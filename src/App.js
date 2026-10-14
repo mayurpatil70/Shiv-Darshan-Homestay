@@ -387,8 +387,14 @@ const CSS = `
 
   /* Storytelling stagger for list items & cards within revealed sections */
   .reveal.is-visible .why-card {
+    animation: scrollyItemRise 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
     transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s ease, border-color 0.4s ease;
   }
+  .reveal.is-visible .why-card:nth-child(1) { animation-delay: 0.04s; }
+  .reveal.is-visible .why-card:nth-child(2) { animation-delay: 0.10s; }
+  .reveal.is-visible .why-card:nth-child(3) { animation-delay: 0.16s; }
+  .reveal.is-visible .why-card:nth-child(4) { animation-delay: 0.22s; }
+  .reveal.is-visible .why-card:nth-child(5) { animation-delay: 0.28s; }
   .reveal.is-visible .service-card {
     animation: scrollyItemRise 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
@@ -494,7 +500,29 @@ const CSS = `
     max-width: 100%;
     padding: 110px 0 3rem; /* keeps hero content clear of the fixed 70px navbar */
   }
-  /* ── REAL ADI KAILASH TEMPLE HERO BACKGROUND (HD LANDSCAPE) ── */
+  /* ── HERO VIDEO BACKGROUND (ADAPTED FULL WIDESCREEN, ZERO BLACK BARS) ── */
+  .hero-video-wrapper {
+    position: absolute; inset: -3%;
+    width: 106%; height: 106%;
+    overflow: hidden;
+    z-index: 0;
+    background: #091a26;
+    transform: scale(1.04);
+    will-change: transform;
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .hero-video-bg {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 100%; height: 100%;
+    min-width: 100%; min-height: 100%;
+    object-fit: cover;
+    object-position: center 36%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    filter: contrast(1.05) brightness(0.92);
+  }
+  /* Fallback static hero image if video fails to load or during reduced motion */
   .hero-bg {
     position: absolute; inset: -2%;
     width: 104%; height: 104%;
@@ -600,7 +628,8 @@ const CSS = `
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-bg { animation: none; transform: none !important; }
+    .hero-video-bg, .hero-video-wrapper { display: none !important; }
+    .hero-bg { animation: none; transform: none !important; display: block; }
     .hero-snow { display: none; }
     .scrolly-reading-bar { display: none; }
   }
@@ -652,6 +681,8 @@ const CSS = `
   .hero-scroll-line { width: 1px; height: 50px; background: linear-gradient(to bottom, rgba(255,255,255,0.6), transparent); margin: 0 auto 6px; }
   .hero-scroll-dot { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; margin: 0 auto; }
   /* Pause background composites when idle off-screen */
+  .hero.is-idle .hero-video-bg,
+  .hero.is-idle .hero-video-wrapper,
   .hero.is-idle .hero-bg,
   .hero.is-idle .hero-snow span,
   .hero.is-idle .hero-scroll { animation-play-state: paused !important; }
@@ -1741,13 +1772,22 @@ function Hero() {
   const ref = useRef(null);
   const heroBgRef = useRef(null);
   const heroContentRef = useRef(null);
+  const videoRef = useRef(null);
 
-  // 60 FPS IntersectionObserver: pauses background CSS animations when scrolled out of view
+  // 60 FPS IntersectionObserver: pauses background video and CSS animations when scrolled out of view
   useEffect(() => {
     const el = ref.current;
     if (!el || !("IntersectionObserver" in window)) return;
     const observer = new IntersectionObserver(([entry]) => {
-      el.classList.toggle("is-idle", !entry.isIntersecting);
+      const isVisible = entry.isIntersecting;
+      el.classList.toggle("is-idle", !isVisible);
+      if (videoRef.current) {
+        if (isVisible) {
+          videoRef.current.play().catch(() => {});
+        } else {
+          videoRef.current.pause();
+        }
+      }
     });
     observer.observe(el);
     return () => observer.disconnect();
@@ -1778,12 +1818,27 @@ function Hero() {
 
   return (
     <section className="hero" id="hero" ref={ref}>
-      {/* Real High-Resolution Adi Kailash Temple & Mountain Background */}
-      <div
-        className="hero-bg"
-        ref={heroBgRef}
-        style={{ backgroundImage: `url(${adiKailashHero})` }}
-      />
+      {/* 9:16 Hero Video Adapted to Full Viewport Width & Height with Zero Black Bars */}
+      <div className="hero-video-wrapper" ref={heroBgRef}>
+        <video
+          ref={videoRef}
+          className="hero-video-bg"
+          autoPlay
+          loop
+          muted
+          playsInline
+          poster={adiKailashHero}
+        >
+          <source
+            src="https://res.cloudinary.com/b4c8jnri/video/upload/w_1080,c_scale,q_auto:best/WhatsApp_Video_2026-10-15_at_1.04.53_AM.mp4"
+            type="video/mp4"
+          />
+          <source
+            src="https://res.cloudinary.com/b4c8jnri/video/upload/WhatsApp_Video_2026-10-15_at_1.04.53_AM.mp4"
+            type="video/mp4"
+          />
+        </video>
+      </div>
 
       <div className="hero-overlay" />
 
@@ -2913,10 +2968,50 @@ function Services() {
 }
 
 function About() {
+  const stackRef = useRef(null);
+  const mainImgRef = useRef(null);
+  const accentImgRef = useRef(null);
+  const cardBadgeRef = useRef(null);
+
+  // 60 FPS Scrollytelling Parallax for About section images
+  useEffect(() => {
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const el = stackRef.current;
+          if (el) {
+            const rect = el.getBoundingClientRect();
+            const winH = window.innerHeight;
+            if (rect.top < winH && rect.bottom > 0) {
+              const progress = (winH - rect.top) / (winH + rect.height);
+              const mainShift = (progress - 0.5) * 22;
+              const accentShift = (progress - 0.5) * -34;
+              const cardShift = (progress - 0.5) * -16;
+              if (mainImgRef.current) {
+                mainImgRef.current.style.transform = `translate3d(0, ${mainShift.toFixed(2)}px, 0)`;
+              }
+              if (accentImgRef.current) {
+                accentImgRef.current.style.transform = `translate3d(0, ${accentShift.toFixed(2)}px, 0)`;
+              }
+              if (cardBadgeRef.current) {
+                cardBadgeRef.current.style.transform = `translateY(-50%) translate3d(0, ${cardShift.toFixed(2)}px, 0)`;
+              }
+            }
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <div className="about-bg" id="about">
       <div className="about-grid reveal">
-        <div className="about-img-stack">
+        <div className="about-img-stack" ref={stackRef}>
           {/* Floating nameplate placed above the owner's photo so face is fully visible */}
           <div
             className="floating-caption"
@@ -2959,22 +3054,22 @@ function About() {
             ></div>
           </div>
 
-          <div className="about-img-main">
+          <div className="about-img-main" ref={mainImgRef}>
             <img
               src={ownerGovindDhami}
               alt="Govind Singh Dhami - Owner of Shiv Darshan Homestay"
-              style={{ objectPosition: "center 15%" }}
+              style={{ objectPosition: "center 18%" }}
             />
           </div>
 
-          <div className="about-img-accent">
+          <div className="about-img-accent" ref={accentImgRef}>
             <img
               src={aboutLandscape}
               alt="Shiv Darshan Homestay scenic mountains in Haat, Dharchula"
             />
           </div>
 
-          <div className="about-card">
+          <div className="about-card" ref={cardBadgeRef}>
             <div className="about-card-num">5+</div>
             <div className="about-card-label">Years of Warm Hosting</div>
           </div>
