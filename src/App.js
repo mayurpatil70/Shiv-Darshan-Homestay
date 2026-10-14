@@ -58,7 +58,7 @@ import roomTriple from "./assets/images/client/room-triple.jpg";
 import roomTwin2 from "./assets/images/client/room-twin-2.jpg";
 import bathroomClean from "./assets/images/client/bathroom-clean.jpg";
 import welcomePoojaGuests from "./assets/images/client/welcome-pooja-guests.jpg";
-import adiKailashHero from "./assets/images/client/adi-kailash-hero-wide.jpg";
+import adiKailashHero from "./assets/images/client/adi-kailash-temple-hero-wide.jpg";
 
 // Brand logo and owner profile images
 const logoImg = shivLogo;
@@ -494,21 +494,19 @@ const CSS = `
     max-width: 100%;
     padding: 110px 0 3rem; /* keeps hero content clear of the fixed 70px navbar */
   }
+  /* ── REAL ADI KAILASH TEMPLE HERO BACKGROUND (HD LANDSCAPE) ── */
   .hero-bg {
-    position: absolute; inset: -3%;
-    background: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&q=80') center/cover no-repeat;
-    width: 104%;
-    animation: heroKenBurns 28s ease-in-out infinite alternate;
+    position: absolute; inset: -2%;
+    width: 104%; height: 104%;
+    background-size: cover;
+    background-position: center 32%;
+    background-repeat: no-repeat;
+    transform: scale(1.04);
     will-change: transform;
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
-  /* Slow cinematic zoom-pan over the SAME image — feels like a moving camera, no video needed */
-  @keyframes heroKenBurns {
-    from { transform: scale(1)    translate(0, 0); }
-    40%  { transform: scale(1.08) translate(-1.2%, 0.6%); }
-    75%  { transform: scale(1.14) translate(1%, -0.8%); }
-    to   { transform: scale(1.18) translate(-0.6%, 0.4%); }
-  }
-  /* Drifting snow particles layer */
+
+  /* Drifting snow particles layer (Snow Fall Only) */
   .hero-snow {
     position: absolute; inset: 0;
     pointer-events: none;
@@ -516,111 +514,53 @@ const CSS = `
     overflow: hidden;
   }
   .hero-snow span {
-    position: absolute; top: -4%;
-    display: block; width: 6px; height: 6px; border-radius: 50%;
-    background: rgba(255,255,255,0.7);
-    box-shadow: 0 0 6px 1px rgba(255,255,255,0.35);
+    position: absolute; top: -5%;
+    display: block; border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.55);
     animation: snowFall linear infinite;
+    will-change: transform, opacity;
   }
   @keyframes snowFall {
-    0%   { transform: translate3d(0, -10px, 0) ; opacity: 0; }
-    8%   { opacity: 0.9; }
-    50%  { transform: translate3d(14px, 55vh, 0); }
-    100% { transform: translate3d(-10px, 108vh, 0); opacity: 0.2; }
+    0%   { transform: translate3d(0, -15px, 0); opacity: 0; }
+    12%  { opacity: 0.95; }
+    50%  { transform: translate3d(22px, 55vh, 0); }
+    88%  { opacity: 0.8; }
+    100% { transform: translate3d(-16px, 110vh, 0); opacity: 0; }
   }
 
-  /* ── REAL ADI KAILASH TEMPLE HERO BACKGROUND & MOVING PEOPLE ── */
-  .hero-bg {
-    position: absolute; inset: 0;
-    background-size: cover;
-    background-position: center 30%;
-    background-repeat: no-repeat;
-    transform: scale(1.04);
-    will-change: transform;
-    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  /* Dual Action Hero CTAs */
+  .hero-cta-group {
+    display: flex; gap: 1rem; justify-content: center; align-items: center;
+    margin-bottom: 2.25rem; flex-wrap: wrap;
   }
-
-  /* Moving Pilgrims & Devotees Layer on Hero Section */
-  .hero-people-layer {
-    position: absolute; inset: 0;
-    pointer-events: none;
-    z-index: 2;
-    display: flex; align-items: flex-end; justify-content: center;
-    overflow: hidden;
+  .hero-btn-primary {
+    display: inline-flex; align-items: center; gap: 0.55rem;
+    background: linear-gradient(135deg, #d4a047 0%, #c8963e 50%, #ad7d2b 100%);
+    color: #0b1a24; padding: 0.82rem 1.85rem; border-radius: 50px;
+    font-size: 0.92rem; font-weight: 700; letter-spacing: 0.02em;
+    text-decoration: none; box-shadow: 0 8px 24px rgba(200, 150, 62, 0.45);
+    transition: all 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
-  .hero-people-svg {
-    width: 100%; height: 55%;
-    max-height: 480px;
-    object-fit: cover;
-    filter: drop-shadow(0 6px 16px rgba(0,0,0,0.55));
+  .hero-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(200, 150, 62, 0.65);
+    background: linear-gradient(135deg, #e5b35a 0%, #d4a047 50%, #ba8933 100%);
+    color: #07121a;
   }
-  .trekker-walk-1 {
-    animation: trekkerWalkPath1 14s linear infinite;
-    will-change: transform;
+  .hero-btn-secondary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1.5px solid rgba(255, 255, 255, 0.35);
+    color: #ffffff; padding: 0.82rem 1.75rem; border-radius: 50px;
+    font-size: 0.92rem; font-weight: 600; text-decoration: none;
+    backdrop-filter: blur(10px); transition: all 0.28s ease;
   }
-  @keyframes trekkerWalkPath1 {
-    0%   { transform: translate3d(-140px, 18px, 0); opacity: 0; }
-    8%   { opacity: 1; }
-    50%  { transform: translate3d(70px, -8px, 0); }
-    92%  { opacity: 1; }
-    100% { transform: translate3d(280px, -32px, 0); opacity: 0; }
-  }
-  .trekker-walk-2 {
-    animation: trekkerWalkPath2 16s linear infinite;
-    will-change: transform;
-  }
-  @keyframes trekkerWalkPath2 {
-    0%   { transform: translate3d(-90px, 20px, 0); opacity: 0; }
-    8%   { opacity: 0.95; }
-    50%  { transform: translate3d(90px, -6px, 0); }
-    92%  { opacity: 0.95; }
-    100% { transform: translate3d(290px, -26px, 0); opacity: 0; }
-  }
-  .trekker-walk-3 {
-    animation: trekkerWalkPath3 18s linear infinite;
-    will-change: transform;
-  }
-  @keyframes trekkerWalkPath3 {
-    0%   { transform: translate3d(-120px, 24px, 0); opacity: 0; }
-    8%   { opacity: 0.95; }
-    50%  { transform: translate3d(80px, -4px, 0); }
-    92%  { opacity: 0.95; }
-    100% { transform: translate3d(300px, -24px, 0); opacity: 0; }
-  }
-  .trekker-bob {
-    animation: trekkerBobAnim 0.7s ease-in-out infinite alternate;
-  }
-  @keyframes trekkerBobAnim {
-    0%   { transform: translate3d(0, 0, 0); }
-    100% { transform: translate3d(0, -3px, 0); }
-  }
-  .trekker-step-1 {
-    animation: trekkerLegSwing 0.7s ease-in-out infinite alternate;
-    transform-origin: center top;
-  }
-  .trekker-step-2 {
-    animation: trekkerLegSwing 0.7s ease-in-out infinite alternate-reverse;
-    transform-origin: center top;
-  }
-  @keyframes trekkerLegSwing {
-    0%   { transform: rotate(-8deg); }
-    100% { transform: rotate(8deg); }
-  }
-  .hero-flag-flutter {
-    animation: flagFlutterAnim 2.2s ease-in-out infinite alternate;
-    will-change: transform;
-  }
-  @keyframes flagFlutterAnim {
-    0%   { transform: scaleX(0.88) skewY(-2deg); }
-    100% { transform: scaleX(1.15) skewY(3deg); }
-  }
-  .devotee-lamp-glow {
-    animation: lampPulse 1.8s ease-in-out infinite alternate;
-    will-change: opacity, transform;
-  }
-  @keyframes lampPulse {
-    0%   { opacity: 0.6; transform: scale(0.9); }
-    100% { opacity: 1; transform: scale(1.15); }
+  .hero-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.24);
+    border-color: #ffffff; color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
   }
 
   /* ── GLOBAL SCROLLYTELLING READING BAR ── */
@@ -662,13 +602,19 @@ const CSS = `
   @media (prefers-reduced-motion: reduce) {
     .hero-bg { animation: none; transform: none !important; }
     .hero-snow { display: none; }
-    .trekker-walk-1, .trekker-walk-2, .trekker-walk-3, .trekker-bob, .trekker-step-1, .trekker-step-2, .hero-flag-flutter, .devotee-lamp-glow { animation: none; }
     .scrolly-reading-bar { display: none; }
   }
   .hero-overlay {
     position: absolute; inset: 0;
-    background: radial-gradient(circle at 50% 85%, rgba(10,30,42,0.18) 0%, rgba(10,25,36,0.65) 60%, rgba(8,18,26,0.85) 100%);
+    background: linear-gradient(
+      180deg,
+      rgba(8, 22, 32, 0.45) 0%,
+      rgba(8, 22, 32, 0.22) 32%,
+      rgba(8, 22, 32, 0.58) 72%,
+      rgba(8, 22, 32, 0.92) 100%
+    );
     z-index: 2;
+    pointer-events: none;
   }
   .hero-content {
     position: relative; z-index: 3; text-align: center;
@@ -708,13 +654,6 @@ const CSS = `
   /* Pause background composites when idle off-screen */
   .hero.is-idle .hero-bg,
   .hero.is-idle .hero-snow span,
-  .hero.is-idle .temple-scaler,
-  .hero.is-idle .bell-swing,
-  .hero.is-idle .aarti-glow,
-  .hero.is-idle .trishul-halo,
-  .hero.is-idle .dhwaja-flutter,
-  .hero.is-idle .dhoop-smoke,
-  .hero.is-idle .pranam-devotee,
   .hero.is-idle .hero-scroll { animation-play-state: paused !important; }
   @keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(8px); } }
 
@@ -1790,12 +1729,12 @@ function Navbar() {
   );
 }
 
-const HERO_SNOWFLAKES = Array.from({ length: 28 }, (_, i) => ({
-  left: (i * 37 + 11) % 100, // spread pseudo-randomly across 0-99%
+const HERO_SNOWFLAKES = Array.from({ length: 34 }, (_, i) => ({
+  left: (i * 31 + 7) % 100, // spread pseudo-randomly across 0-99%
   size: 3 + ((i * 7) % 5), // 3-7px
-  duration: 9 + ((i * 13) % 12), // 9-20s fall time
-  delay: -((i * 5) % 20), // negative delay so snow is already falling on load
-  drift: ((i * 29) % 60) - 30, // horizontal sway amplitude
+  duration: 8 + ((i * 11) % 10), // 8-18s fall time
+  delay: -((i * 4.5) % 18), // negative delay so snow is already falling on load
+  drift: ((i * 23) % 50) - 25, // horizontal sway amplitude
 }));
 
 function Hero() {
@@ -1839,86 +1778,16 @@ function Hero() {
 
   return (
     <section className="hero" id="hero" ref={ref}>
-      {/* Real High-Resolution Adi Kailash Temple & Mountain Background Stretched Across Hero */}
+      {/* Real High-Resolution Adi Kailash Temple & Mountain Background */}
       <div
         className="hero-bg"
         ref={heroBgRef}
         style={{ backgroundImage: `url(${adiKailashHero})` }}
       />
 
-      {/* Moving People & Pilgrims on Hero Section Trail & Ridge */}
-      <div className="hero-people-layer" aria-hidden="true">
-        <svg
-          className="hero-people-svg"
-          viewBox="0 0 1200 400"
-          preserveAspectRatio="xMidYBottom meet"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <defs>
-            <radialGradient id="lampGlow" cx="50%" cy="50%" r="50%">
-              <stop stopColor="#ffe270" stopOpacity="0.9" />
-              <stop offset="60%" stopColor="#ff9900" stopOpacity="0.4" />
-              <stop offset="100%" stopColor="#ff6600" stopOpacity="0" />
-            </radialGradient>
-          </defs>
-
-          {/* Saffron Flag on Temple Mast Fluttering in High Himalayan Wind */}
-          <g className="hero-flag-flutter" style={{ transformOrigin: "602px 145px" }}>
-            <path d="M602 145 L632 153 L602 163 Z" fill="#ff7700" opacity="0.95" />
-          </g>
-
-          {/* Moving Trekker 1: Walking along Mountain Trail with Trek Pole & Backpack */}
-          <g className="trekker-walk-1">
-            <g className="trekker-bob">
-              <path d="M360 330 C360 300, 368 296, 375 296 C382 296, 390 300, 390 330 Z" fill="#122530" />
-              <circle cx="375" cy="288" r="8.5" fill="#122530" />
-              <path d="M356 305 C354 300, 354 316, 357 322 Z" fill="#c8963e" stroke="#122530" strokeWidth="2" />
-              <line x1="388" y1="298" x2="394" y2="338" stroke="#f5d070" strokeWidth="2.5" strokeLinecap="round" />
-              <line className="trekker-step-1" x1="368" y1="330" x2="364" y2="346" stroke="#122530" strokeWidth="4" strokeLinecap="round" />
-              <line className="trekker-step-2" x1="382" y1="330" x2="386" y2="346" stroke="#122530" strokeWidth="4" strokeLinecap="round" />
-            </g>
-          </g>
-
-          {/* Moving Trekker 2: Walking with Saffron Shawl towards the Temple */}
-          <g className="trekker-walk-2">
-            <g className="trekker-bob">
-              <path d="M420 334 C420 306, 428 302, 435 302 C442 302, 450 306, 450 334 Z" fill="#ff7700" opacity="0.92" />
-              <circle cx="435" cy="294" r="8" fill="#122530" />
-              <line className="trekker-step-2" x1="428" y1="334" x2="424" y2="348" stroke="#122530" strokeWidth="3.5" strokeLinecap="round" />
-              <line className="trekker-step-1" x1="442" y1="334" x2="446" y2="348" stroke="#122530" strokeWidth="3.5" strokeLinecap="round" />
-            </g>
-          </g>
-
-          {/* Moving Trekker 3: Pilgrim carrying Sacred Saffron Flag towards Temple */}
-          <g className="trekker-walk-3">
-            <g className="trekker-bob">
-              <path d="M280 342 C280 316, 287 312, 294 312 C301 312, 308 316, 308 342 Z" fill="#1b3545" />
-              <circle cx="294" cy="305" r="7.5" fill="#1b3545" />
-              <line x1="298" y1="282" x2="304" y2="348" stroke="#f5d070" strokeWidth="2.2" strokeLinecap="round" />
-              <path d="M298 282 L316 288 L298 296 Z" fill="#ff7700" />
-              <line className="trekker-step-1" x1="288" y1="342" x2="284" y2="356" stroke="#1b3545" strokeWidth="3.5" strokeLinecap="round" />
-              <line className="trekker-step-2" x1="300" y1="342" x2="304" y2="356" stroke="#1b3545" strokeWidth="3.5" strokeLinecap="round" />
-            </g>
-          </g>
-
-          {/* Devotees on the Ridge near Temple in Prayer */}
-          <g className="temple-devotee-1">
-            <path d="M585 270 C585 248, 592 245, 597 245 C602 245, 609 248, 609 270 Z" fill="#10222d" />
-            <circle cx="597" cy="239" r="6.5" fill="#10222d" />
-            <path d="M592 254 L597 248 L602 254" stroke="#f5c26b" strokeWidth="3" strokeLinecap="round" />
-            <circle cx="597" cy="246" r="10" fill="url(#lampGlow)" className="devotee-lamp-glow" />
-          </g>
-
-          <g className="temple-devotee-2">
-            <path d="M635 272 C635 250, 642 247, 647 247 C652 247, 659 250, 659 272 Z" fill="#10222d" />
-            <circle cx="647" cy="241" r="6.5" fill="#10222d" />
-            <path d="M642 256 L647 250 L652 256" stroke="#10222d" strokeWidth="3" strokeLinecap="round" />
-          </g>
-        </svg>
-      </div>
-
       <div className="hero-overlay" />
+
+      {/* Gentle Snow Fall Only */}
       <div className="hero-snow" aria-hidden="true">
         {HERO_SNOWFLAKES.map((f, i) => (
           <span
@@ -1937,7 +1806,7 @@ function Hero() {
 
       <div className="hero-content" ref={heroContentRef}>
         <div className="hero-badge">
-          Top-Rated Homestay on Adi Kailash Route
+          ✦ Authentic Himalayan Homestay · Adi Kailash Yatra Route
         </div>
         <h1 style={{ display: "none" }}>Best Homestay in Haat, Dharchula - Shiv Darshan Homestay</h1>
         <h2 style={{
@@ -1956,12 +1825,31 @@ function Hero() {
         <p className="hero-tagline">
           More than a stay, it feels like home · Sacred Himalayan tranquility in Haat, Dharchula Dehat · Uttarakhand
         </p>
+
+        {/* Dual High-Conversion Call-to-Action Buttons */}
+        <div className="hero-cta-group">
+          <a
+            href={WA_BOOKING_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hero-btn-primary"
+          >
+            <span>💬 Book on WhatsApp</span>
+          </a>
+          <a
+            href="#rooms"
+            className="hero-btn-secondary"
+          >
+            <span>Explore Rooms & Tariffs ↓</span>
+          </a>
+        </div>
+
         <div className="hero-stats">
           {[
             ["1000+", "Happy Pilgrims & Guests"],
             ["Haat", "Dharchula, Uttarakhand"],
             ["5,905 ft", "Himalayan Altitude"],
-            ["4.9★", "Google Rating"],
+            ["4.9★", "Google Guest Rating"],
           ].map(([n, l]) => (
             <div className="hero-stat" key={l}>
               <div className="hero-stat-num">{n}</div>
