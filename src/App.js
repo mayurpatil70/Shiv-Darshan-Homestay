@@ -517,10 +517,15 @@ const CSS = `
     width: 100%; height: 100%;
     min-width: 100%; min-height: 100%;
     object-fit: cover;
-    object-position: center 36%;
+    object-position: center 30%;
     transform: translate(-50%, -50%);
     pointer-events: none;
     filter: contrast(1.05) brightness(0.92);
+  }
+  @media (max-width: 768px) {
+    .hero-video-bg {
+      object-position: center 36%;
+    }
   }
   /* Fallback static hero image if video fails to load or during reduced motion */
   .hero-bg {
@@ -1771,6 +1776,15 @@ function Hero() {
   const heroBgRef = useRef(null);
   const heroContentRef = useRef(null);
   const videoRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== "undefined" ? window.innerWidth <= 768 : false
+  );
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", handleResize, { passive: true });
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // 60 FPS IntersectionObserver: pauses background video and CSS animations when scrolled out of view
   useEffect(() => {
@@ -1814,11 +1828,22 @@ function Hero() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Widescreen 60 FPS video on Desktop (WhatsApp_Video_2026-10-15_at_1.30.16_AM)
+  // Vertical 9:16 Snow & Clouds reel on Mobile (WhatsApp_Video_2026-10-15_at_1.04.53_AM)
+  const currentVideoSrc = isMobile
+    ? "https://res.cloudinary.com/b4c8jnri/video/upload/w_1080,c_scale,q_auto:best/WhatsApp_Video_2026-10-15_at_1.04.53_AM.mp4"
+    : "https://res.cloudinary.com/b4c8jnri/video/upload/w_1920,c_scale,q_auto:best/WhatsApp_Video_2026-10-15_at_1.30.16_AM.mp4";
+
+  const fallbackVideoSrc = isMobile
+    ? "https://res.cloudinary.com/b4c8jnri/video/upload/WhatsApp_Video_2026-10-15_at_1.04.53_AM.mp4"
+    : "https://res.cloudinary.com/b4c8jnri/video/upload/WhatsApp_Video_2026-10-15_at_1.30.16_AM.mp4";
+
   return (
     <section className="hero" id="hero" ref={ref}>
-      {/* 9:16 Hero Video Adapted to Full Viewport Width & Height with Zero Black Bars */}
+      {/* Responsive Hero Video (60 FPS Widescreen on Desktop, 9:16 Reel on Mobile) with Zero Black Bars */}
       <div className="hero-video-wrapper" ref={heroBgRef}>
         <video
+          key={isMobile ? "mobile-video" : "desktop-video"}
           ref={videoRef}
           className="hero-video-bg"
           autoPlay
@@ -1827,14 +1852,8 @@ function Hero() {
           playsInline
           poster={adiKailashHero}
         >
-          <source
-            src="https://res.cloudinary.com/b4c8jnri/video/upload/w_1080,c_scale,q_auto:best/WhatsApp_Video_2026-10-15_at_1.04.53_AM.mp4"
-            type="video/mp4"
-          />
-          <source
-            src="https://res.cloudinary.com/b4c8jnri/video/upload/WhatsApp_Video_2026-10-15_at_1.04.53_AM.mp4"
-            type="video/mp4"
-          />
+          <source src={currentVideoSrc} type="video/mp4" />
+          <source src={fallbackVideoSrc} type="video/mp4" />
         </video>
       </div>
 
