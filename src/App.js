@@ -74,35 +74,37 @@ const EMAILJS_SERVICE_ID = "service_e4gi90r";
 const EMAILJS_PUBLIC_KEY = "cqWBlZliX0aLNQQDB";
 const EMAILJS_BOOKING_TEMPLATE = "template_r4zfcvr";
 
-// ─── WHATSAPP BOOKING ───────────────────────────────────────────────────────
-const WA_NUMBER = "917500960261";
+// ─── WHATSAPP BOOKING & ENQUIRY ─────────────────────────────────────────────
+const WA_NUMBER = "919410135726";
+const WA_NUMBER_2 = "919456761865";
+const PHONE_1_DISPLAY = "+91 94101 35726";
+const PHONE_2_DISPLAY = "+91 94567 61865";
+
 const WA_BOOKING_MESSAGE = [
-  "Hello! I'd like to book a stay at Shiv Darshan Homestay, Haat, Dharchula, Uttarakhand.",
+  "Namaste Govind Singh Dhami ji! 🙏",
+  "I would like to enquire about staying at Shiv Darshan Homestay, Haat, Dharchula (Uttarakhand).",
   "",
-  "Room Type: ",
-  "📅 Check-in: ",
-  "📅 Check-out: ",
-  "👥 Guests: ",
+  "📅 Check-in Date: ",
+  "📅 Check-out Date: ",
+  "👥 Number of Guests: ",
+  "🛏️ Preferred Room Type: ",
   "",
-  "Please share availability and best rates. Thank you!",
+  "Please share availability, rates, and guidance for the Adi Kailash & Om Parvat yatra. Thank you!",
   "",
   "🌹🙏 शिव दर्शन होम स्टे 🙏🌹",
   "हाट, धारचूला देहात, पिथौरागढ़ (उत्तराखंड)",
+  "स्वामी: गोविंद सिंह धामी",
+  "संपर्क सूत्र: 9410135726 / 9456761865",
   "",
-  "/ परसन (प्रति व्यक्ति ) ₹1000",
-  "जिसमें चाय, स्वादिष्ट भोजन और पहाड़ी आतिथ्य शामिल है",
-  "",
-  "             ऑनर ",
-  "🌾🌾🌾🌾🌾🌾🌾",
-  "गोविंद सिंह धामी",
-  "🌾🌾🌾🌾🌾🌾🌾",
-  "",
-  "हमारे होम स्टे से इनर लाइन परमिट और आदि कैलाश ॐ पर्वत के लिए सुविधा उपलब्ध है 🙏",
-  "",
-  "🌹🙏 अतिथि देवो भवः 🌹🙏",
-  "🚩🙏 हर हर महादेव 🚩🙏"
+  "हमारे होम स्टे से इनर लाइन परमिट और आदि कैलाश ॐ पर्वत के लिए संपूर्ण सुविधा उपलब्ध है 🙏",
+  "🌹🙏 अतिथि देवो भवः · हर हर महादेव 🚩🙏"
 ].join("\n");
-const WA_BOOKING_URL = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(WA_BOOKING_MESSAGE)}`;
+
+const getWaUrl = (number = WA_NUMBER, customMsg = WA_BOOKING_MESSAGE) =>
+  `https://wa.me/${number}?text=${encodeURIComponent(customMsg)}`;
+
+const WA_BOOKING_URL = getWaUrl(WA_NUMBER);
+const WA_BOOKING_URL_2 = getWaUrl(WA_NUMBER_2);
 
 // Exact Google Maps listing for Shiv Darshan Homestay
 const MAPS_URL = "https://maps.app.goo.gl/rQN7wv5mMmsVjdkQ6?g_st=aw";
@@ -1008,60 +1010,87 @@ const CSS = `
 
   /* ── WHY STAY WITH US ── */
   .why-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
     gap: 1.25rem;
   }
   .why-card {
     position: relative; overflow: hidden;
-    background: white; border: 1px solid var(--border); border-radius: var(--radius);
-    padding: 1.75rem 1.25rem; text-align: center;
+    background: white; border: 1.5px solid var(--border); border-radius: var(--radius);
+    padding: 1.75rem 1.25rem 1.4rem; text-align: center;
     cursor: pointer; outline: none;
-    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.55s ease, border-color 0.55s ease;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
   }
-  .why-card:hover, .why-card:focus-visible { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: var(--glacier); }
+  .why-card:hover, .why-card:focus-visible, .why-card.is-active {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 45px rgba(26,58,74,0.18);
+    border-color: var(--gold);
+  }
   .why-media {
     position: absolute; inset: 0; z-index: 2;
-    transform: translateY(-101%);
-    /* Exit (mouse leaves): slow, symmetrical ease-in-out so the curtain glides away gently */
-    transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1);
-    will-change: transform;
+    opacity: 0; visibility: hidden; pointer-events: none;
+    transform: translateY(-6px) scale(0.98);
+    transition: opacity 0.32s ease, transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.32s;
+    will-change: transform, opacity;
   }
   .why-media img {
     width: 100%; height: 100%; object-fit: cover; display: block;
-    /* Long, lazy zoom that keeps drifting after the panel lands — premium documentary feel */
-    transition: transform 1.6s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .why-media::after {
     content: ""; position: absolute; inset: 0;
-    background: linear-gradient(to top, rgba(13,37,53,0.88) 0%, rgba(13,37,53,0.3) 55%, rgba(13,37,53,0.12) 100%);
+    background: linear-gradient(to top, rgba(10,30,42,0.95) 0%, rgba(10,30,42,0.68) 55%, rgba(10,30,42,0.22) 100%);
   }
   .why-media-caption {
-    position: absolute; left: 0; right: 0; bottom: 0; z-index: 3;
-    padding: 1rem 0.9rem; color: white; text-align: center;
-    font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 0.95rem;
-    text-shadow: 0 1px 8px rgba(0,0,0,0.5);
+    position: absolute; left: 0; right: 0; bottom: 0; top: 0; z-index: 3;
+    padding: 1.2rem 1rem; color: white; text-align: center;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.6);
   }
-  .why-media-caption span { display: block; font-weight: 400; font-size: 0.74rem; opacity: 0.85; margin-top: 3px; letter-spacing: 0.02em; }
-  /* Entry (mouse enters): slightly quicker than exit but with a soft start — feels intentional, not snappy */
-  .why-card:hover .why-media, .why-card:focus-visible .why-media {
-    transform: translateY(0);
-    transition: transform 0.85s cubic-bezier(0.33, 0, 0.2, 1);
+  .why-media-icon { font-size: 2rem; margin-bottom: 0.35rem; }
+  .why-media-title {
+    font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1.05rem;
+    color: white; margin-bottom: 0.25rem;
   }
-  .why-card:hover .why-media img, .why-card:focus-visible .why-media img { transform: scale(1.08); }
+  .why-media-sub {
+    font-size: 0.78rem; font-weight: 600; color: var(--gold);
+    letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 0.35rem;
+  }
+  .why-media-desc {
+    font-size: 0.8rem; color: rgba(255,255,255,0.9); line-height: 1.45;
+    max-width: 90%; margin: 0 auto;
+  }
+  /* Entry on hover, focus, or click */
+  .why-card:hover .why-media, .why-card:focus-visible .why-media, .why-card.is-active .why-media {
+    opacity: 1; visibility: visible; pointer-events: auto;
+    transform: translateY(0) scale(1);
+  }
+  .why-card:hover .why-media img, .why-card:focus-visible .why-media img, .why-card.is-active .why-media img {
+    transform: scale(1.08);
+  }
+  .why-hover-hint {
+    display: inline-block; margin-top: 0.75rem;
+    font-size: 0.7rem; font-weight: 600; color: var(--gold);
+    background: rgba(200, 150, 62, 0.1); padding: 3px 10px;
+    border-radius: 50px; border: 1px solid rgba(200, 150, 62, 0.25);
+    transition: background 0.2s, color 0.2s;
+  }
+  .why-card:hover .why-hover-hint { background: var(--gold); color: white; }
   @media (prefers-reduced-motion: reduce) {
-    .why-card, .why-media, .why-media img { transition: none; }
-    .why-card:hover .why-media, .why-card:focus-visible .why-media { transform: translateY(-101%); }
+    .why-card, .why-media, .why-media img { transition: none !important; }
+    .why-card:hover .why-media, .why-card:focus-visible .why-media, .why-card.is-active .why-media {
+      opacity: 1 !important; visibility: visible !important; transform: none !important;
+    }
   }
   .why-icon {
-    width: 58px; height: 58px; margin: 0 auto 1rem; border-radius: 50%;
+    width: 58px; height: 58px; margin: 0 auto 0.9rem; border-radius: 50%;
     background: linear-gradient(135deg, var(--ice), var(--glacier));
     display: flex; align-items: center; justify-content: center; font-size: 1.6rem;
   }
   .why-title {
     font-family: 'DM Sans', sans-serif; font-size: 0.98rem; font-weight: 700;
-    color: var(--peak); margin-bottom: 0.5rem;
+    color: var(--peak); margin-bottom: 0.45rem;
   }
-  .why-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.6; }
+  .why-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.55; }
 
   /* ── SERVICES ── */
   .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.25rem; }
@@ -2323,12 +2352,8 @@ function RoomCard({ room, onBook, posClass = "", onClick }) {
             onClick={(e) => {
               e.stopPropagation();
               if (room.available) {
-                const msg = `Hello! I would like to book the ${room.name} (${room.type}). Please share the detailed price and availability.`;
-                window.open(
-                  `https://wa.me/917500960261?text=${encodeURIComponent(msg)}`,
-                  "_blank",
-                  "noopener",
-                );
+                const msg = `Hello! I would like to book the ${room.name} (${room.type}) at Shiv Darshan Homestay, Haat, Dharchula. Please share availability and rates.`;
+                window.open(getWaUrl(WA_NUMBER, msg), "_blank", "noopener");
               }
             }}
             disabled={!room.available}
@@ -2438,7 +2463,7 @@ function BookingModal({ room, preCheckin, preCheckout, preGuests, onClose }) {
               <br />
               <br />
               We'll send details to <strong>{form.email}</strong>.<br />
-              For questions, WhatsApp: <strong>+91 94120 XXXXX</strong>
+              For questions, WhatsApp / Call: <strong>+91 94101 35726 / +91 94567 61865</strong>
             </p>
             <button className="btn-primary mt-3" onClick={onClose}>
               Close
@@ -3134,6 +3159,8 @@ function About() {
 }
 
 function WhyStay() {
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+
   const reasons = [
     {
       icon: "🏔️",
@@ -3150,11 +3177,11 @@ function WhyStay() {
       caption: "Warm, cozy & spotless",
     },
     {
-      icon: "🍛",
+      icon: "🍲",
       title: "Kumaoni Cuisine",
       desc: "Authentic home-cooked Kumaoni meals from our organic garden.",
       img: foodImg,
-      caption: "Fresh local thali",
+      caption: "Fresh local thali & warm hospitality",
     },
     {
       icon: "📍",
@@ -3185,18 +3212,31 @@ function WhyStay() {
       <h2 className="section-title">Why Stay With Us?</h2>
       <p className="section-sub">
         Five reasons travelers choose Shiv Darshan Homestay — and keep coming back.
+        <span style={{ display: "block", fontSize: "0.82rem", color: "var(--gold)", marginTop: "4px" }}>
+          (Hover or tap any card to view the real photo)
+        </span>
       </p>
       <div className="why-grid reveal">
-        {reasons.map(({ icon, title, desc, img, caption }) => (
-          <div key={title} className="why-card" tabIndex={0}>
+        {reasons.map(({ icon, title, desc, img, caption }, i) => (
+          <div
+            key={title}
+            className={`why-card${hoveredIndex === i ? " is-active" : ""}`}
+            tabIndex={0}
+            onMouseEnter={() => setHoveredIndex(i)}
+            onMouseLeave={() => setHoveredIndex(null)}
+            onClick={() => setHoveredIndex(hoveredIndex === i ? null : i)}
+          >
             <div className="why-icon">{icon}</div>
             <div className="why-title">{title}</div>
             <div className="why-desc">{desc}</div>
+            <span className="why-hover-hint">Hover to view 📸</span>
             <div className="why-media" aria-hidden="true">
-              <img src={img} alt="" loading="lazy" />
+              <img src={img} alt={caption} loading="lazy" />
               <div className="why-media-caption">
-                {icon} {title}
-                <span>{caption}</span>
+                <div className="why-media-icon">{icon}</div>
+                <div className="why-media-title">{title}</div>
+                <div className="why-media-sub">{caption}</div>
+                <div className="why-media-desc">{desc}</div>
               </div>
             </div>
           </div>
@@ -3481,7 +3521,7 @@ Phone: ${phone || "Not provided"}
 Message:
 ${form.message}`;
 
-    const waUrl = `https://wa.me/917500960261?text=${encodeURIComponent(msg)}`;
+    const waUrl = getWaUrl(WA_NUMBER, msg);
     window.open(waUrl, "_blank", "noopener");
     setSent(true);
   };
@@ -3510,7 +3550,7 @@ ${form.message}`;
               "Address",
               "Shiv Darshan Homestay, Haat, Dharchula Dehat, Pithoragarh, Uttarakhand – 262545",
             ],
-            [Phone, "Phone", "+91 75009 60261"],
+            [Phone, "Call / WhatsApp", `${PHONE_1_DISPLAY} / ${PHONE_2_DISPLAY}`],
             [Mail, "Email", "shivdarshanhomestay@gmail.com"],
             [
               Clock,
@@ -3529,14 +3569,26 @@ ${form.message}`;
               </div>
             </div>
           ))}
-          <a
-            href={WA_BOOKING_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="whatsapp-btn"
-          >
-            <MessageCircle size={18} strokeWidth={2} /> Chat on WhatsApp
-          </a>
+          <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", marginTop: "1rem" }}>
+            <a
+              href={WA_BOOKING_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="whatsapp-btn"
+              style={{ flex: "1 1 200px", padding: "0.75rem 1rem", fontSize: "0.88rem" }}
+            >
+              <MessageCircle size={18} strokeWidth={2} /> WhatsApp: 9410135726
+            </a>
+            <a
+              href={WA_BOOKING_URL_2}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="whatsapp-btn"
+              style={{ flex: "1 1 200px", padding: "0.75rem 1rem", fontSize: "0.88rem", background: "#25D366" }}
+            >
+              <MessageCircle size={18} strokeWidth={2} /> WhatsApp: 9456761865
+            </a>
+          </div>
         </div>
         <div>
           <h3
@@ -3811,13 +3863,21 @@ function Footer({ bookRowRef, toTopRef, onPolicies }) {
           </div>
           <div className="footer-col footer-col-contact">
             <h4>Contact</h4>
-            <a href="tel:+917500960261">
+            <a href="tel:+919410135726">
               <Phone
                 size={13}
                 strokeWidth={2.2}
                 style={{ verticalAlign: "-2px", marginRight: "5px" }}
               />
-              +91 75009 60261
+              +91 94101 35726
+            </a>
+            <a href="tel:+919456761865">
+              <Phone
+                size={13}
+                strokeWidth={2.2}
+                style={{ verticalAlign: "-2px", marginRight: "5px" }}
+              />
+              +91 94567 61865
             </a>
             <a href="mailto:shivdarshanhomestay@gmail.com">
               <Mail
@@ -3833,7 +3893,15 @@ function Footer({ bookRowRef, toTopRef, onPolicies }) {
                 strokeWidth={2.2}
                 style={{ verticalAlign: "-2px", marginRight: "5px" }}
               />
-              WhatsApp
+              WhatsApp (9410135726)
+            </a>
+            <a href={WA_BOOKING_URL_2} target="_blank" rel="noopener noreferrer">
+              <MessageCircle
+                size={13}
+                strokeWidth={2.2}
+                style={{ verticalAlign: "-2px", marginRight: "5px" }}
+              />
+              WhatsApp (9456761865)
             </a>
             <div className="footer-book-row" ref={bookRowRef}>
               <a href={MAPS_URL} target="_blank" rel="noopener noreferrer">
@@ -3992,16 +4060,27 @@ function PolicyPage({ section, onClose }) {
           For any queries or special requests, feel free to contact us anytime.
         </p>
         <div className="pol-contact-btns">
-          <a className="btn-primary" href="tel:+917500960261">
-            📞 +91 75009 60261
+          <a className="btn-primary" href="tel:+919410135726">
+            📞 +91 94101 35726
+          </a>
+          <a className="btn-primary" href="tel:+919456761865">
+            📞 +91 94567 61865
           </a>
           <a
             className="btn-outline"
-            href="https://wa.me/917500960261?text=Hello!%20I%20have%20a%20question%20about%20your%20policies."
+            href={getWaUrl(WA_NUMBER, "Hello Govind ji! I have a question regarding Shiv Darshan Homestay policies and booking.")}
             target="_blank"
             rel="noopener noreferrer"
           >
-            WhatsApp Us
+            WhatsApp (9410135726)
+          </a>
+          <a
+            className="btn-outline"
+            href={getWaUrl(WA_NUMBER_2, "Hello Govind ji! I have a question regarding Shiv Darshan Homestay policies and booking.")}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            WhatsApp (9456761865)
           </a>
         </div>
       </div>
@@ -4234,7 +4313,7 @@ export default function App() {
       >
         <CalendarDays size={19} strokeWidth={2} />
         <span>Book Now</span>
-        <span className="book-tooltip">Book instantly on WhatsApp</span>
+        <span className="book-tooltip">WhatsApp: 9410135726 / 9456761865</span>
       </a>
 
       {/* Booking Modal */}
