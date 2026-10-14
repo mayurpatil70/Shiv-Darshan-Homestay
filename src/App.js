@@ -1014,24 +1014,30 @@ const CSS = `
   /* ── ABOUT ── */
   .about-bg { background: linear-gradient(135deg, var(--peak) 0%, #0d2535 100%); padding: 4rem 1.5rem; }
   .about-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
-  .about-img-stack { position: relative; height: 500px; }
+  .about-img-stack {
+    position: relative;
+    width: 100%;
+    max-width: 440px;
+    height: 520px;
+    margin: 0 auto;
+  }
   .about-img-main {
-    position: absolute; top: 0; left: 0; width: 75%; height: 80%;
-    border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg);
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+    border: 3px solid rgba(255, 255, 255, 0.12);
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
-  .about-img-accent {
-    position: absolute; bottom: 0; right: 0; width: 55%; height: 55%;
-    border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg);
-    border: 4px solid rgba(255,255,255,0.1);
+  .about-img-main img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 18%;
+    display: block;
   }
-  .about-img-main img, .about-img-accent img { width: 100%; height: 100%; object-fit: cover; }
-  .about-card {
-    position: absolute; top: 50%; left: 65%; transform: translateY(-50%);
-    background: var(--gold); padding: 1.25rem 1.5rem; border-radius: var(--radius-sm);
-    text-align: center; box-shadow: 0 8px 32px rgba(200,150,62,0.4); min-width: 120px;
-  }
-  .about-card-num { font-family: var(--font-serif); font-size: 2.2rem; font-weight: 700; color: white; }
-  .about-card-label { font-size: 0.7rem; color: rgba(255,255,255,0.85); text-transform: uppercase; letter-spacing: 0.1em; }
   .about-text { color: rgba(255,255,255,0.75); }
   .about-text .section-label { color: var(--gold); }
   .about-text .section-title { color: white; }
@@ -1044,15 +1050,7 @@ const CSS = `
 
   @media (max-width: 768px) {
     .about-grid { grid-template-columns: 1fr; gap: 3rem; }
-    .about-img-stack { height: 320px; }
-    /* "5 Years Hosting" badge: compact and tucked into the corner so it
-       never dwarfs the photos on a phone screen */
-    .about-card {
-      top: auto; bottom: -14px; left: 14px; transform: none;
-      padding: 0.8rem 1rem; min-width: 96px;
-    }
-    .about-card-num { font-size: 1.5rem; }
-    .about-card-label { font-size: 0.6rem; letter-spacing: 0.08em; }
+    .about-img-stack { height: 440px; max-width: 360px; }
   }
 
   /* ── WHY STAY WITH US ── */
@@ -2970,10 +2968,8 @@ function Services() {
 function About() {
   const stackRef = useRef(null);
   const mainImgRef = useRef(null);
-  const accentImgRef = useRef(null);
-  const cardBadgeRef = useRef(null);
 
-  // 60 FPS Scrollytelling Parallax for About section images
+  // 60 FPS Scrollytelling Parallax for About owner photo
   useEffect(() => {
     let ticking = false;
     const handleScroll = () => {
@@ -2985,17 +2981,9 @@ function About() {
             const winH = window.innerHeight;
             if (rect.top < winH && rect.bottom > 0) {
               const progress = (winH - rect.top) / (winH + rect.height);
-              const mainShift = (progress - 0.5) * 22;
-              const accentShift = (progress - 0.5) * -34;
-              const cardShift = (progress - 0.5) * -16;
+              const mainShift = (progress - 0.5) * 20;
               if (mainImgRef.current) {
                 mainImgRef.current.style.transform = `translate3d(0, ${mainShift.toFixed(2)}px, 0)`;
-              }
-              if (accentImgRef.current) {
-                accentImgRef.current.style.transform = `translate3d(0, ${accentShift.toFixed(2)}px, 0)`;
-              }
-              if (cardBadgeRef.current) {
-                cardBadgeRef.current.style.transform = `translateY(-50%) translate3d(0, ${cardShift.toFixed(2)}px, 0)`;
               }
             }
           }
@@ -3017,21 +3005,21 @@ function About() {
             className="floating-caption"
             style={{
               position: "absolute",
-              top: "-18px",
-              left: "40%",
+              top: "-20px",
+              left: "50%",
               transform: "translateX(-50%)",
-              background: "rgba(255, 255, 255, 0.96)",
-              padding: "7px 18px",
+              background: "rgba(255, 255, 255, 0.98)",
+              padding: "8px 22px",
               borderRadius: "30px",
-              boxShadow: "0 8px 24px rgba(0,0,0,0.18)",
+              boxShadow: "0 10px 30px rgba(0,0,0,0.25)",
               textAlign: "center",
               zIndex: 10,
               fontFamily: "var(--font-sans)",
               whiteSpace: "nowrap",
-              border: "1px solid rgba(200, 150, 62, 0.35)",
+              border: "1.5px solid rgba(200, 150, 62, 0.4)",
             }}
           >
-            <div style={{ fontWeight: "700", color: "#1a3a4a", fontSize: "0.92rem" }}>
+            <div style={{ fontWeight: "700", color: "#1a3a4a", fontSize: "0.96rem" }}>
               Govind Singh Dhami
             </div>
             <div style={{ fontSize: "0.78rem", color: "#5a7380" }}>
@@ -3046,9 +3034,9 @@ function About() {
                 transform: "translateX(-50%) rotate(45deg)",
                 width: "12px",
                 height: "12px",
-                background: "rgba(255, 255, 255, 0.96)",
-                borderRight: "1px solid rgba(200, 150, 62, 0.35)",
-                borderBottom: "1px solid rgba(200, 150, 62, 0.35)",
+                background: "rgba(255, 255, 255, 0.98)",
+                borderRight: "1.5px solid rgba(200, 150, 62, 0.4)",
+                borderBottom: "1.5px solid rgba(200, 150, 62, 0.4)",
                 zIndex: 1,
               }}
             ></div>
@@ -3060,18 +3048,6 @@ function About() {
               alt="Govind Singh Dhami - Owner of Shiv Darshan Homestay"
               style={{ objectPosition: "center 18%" }}
             />
-          </div>
-
-          <div className="about-img-accent" ref={accentImgRef}>
-            <img
-              src={aboutLandscape}
-              alt="Shiv Darshan Homestay scenic mountains in Haat, Dharchula"
-            />
-          </div>
-
-          <div className="about-card" ref={cardBadgeRef}>
-            <div className="about-card-num">5+</div>
-            <div className="about-card-label">Years of Warm Hosting</div>
           </div>
         </div>
         <div className="about-text">
