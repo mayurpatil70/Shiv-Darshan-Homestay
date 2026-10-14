@@ -2995,49 +2995,63 @@ function About() {
     <div className="about-bg" id="about">
       <div className="about-grid reveal">
         <div className="about-img-stack">
-          <div className="about-img-main">
+          {/* Floating nameplate placed above the owner's photo so face is fully visible */}
+          <div
+            className="floating-caption"
+            style={{
+              position: "absolute",
+              top: "-18px",
+              left: "40%",
+              transform: "translateX(-50%)",
+              background: "rgba(255, 255, 255, 0.96)",
+              padding: "7px 18px",
+              borderRadius: "30px",
+              boxShadow: "0 8px 24px rgba(0,0,0,0.18)",
+              textAlign: "center",
+              zIndex: 10,
+              fontFamily: "'DM Sans', sans-serif",
+              whiteSpace: "nowrap",
+              border: "1px solid rgba(200, 150, 62, 0.35)",
+            }}
+          >
+            <div style={{ fontWeight: "700", color: "#1a3a4a", fontSize: "0.92rem" }}>
+              Govind Singh Dhami
+            </div>
+            <div style={{ fontSize: "0.78rem", color: "#5a7380" }}>
+              Owner &amp; Host · Shiv Darshan Homestay 🚩
+            </div>
+            {/* Pointer arrow directing attention down to Govind Singh Dhami */}
             <div
-              className="floating-caption"
               style={{
                 position: "absolute",
-                top: "10%",
+                bottom: "-6px",
                 left: "50%",
-                transform: "translateX(-50%)",
-                background: "rgba(255, 255, 255, 0.95)",
-                padding: "10px 20px",
-                borderRadius: "30px",
-                boxShadow: "0 8px 32px rgba(0,0,0,0.15)",
-                textAlign: "center",
-                zIndex: 10,
-                fontFamily: "'DM Sans', sans-serif",
-                whiteSpace: "nowrap",
+                transform: "translateX(-50%) rotate(45deg)",
+                width: "12px",
+                height: "12px",
+                background: "rgba(255, 255, 255, 0.96)",
+                borderRight: "1px solid rgba(200, 150, 62, 0.35)",
+                borderBottom: "1px solid rgba(200, 150, 62, 0.35)",
+                zIndex: 1,
               }}
-            >
-              <div style={{ fontWeight: "700", color: "#1a3a4a" }}>
-                Govind Singh Dhami
-              </div>
-              <div style={{ fontSize: "0.85rem", color: "#5a7380" }}>
-                Owner &amp; Host · Shiv Darshan Homestay 🚩
-              </div>
-              {/* Cloud tail */}
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: "-8px",
-                  left: "50%",
-                  transform: "translateX(-50%) rotate(45deg)",
-                  width: "16px",
-                  height: "16px",
-                  background: "rgba(255, 255, 255, 0.95)",
-                  zIndex: -1,
-                }}
-              ></div>
-            </div>
-            <img src={aboutLandscape} alt="Shiv Darshan Homestay scenic mountains in Haat, Dharchula" />
+            ></div>
           </div>
+
+          <div className="about-img-main">
+            <img
+              src={ownerGovindDhami}
+              alt="Govind Singh Dhami - Owner of Shiv Darshan Homestay"
+              style={{ objectPosition: "center 15%" }}
+            />
+          </div>
+
           <div className="about-img-accent">
-            <img src={ownerGovindDhami} alt="Govind Singh Dhami - Owner of Shiv Darshan Homestay" />
+            <img
+              src={aboutLandscape}
+              alt="Shiv Darshan Homestay scenic mountains in Haat, Dharchula"
+            />
           </div>
+
           <div className="about-card">
             <div className="about-card-num">5+</div>
             <div className="about-card-label">Years of Warm Hosting</div>
