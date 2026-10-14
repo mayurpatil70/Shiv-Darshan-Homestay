@@ -516,8 +516,23 @@ const CSS = `
     width: 100%; height: 100%;
     min-width: 100%; min-height: 100%;
     object-fit: cover;
-    pointer-events: none;
+    pointer-events: none !important;
     filter: contrast(1.04) brightness(0.92);
+  }
+  /* Explicitly hide any native browser play/pause icons, overlays, or start buttons */
+  .hero-video-bg::-webkit-media-controls,
+  .hero-video-bg::-webkit-media-controls-start-playback-button,
+  .hero-video-bg::-webkit-media-controls-play-button,
+  .hero-video-bg::-webkit-media-controls-overlay-play-button,
+  .hero-video-bg::-webkit-media-controls-enclosure,
+  .hero-video-bg::-webkit-media-controls-panel {
+    display: none !important;
+    -webkit-appearance: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    width: 0 !important;
+    height: 0 !important;
   }
   /* Desktop Video: 60 FPS Widescreen drone panorama */
   .hero-video-desktop {
@@ -1791,18 +1806,31 @@ function Hero() {
 
   // Guaranteed video autoplay & mute enforcement across all browser engines
   useEffect(() => {
-    const vids = [desktopVideoRef.current, mobileVideoRef.current];
-    vids.forEach((v) => {
-      if (!v) return;
-      v.muted = true;
-      v.defaultMuted = true;
-      v.playsInline = true;
-      const playPromise = v.play();
+    const isMobile = typeof window !== "undefined" ? window.innerWidth <= 768 : false;
+    const active = isMobile ? mobileVideoRef.current : desktopVideoRef.current;
+    const inactive = isMobile ? desktopVideoRef.current : mobileVideoRef.current;
+
+    if (inactive) {
+      inactive.muted = true;
+      inactive.defaultMuted = true;
+      inactive.pause();
+    }
+
+    if (active) {
+      active.muted = true;
+      active.defaultMuted = true;
+      active.playsInline = true;
+      active.setAttribute("muted", "");
+      active.setAttribute("playsinline", "");
+      active.setAttribute("webkit-playsinline", "true");
+      const playPromise = active.play();
       if (playPromise !== undefined) {
         playPromise.catch(() => {
-          // Fallback if browser autoplay policy restricts media
+          // Fallback unlock if browser autoplay policy restricts media until first gesture
           const unlock = () => {
-            if (v && v.paused) v.play().catch(() => {});
+            if (active && active.paused && window.scrollY < 400) {
+              active.play().catch(() => {});
+            }
             window.removeEventListener("touchstart", unlock);
             window.removeEventListener("click", unlock);
             window.removeEventListener("scroll", unlock);
@@ -1812,36 +1840,57 @@ function Hero() {
           window.addEventListener("scroll", unlock, { passive: true, once: true });
         });
       }
-    });
+    }
   }, []);
 
-  // 60 FPS IntersectionObserver: pauses background video and CSS animations when scrolled out of view
+  // 60 FPS IntersectionObserver: stops video when scrolled away, resumes when back in view
   useEffect(() => {
     const el = ref.current;
     if (!el || !("IntersectionObserver" in window)) return;
-    const observer = new IntersectionObserver(([entry]) => {
-      const isVisible = entry.isIntersecting;
-      el.classList.toggle("is-idle", !isVisible);
-      [desktopVideoRef.current, mobileVideoRef.current].forEach((v) => {
-        if (!v) return;
-        if (isVisible) {
-          v.play().catch(() => {});
-        } else {
-          v.pause();
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const isVisible = entry.isIntersecting;
+        el.classList.toggle("is-idle", !isVisible);
+        const isMobile = window.innerWidth <= 768;
+        const active = isMobile ? mobileVideoRef.current : desktopVideoRef.current;
+        const inactive = isMobile ? desktopVideoRef.current : mobileVideoRef.current;
+
+        if (inactive && !inactive.paused) {
+          inactive.pause();
         }
-      });
-    });
+
+        if (!isVisible) {
+          // STOP video when scrolled down past hero
+          if (active && !active.paused) {
+            active.pause();
+          }
+        } else {
+          // AUTO PLAY video when user hits / returns to hero section
+          if (active && active.paused && window.scrollY < (el.offsetHeight * 0.75)) {
+            active.play().catch(() => {});
+          }
+        }
+      },
+      { threshold: [0, 0.25, 0.6] }
+    );
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
-  // 60 FPS Scrollytelling Parallax for Hero
+  // 60 FPS Scrollytelling Parallax & Instant Scroll-Down Video Stop
   useEffect(() => {
     let ticking = false;
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
           const scrollY = window.scrollY;
+          const heroEl = ref.current;
+          const heroHeight = heroEl ? heroEl.offsetHeight : window.innerHeight;
+          const isMobile = window.innerWidth <= 768;
+          const active = isMobile ? mobileVideoRef.current : desktopVideoRef.current;
+          const inactive = isMobile ? desktopVideoRef.current : mobileVideoRef.current;
+
+          // Parallax transform
           if (heroBgRef.current) {
             heroBgRef.current.style.transform = `scale(1.02) translate3d(0, ${(scrollY * 0.16).toFixed(2)}px, 0)`;
           }
@@ -1849,6 +1898,22 @@ function Hero() {
             heroContentRef.current.style.transform = `translate3d(0, ${(scrollY * 0.28).toFixed(2)}px, 0)`;
             heroContentRef.current.style.opacity = Math.max(0, 1 - scrollY / 700).toFixed(3);
           }
+
+          // STOP video after user scrolls down; RESUME when user is back at hero
+          if (inactive && !inactive.paused) {
+            inactive.pause();
+          }
+
+          if (scrollY > heroHeight * 0.65) {
+            if (active && !active.paused) {
+              active.pause();
+            }
+          } else {
+            if (active && active.paused) {
+              active.play().catch(() => {});
+            }
+          }
+
           ticking = false;
         });
         ticking = true;
@@ -1869,7 +1934,7 @@ function Hero() {
     <section className="hero" id="hero" ref={ref}>
       {/* Responsive Hero Video (Pure CSS-switched: Widescreen on Desktop, 9:16 Reel on Mobile) */}
       <div className="hero-video-wrapper" ref={heroBgRef}>
-        {/* Desktop Landscape Video (Zero Black Bars, Native 60 FPS Ultrawide) */}
+        {/* Desktop Landscape Video (Zero Black Bars, Native 60 FPS Ultrawide, No Middle Button) */}
         <video
           ref={desktopVideoRef}
           className="hero-video-bg hero-video-desktop"
@@ -1878,12 +1943,16 @@ function Hero() {
           loop
           muted
           playsInline
+          webkit-playsinline="true"
           preload="auto"
+          controls={false}
+          disablePictureInPicture
+          disableRemotePlayback
         >
           <source src={DESKTOP_VIDEO_SRC} type="video/mp4" />
         </video>
 
-        {/* Mobile Vertical Video (Zero Black Bars, 9:16 Cloud & Snow Trek Reel) */}
+        {/* Mobile Vertical Video (Zero Black Bars, 9:16 Cloud & Snow Trek Reel, No Middle Button) */}
         <video
           ref={mobileVideoRef}
           className="hero-video-bg hero-video-mobile"
@@ -1892,7 +1961,11 @@ function Hero() {
           loop
           muted
           playsInline
+          webkit-playsinline="true"
           preload="auto"
+          controls={false}
+          disablePictureInPicture
+          disableRemotePlayback
         >
           <source src={MOBILE_VIDEO_SRC} type="video/mp4" />
         </video>
