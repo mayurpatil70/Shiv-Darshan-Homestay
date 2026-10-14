@@ -58,7 +58,6 @@ import roomTriple from "./assets/images/client/room-triple.jpg";
 import roomTwin2 from "./assets/images/client/room-twin-2.jpg";
 import bathroomClean from "./assets/images/client/bathroom-clean.jpg";
 import welcomePoojaGuests from "./assets/images/client/welcome-pooja-guests.jpg";
-import adiKailashHero from "./assets/images/client/adi-kailash-temple-hero-wide.jpg";
 
 // Brand logo and owner profile images
 const logoImg = shivLogo;
@@ -502,29 +501,41 @@ const CSS = `
   }
   /* ── HERO VIDEO BACKGROUND (ADAPTED FULL WIDESCREEN, ZERO BLACK BARS) ── */
   .hero-video-wrapper {
-    position: absolute; inset: -3%;
-    width: 106%; height: 106%;
+    position: absolute; inset: -2%;
+    width: 104%; height: 104%;
     overflow: hidden;
     z-index: 0;
     background: #091a26;
-    transform: scale(1.04);
+    transform: scale(1.02);
     will-change: transform;
-    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    pointer-events: none;
   }
   .hero-video-bg {
     position: absolute;
-    top: 50%; left: 50%;
+    top: 0; left: 0;
     width: 100%; height: 100%;
     min-width: 100%; min-height: 100%;
     object-fit: cover;
-    object-position: center 30%;
-    transform: translate(-50%, -50%);
     pointer-events: none;
-    filter: contrast(1.05) brightness(0.92);
+    filter: contrast(1.04) brightness(0.92);
   }
-  @media (max-width: 768px) {
-    .hero-video-bg {
-      object-position: center 36%;
+  /* Desktop Video: 60 FPS Widescreen drone panorama */
+  .hero-video-desktop {
+    display: block !important;
+    object-position: center 30%;
+  }
+  /* Mobile Video: Vertical 9:16 snow & clouds trek reel */
+  .hero-video-mobile {
+    display: none !important;
+    object-position: center 36%;
+  }
+  /* Mobile & Portrait Screens: seamlessly show 9:16 reel, hide desktop widescreen */
+  @media (max-width: 768px), (max-width: 960px) and (orientation: portrait) {
+    .hero-video-desktop {
+      display: none !important;
+    }
+    .hero-video-mobile {
+      display: block !important;
     }
   }
   /* Fallback static hero image if video fails to load or during reduced motion */
@@ -1775,15 +1786,33 @@ function Hero() {
   const ref = useRef(null);
   const heroBgRef = useRef(null);
   const heroContentRef = useRef(null);
-  const videoRef = useRef(null);
-  const [isMobile, setIsMobile] = useState(() =>
-    typeof window !== "undefined" ? window.innerWidth <= 768 : false
-  );
+  const desktopVideoRef = useRef(null);
+  const mobileVideoRef = useRef(null);
 
+  // Guaranteed video autoplay & mute enforcement across all browser engines
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 768);
-    window.addEventListener("resize", handleResize, { passive: true });
-    return () => window.removeEventListener("resize", handleResize);
+    const vids = [desktopVideoRef.current, mobileVideoRef.current];
+    vids.forEach((v) => {
+      if (!v) return;
+      v.muted = true;
+      v.defaultMuted = true;
+      v.playsInline = true;
+      const playPromise = v.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Fallback if browser autoplay policy restricts media
+          const unlock = () => {
+            if (v && v.paused) v.play().catch(() => {});
+            window.removeEventListener("touchstart", unlock);
+            window.removeEventListener("click", unlock);
+            window.removeEventListener("scroll", unlock);
+          };
+          window.addEventListener("touchstart", unlock, { passive: true, once: true });
+          window.addEventListener("click", unlock, { passive: true, once: true });
+          window.addEventListener("scroll", unlock, { passive: true, once: true });
+        });
+      }
+    });
   }, []);
 
   // 60 FPS IntersectionObserver: pauses background video and CSS animations when scrolled out of view
@@ -1793,13 +1822,14 @@ function Hero() {
     const observer = new IntersectionObserver(([entry]) => {
       const isVisible = entry.isIntersecting;
       el.classList.toggle("is-idle", !isVisible);
-      if (videoRef.current) {
+      [desktopVideoRef.current, mobileVideoRef.current].forEach((v) => {
+        if (!v) return;
         if (isVisible) {
-          videoRef.current.play().catch(() => {});
+          v.play().catch(() => {});
         } else {
-          videoRef.current.pause();
+          v.pause();
         }
-      }
+      });
     });
     observer.observe(el);
     return () => observer.disconnect();
@@ -1813,7 +1843,7 @@ function Hero() {
         window.requestAnimationFrame(() => {
           const scrollY = window.scrollY;
           if (heroBgRef.current) {
-            heroBgRef.current.style.transform = `scale(1.04) translate3d(0, ${(scrollY * 0.16).toFixed(2)}px, 0)`;
+            heroBgRef.current.style.transform = `scale(1.02) translate3d(0, ${(scrollY * 0.16).toFixed(2)}px, 0)`;
           }
           if (heroContentRef.current) {
             heroContentRef.current.style.transform = `translate3d(0, ${(scrollY * 0.28).toFixed(2)}px, 0)`;
@@ -1828,32 +1858,43 @@ function Hero() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Widescreen 60 FPS video on Desktop (WhatsApp_Video_2026-10-15_at_1.30.16_AM)
-  // Vertical 9:16 Snow & Clouds reel on Mobile (WhatsApp_Video_2026-10-15_at_1.04.53_AM)
-  const currentVideoSrc = isMobile
-    ? "https://res.cloudinary.com/b4c8jnri/video/upload/w_1080,c_scale,q_auto:best/WhatsApp_Video_2026-10-15_at_1.04.53_AM.mp4"
-    : "https://res.cloudinary.com/b4c8jnri/video/upload/w_1920,c_scale,q_auto:best/WhatsApp_Video_2026-10-15_at_1.30.16_AM.mp4";
-
-  const fallbackVideoSrc = isMobile
-    ? "https://res.cloudinary.com/b4c8jnri/video/upload/WhatsApp_Video_2026-10-15_at_1.04.53_AM.mp4"
-    : "https://res.cloudinary.com/b4c8jnri/video/upload/WhatsApp_Video_2026-10-15_at_1.30.16_AM.mp4";
+  // Desktop Widescreen Video (60 FPS Drone Panorama)
+  const DESKTOP_VIDEO_SRC =
+    "https://res.cloudinary.com/b4c8jnri/video/upload/WhatsApp_Video_2026-10-15_at_1.30.16_AM.mp4";
+  // Mobile Vertical Video (9:16 Snow & Clouds Trek Reel)
+  const MOBILE_VIDEO_SRC =
+    "https://res.cloudinary.com/b4c8jnri/video/upload/WhatsApp_Video_2026-10-15_at_1.04.53_AM.mp4";
 
   return (
     <section className="hero" id="hero" ref={ref}>
-      {/* Responsive Hero Video (60 FPS Widescreen on Desktop, 9:16 Reel on Mobile) with Zero Black Bars */}
+      {/* Responsive Hero Video (Pure CSS-switched: Widescreen on Desktop, 9:16 Reel on Mobile) */}
       <div className="hero-video-wrapper" ref={heroBgRef}>
+        {/* Desktop Landscape Video (Zero Black Bars, Native 60 FPS Ultrawide) */}
         <video
-          key={isMobile ? "mobile-video" : "desktop-video"}
-          ref={videoRef}
-          className="hero-video-bg"
+          ref={desktopVideoRef}
+          className="hero-video-bg hero-video-desktop"
+          src={DESKTOP_VIDEO_SRC}
           autoPlay
           loop
           muted
           playsInline
-          poster={adiKailashHero}
+          preload="auto"
         >
-          <source src={currentVideoSrc} type="video/mp4" />
-          <source src={fallbackVideoSrc} type="video/mp4" />
+          <source src={DESKTOP_VIDEO_SRC} type="video/mp4" />
+        </video>
+
+        {/* Mobile Vertical Video (Zero Black Bars, 9:16 Cloud & Snow Trek Reel) */}
+        <video
+          ref={mobileVideoRef}
+          className="hero-video-bg hero-video-mobile"
+          src={MOBILE_VIDEO_SRC}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+        >
+          <source src={MOBILE_VIDEO_SRC} type="video/mp4" />
         </video>
       </div>
 
