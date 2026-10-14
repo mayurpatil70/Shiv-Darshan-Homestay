@@ -1804,46 +1804,56 @@ function Hero() {
   const desktopVideoRef = useRef(null);
   const mobileVideoRef = useRef(null);
 
-  // Guaranteed video autoplay & mute enforcement across all browser engines
-  useEffect(() => {
-    const isMobile = typeof window !== "undefined" ? window.innerWidth <= 768 : false;
-    const active = isMobile ? mobileVideoRef.current : desktopVideoRef.current;
-    const inactive = isMobile ? desktopVideoRef.current : mobileVideoRef.current;
-
-    if (inactive) {
-      inactive.muted = true;
-      inactive.defaultMuted = true;
-      inactive.pause();
-    }
-
-    if (active) {
-      active.muted = true;
-      active.defaultMuted = true;
-      active.playsInline = true;
-      active.setAttribute("muted", "");
-      active.setAttribute("playsinline", "");
-      active.setAttribute("webkit-playsinline", "true");
-      const playPromise = active.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          // Fallback unlock if browser autoplay policy restricts media until first gesture
-          const unlock = () => {
-            if (active && active.paused && window.scrollY < 400) {
-              active.play().catch(() => {});
-            }
-            window.removeEventListener("touchstart", unlock);
-            window.removeEventListener("click", unlock);
-            window.removeEventListener("scroll", unlock);
-          };
-          window.addEventListener("touchstart", unlock, { passive: true, once: true });
-          window.addEventListener("click", unlock, { passive: true, once: true });
-          window.addEventListener("scroll", unlock, { passive: true, once: true });
-        });
+  // Safe helper to play without interruption or race condition
+  const playVideo = (v) => {
+    if (!v) return;
+    v.muted = true;
+    v.defaultMuted = true;
+    v.playsInline = true;
+    if (v.paused) {
+      const p = v.play();
+      if (p !== undefined) {
+        p.catch(() => {});
       }
     }
+  };
+
+  const pauseVideo = (v) => {
+    if (!v) return;
+    if (!v.paused) {
+      v.pause();
+    }
+  };
+
+  // Immediate autoplay on visit + interaction fallback
+  useEffect(() => {
+    const desktop = desktopVideoRef.current;
+    const mobile = mobileVideoRef.current;
+
+    playVideo(desktop);
+    playVideo(mobile);
+
+    const unlock = () => {
+      if (window.scrollY < 400) {
+        playVideo(desktop);
+        playVideo(mobile);
+      }
+      window.removeEventListener("touchstart", unlock);
+      window.removeEventListener("click", unlock);
+      window.removeEventListener("scroll", unlock);
+    };
+    window.addEventListener("touchstart", unlock, { passive: true, once: true });
+    window.addEventListener("click", unlock, { passive: true, once: true });
+    window.addEventListener("scroll", unlock, { passive: true, once: true });
+
+    return () => {
+      window.removeEventListener("touchstart", unlock);
+      window.removeEventListener("click", unlock);
+      window.removeEventListener("scroll", unlock);
+    };
   }, []);
 
-  // 60 FPS IntersectionObserver: stops video when scrolled away, resumes when back in view
+  // 60 FPS IntersectionObserver: pauses when scrolled completely off-screen, resumes when back
   useEffect(() => {
     const el = ref.current;
     if (!el || !("IntersectionObserver" in window)) return;
@@ -1851,44 +1861,31 @@ function Hero() {
       ([entry]) => {
         const isVisible = entry.isIntersecting;
         el.classList.toggle("is-idle", !isVisible);
-        const isMobile = window.innerWidth <= 768;
-        const active = isMobile ? mobileVideoRef.current : desktopVideoRef.current;
-        const inactive = isMobile ? desktopVideoRef.current : mobileVideoRef.current;
-
-        if (inactive && !inactive.paused) {
-          inactive.pause();
-        }
-
         if (!isVisible) {
-          // STOP video when scrolled down past hero
-          if (active && !active.paused) {
-            active.pause();
-          }
-        } else {
-          // AUTO PLAY video when user hits / returns to hero section
-          if (active && active.paused && window.scrollY < (el.offsetHeight * 0.75)) {
-            active.play().catch(() => {});
-          }
+          pauseVideo(desktopVideoRef.current);
+          pauseVideo(mobileVideoRef.current);
+        } else if (window.scrollY < (el.offsetHeight * 0.7)) {
+          playVideo(desktopVideoRef.current);
+          playVideo(mobileVideoRef.current);
         }
       },
-      { threshold: [0, 0.25, 0.6] }
+      { threshold: 0.1 }
     );
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
-  // 60 FPS Scrollytelling Parallax & Instant Scroll-Down Video Stop
+  // 60 FPS Scrollytelling Parallax & State-Tracked Scroll Down Stop / Scroll Up Resume
   useEffect(() => {
     let ticking = false;
+    let isPastHero = false;
+
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
           const scrollY = window.scrollY;
           const heroEl = ref.current;
           const heroHeight = heroEl ? heroEl.offsetHeight : window.innerHeight;
-          const isMobile = window.innerWidth <= 768;
-          const active = isMobile ? mobileVideoRef.current : desktopVideoRef.current;
-          const inactive = isMobile ? desktopVideoRef.current : mobileVideoRef.current;
 
           // Parallax transform
           if (heroBgRef.current) {
@@ -1899,18 +1896,16 @@ function Hero() {
             heroContentRef.current.style.opacity = Math.max(0, 1 - scrollY / 700).toFixed(3);
           }
 
-          // STOP video after user scrolls down; RESUME when user is back at hero
-          if (inactive && !inactive.paused) {
-            inactive.pause();
-          }
-
-          if (scrollY > heroHeight * 0.65) {
-            if (active && !active.paused) {
-              active.pause();
-            }
-          } else {
-            if (active && active.paused) {
-              active.play().catch(() => {});
+          // State-tracked: trigger pause/play only ONCE when crossing the hero boundary
+          const shouldPause = scrollY > (heroHeight * 0.65);
+          if (shouldPause !== isPastHero) {
+            isPastHero = shouldPause;
+            if (shouldPause) {
+              pauseVideo(desktopVideoRef.current);
+              pauseVideo(mobileVideoRef.current);
+            } else {
+              playVideo(desktopVideoRef.current);
+              playVideo(mobileVideoRef.current);
             }
           }
 
