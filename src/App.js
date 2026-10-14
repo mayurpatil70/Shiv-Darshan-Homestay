@@ -58,6 +58,7 @@ import roomTriple from "./assets/images/client/room-triple.jpg";
 import roomTwin2 from "./assets/images/client/room-twin-2.jpg";
 import bathroomClean from "./assets/images/client/bathroom-clean.jpg";
 import welcomePoojaGuests from "./assets/images/client/welcome-pooja-guests.jpg";
+import adiKailashTemple from "./assets/images/client/adi-kailash-temple.jpg";
 
 // Brand logo and owner profile images
 const logoImg = shivLogo;
@@ -342,6 +343,8 @@ const CSS = `
   }
 
   :root {
+    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-serif: 'Playfair Display', Georgia, serif;
     --ice: #e8f4f8;
     --snow: #f7fbfc;
     --glacier: #c5dde8;
@@ -385,16 +388,17 @@ const CSS = `
   }
 
   body {
-    font-family: 'DM Sans', sans-serif;
+    font-family: var(--font-sans);
     background: var(--snow);
     color: var(--text);
     line-height: 1.6;
+    letter-spacing: -0.01em;
     overflow-x: hidden;
     position: relative;
     width: 100%;
   }
 
-  h1,h2,h3,h4 { font-family: 'Cormorant Garamond', serif; line-height: 1.2; }
+  h1,h2,h3,h4 { font-family: var(--font-serif); line-height: 1.2; letter-spacing: -0.015em; }
 
   /* ── SCROLLBAR ── */
   ::-webkit-scrollbar { width: 6px; }
@@ -419,8 +423,8 @@ const CSS = `
   .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
   .nav-logo-icon { font-size: 1.6rem; display: flex; align-items: center; justify-content: center; width: 52px; height: 52px; background: #ffffff; border-radius: 50%; padding: 0; box-shadow: 0 3px 10px rgba(0,0,0,0.35); flex-shrink: 0; overflow: hidden; }
   .nav-logo-img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%; }
-  .nav-logo-text { color: white; font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 600; line-height: 1.1; }
-  .nav-logo-sub { font-size: 0.65rem; letter-spacing: 0.15em; font-family: 'DM Sans', sans-serif; font-weight: 300; opacity: 0.8; color:white; }
+  .nav-logo-text { color: white; font-family: var(--font-serif); font-size: 1.3rem; font-weight: 600; line-height: 1.1; letter-spacing: -0.01em; }
+  .nav-logo-sub { font-size: 0.65rem; letter-spacing: 0.15em; font-family: var(--font-sans); font-weight: 400; opacity: 0.85; color:white; }
   .nav-links { display: flex; gap: 2rem; align-items: center; }
   .nav-links a { color: rgba(255,255,255,0.88); text-decoration: none; font-size: 0.875rem; font-weight: 500; letter-spacing: 0.02em; transition: color 0.2s; }
   .nav-links a:hover { color: var(--gold); }
@@ -499,13 +503,14 @@ const CSS = `
     100% { transform: translate3d(-10px, 108vh, 0); opacity: 0.2; }
   }
 
-  /* ── 60 FPS ANIMATED SHIVA TEMPLE HERO SCENE ── */
+  /* ── 60 FPS SCROLLYTELLING SACRED ADI KAILASH TEMPLE & DEVOTEES SCENE ── */
   .temple-viewport {
     position: absolute; inset: 0;
     pointer-events: none;
     overflow: hidden;
     z-index: 1;
     display: flex; align-items: flex-end; justify-content: center;
+    perspective: 1200px;
   }
   .temple-scaler {
     width: 100%; height: 100%;
@@ -516,24 +521,93 @@ const CSS = `
     transform: scale3d(1.18, 1.18, 1);
     transition: transform 0.05s linear;
   }
+
+  /* Sacred Celestial Mandala Halo - Rolls in continuous 360° circular motion */
+  .temple-mandala-ring {
+    position: absolute;
+    bottom: 4%;
+    left: 50%;
+    width: min(720px, 86vw);
+    height: min(720px, 86vw);
+    margin-left: calc(min(720px, 86vw) / -2);
+    margin-bottom: -100px;
+    border-radius: 50%;
+    border: 2px dashed rgba(200, 150, 62, 0.45);
+    box-shadow: 0 0 70px rgba(200, 150, 62, 0.28), inset 0 0 70px rgba(200, 150, 62, 0.16);
+    background: radial-gradient(circle, rgba(200, 150, 62, 0.14) 0%, rgba(200, 150, 62, 0.04) 50%, rgba(10, 30, 42, 0) 72%);
+    animation: mandalaSpin 45s linear infinite;
+    pointer-events: none;
+    z-index: 1;
+    will-change: transform;
+  }
+  @keyframes mandalaSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* Real Authentic Photograph of Adi-Kailash Temple & Holy Parvati Kund */
+  .adi-kailash-shrine-frame {
+    position: absolute;
+    bottom: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(600px, 84vw);
+    height: min(380px, 54vw);
+    border-radius: 240px 240px 24px 24px;
+    overflow: hidden;
+    border: 3px solid rgba(245, 208, 112, 0.75);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 50px rgba(200, 150, 62, 0.35);
+    z-index: 2;
+    background: #081720;
+  }
+  .adi-kailash-img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center 36%;
+    filter: brightness(0.92) contrast(1.08) saturate(1.15);
+    transform: scale(1.02);
+    transition: transform 0.6s ease;
+  }
+  .shrine-light-rays {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 20%, rgba(255, 230, 130, 0.28) 0%, rgba(200, 150, 62, 0.08) 45%, rgba(5, 18, 26, 0.55) 100%);
+    mix-blend-mode: screen;
+    pointer-events: none;
+  }
+  .shrine-plaque {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(8, 20, 28, 0.95) 0%, rgba(8, 20, 28, 0.7) 65%, transparent 100%);
+    padding: 20px 12px 9px;
+    text-align: center;
+    color: #fce79f;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.85);
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+
   .temple-svg {
+    position: relative;
     width: 100%;
     max-width: 1400px;
     height: 85%;
     max-height: 720px;
     object-fit: cover;
     filter: drop-shadow(0 15px 35px rgba(0,0,0,0.6));
+    z-index: 3;
   }
-  /* Live 60 FPS GPU-accelerated keyframe animations */
-  .bell-swing {
-    transform-origin: 122px 185px;
-    animation: bellSwayAnim 3.2s ease-in-out infinite alternate;
+
+  /* Live 60 FPS GPU-accelerated keyframe animations for devotees & Shiva aura */
+  .aarti-wave-circ {
+    transform-origin: 430px 530px;
+    animation: aartiCircWave 2.8s ease-in-out infinite alternate;
     will-change: transform;
   }
-  @keyframes bellSwayAnim {
-    0% { transform: rotate(-7deg); }
-    50% { transform: rotate(5deg); }
-    100% { transform: rotate(-6deg); }
+  @keyframes aartiCircWave {
+    0% { transform: rotate(-8deg) translate3d(-3px, 2px, 0); }
+    50% { transform: rotate(7deg) translate3d(4px, -4px, 0); }
+    100% { transform: rotate(-4deg) translate3d(-1px, 0, 0); }
   }
   .aarti-glow {
     animation: aartiFlamePulse 1.6s ease-in-out infinite alternate;
@@ -573,24 +647,86 @@ const CSS = `
     100% { transform: translate3d(-18px, -65px, 0) scale(1.4); opacity: 0; }
   }
   .pranam-devotee {
-    animation: devoteePrayAnim 4s ease-in-out infinite alternate;
+    animation: devoteePrayAnim 3.8s ease-in-out infinite alternate;
     transform-origin: bottom center;
     will-change: transform;
   }
   @keyframes devoteePrayAnim {
     0% { transform: translateY(0); }
-    100% { transform: translateY(-2px); }
+    100% { transform: translateY(-3px); }
+  }
+  .parikrama-walk {
+    animation: parikramaWalkAnim 7s ease-in-out infinite;
+    will-change: transform;
+  }
+  @keyframes parikramaWalkAnim {
+    0% { transform: translate3d(-35px, 0, 0); }
+    50% { transform: translate3d(35px, -3px, 0); }
+    100% { transform: translate3d(-35px, 0, 0); }
+  }
+  .bilva-leaf {
+    animation: bilvaLeafDrift 7.5s linear infinite;
+    will-change: transform, opacity;
+  }
+  @keyframes bilvaLeafDrift {
+    0% { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 0; }
+    20% { opacity: 0.85; }
+    80% { opacity: 0.85; }
+    100% { transform: translate3d(-60px, 85px, 0) rotate(160deg); opacity: 0; }
+  }
+
+  /* Scrollytelling Progress Bar HUD */
+  .hero-scrolly-indicator {
+    position: absolute;
+    bottom: 5.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    background: rgba(10, 30, 42, 0.75);
+    border: 1px solid rgba(200, 150, 62, 0.45);
+    padding: 6px 18px 8px;
+    border-radius: 30px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 25px rgba(0,0,0,0.4);
+    max-width: 90vw;
+  }
+  .scrolly-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #fce79f;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+  }
+  .scrolly-track {
+    width: 140px;
+    height: 3px;
+    background: rgba(255,255,255,0.18);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .scrolly-progress {
+    height: 100%;
+    background: linear-gradient(90deg, #c8963e, #fce79f);
+    border-radius: 3px;
+    transition: width 0.1s ease-out;
+    box-shadow: 0 0 8px #fce79f;
   }
 
   @media (prefers-reduced-motion: reduce) {
     .hero-bg { animation: none; }
     .hero-snow { display: none; }
     .temple-scaler { transform: none !important; }
-    .bell-swing, .aarti-glow, .trishul-halo, .dhwaja-flutter, .dhoop-smoke, .pranam-devotee { animation: none; }
+    .temple-mandala-ring { animation: none !important; }
+    .aarti-wave-circ, .aarti-glow, .trishul-halo, .dhwaja-flutter, .dhoop-smoke, .pranam-devotee, .parikrama-walk, .bilva-leaf { animation: none; }
   }
   .hero-overlay {
     position: absolute; inset: 0;
-    background: radial-gradient(circle at 50% 85%, rgba(10,30,42,0.2) 0%, rgba(10,25,36,0.65) 60%, rgba(8,18,26,0.85) 100%);
+    background: radial-gradient(circle at 50% 85%, rgba(10,30,42,0.18) 0%, rgba(10,25,36,0.65) 60%, rgba(8,18,26,0.85) 100%);
     z-index: 2;
   }
   .hero-content {
@@ -600,12 +736,12 @@ const CSS = `
   }
   @keyframes heroFade { from { opacity:0; transform: translateY(30px); } to { opacity:1; transform: translateY(0); } }
   .hero-badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: rgba(200,150,62,0.25); border: 1px solid rgba(200,150,62,0.6);
-    color: #f5d070; padding: 0.35rem 1.1rem; border-radius: 50px;
-    font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase;
-    margin-bottom: 1.25rem; backdrop-filter: blur(8px);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.28);
+    color: #ffffff; padding: 0.4rem 1.25rem; border-radius: 50px;
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    margin-bottom: 1.25rem; backdrop-filter: blur(12px);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.3);
   }
   .hero h1 {
     font-size: clamp(2.8rem, 7vw, 5.5rem); font-weight: 700; color: white;
@@ -615,7 +751,7 @@ const CSS = `
   .hero h1 span { color: var(--gold); font-style: italic; }
   .hero-tagline {
     font-size: clamp(1rem, 2.5vw, 1.3rem); color: rgba(255,255,255,0.9);
-    font-family: 'DM Sans', sans-serif; font-weight: 300; letter-spacing: 0.02em;
+    font-family: var(--font-sans); font-weight: 400; letter-spacing: 0.01em;
     margin-bottom: 2.5rem;
     text-shadow: 0 2px 10px rgba(0,0,0,0.4);
   }
@@ -623,7 +759,7 @@ const CSS = `
     display: flex; gap: 2.5rem; justify-content: center; margin-bottom: 2.5rem; flex-wrap: wrap;
   }
   .hero-stat { text-align: center; }
-  .hero-stat-num { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 700; color: var(--gold); }
+  .hero-stat-num { font-family: var(--font-serif); font-size: 2rem; font-weight: 700; color: var(--gold); }
   .hero-stat-label { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.7); }
   .hero-scroll { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); animation: bounce 2s infinite; z-index: 3; }
   .hero-scroll-line { width: 1px; height: 50px; background: linear-gradient(to bottom, rgba(255,255,255,0.6), transparent); margin: 0 auto 6px; }
@@ -851,14 +987,14 @@ const CSS = `
     margin: 0 -1.5rem 2.25rem; padding: 1rem 1.5rem;
   }
   .rg-brand {
-    font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 600;
+    font-family: var(--font-serif); font-size: 1.05rem; font-weight: 600;
     letter-spacing: 0.06em; color: rgba(255,255,255,0.75);
   }
   .rg-back {
     display: inline-flex; align-items: center; gap: 0.35rem;
     background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.25);
     border-radius: 50px; padding: 0.55rem 1.25rem 0.55rem 0.95rem;
-    font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 600;
+    font-family: var(--font-sans); font-size: 0.85rem; font-weight: 600;
     cursor: pointer; transition: background 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
   }
   .rg-back:hover { background: rgba(255,255,255,0.22); border-color: rgba(255,255,255,0.45); transform: translateX(-2px); }
@@ -869,7 +1005,7 @@ const CSS = `
   @keyframes rgHeroIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
   .rg-hero .section-label { color: var(--gold); }
   .rg-title {
-    font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 4vw, 3rem);
+    font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3rem);
     color: white; margin: 0.4rem 0 0.6rem;
   }
   .rg-sub { color: rgba(255,255,255,0.65); margin-bottom: 0; }
@@ -892,7 +1028,7 @@ const CSS = `
   .rg-view {
     position: absolute; left: 50%; bottom: 0.9rem; transform: translate(-50%, 12px);
     background: rgba(10,30,43,0.78); backdrop-filter: blur(8px); color: white;
-    font-family: 'DM Sans', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+    font-family: var(--font-sans); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 0.4rem 1.05rem; border-radius: 50px; border: 1px solid rgba(255,255,255,0.25);
     opacity: 0; transition: opacity 0.35s ease, transform 0.35s ease; pointer-events: none;
   }
@@ -932,20 +1068,20 @@ const CSS = `
     .rg-arrow-prev { left: 0.5rem; }
     .rg-arrow-next { right: 0.5rem; }
   }
-  .room-price { font-family: 'Cormorant Garamond', serif; }
+  .room-price { font-family: var(--font-serif); }
   .room-price-num { font-size: 1.6rem; font-weight: 700; color: var(--peak); }
   .room-price-per { font-size: 0.75rem; color: var(--muted); }
   .room-price-guests { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
   .btn-primary {
     background: var(--peak); color: white; border: none; border-radius: 50px;
-    padding: 0.6rem 1.4rem; font-family: 'DM Sans', sans-serif; font-size: 0.85rem;
+    padding: 0.6rem 1.4rem; font-family: var(--font-sans); font-size: 0.85rem;
     font-weight: 600; cursor: pointer; transition: var(--transition); text-decoration: none; display: inline-block;
   }
   .btn-primary:hover { background: var(--pine); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(26,58,74,0.3); }
   .btn-primary:disabled { background: var(--muted); cursor: not-allowed; transform: none; }
   .btn-outline {
     background: transparent; color: var(--peak); border: 2px solid var(--peak);
-    border-radius: 50px; padding: 0.6rem 1.4rem; font-family: 'DM Sans', sans-serif;
+    border-radius: 50px; padding: 0.6rem 1.4rem; font-family: var(--font-sans);
     font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: var(--transition); text-decoration: none; display: inline-block;
   }
   .btn-outline:hover { background: var(--peak); color: white; }
@@ -983,7 +1119,7 @@ const CSS = `
     background: var(--gold); padding: 1.25rem 1.5rem; border-radius: var(--radius-sm);
     text-align: center; box-shadow: 0 8px 32px rgba(200,150,62,0.4); min-width: 120px;
   }
-  .about-card-num { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 700; color: white; }
+  .about-card-num { font-family: var(--font-serif); font-size: 2.2rem; font-weight: 700; color: white; }
   .about-card-label { font-size: 0.7rem; color: rgba(255,255,255,0.85); text-transform: uppercase; letter-spacing: 0.1em; }
   .about-text { color: rgba(255,255,255,0.75); }
   .about-text .section-label { color: var(--gold); }
@@ -992,7 +1128,7 @@ const CSS = `
   .about-features { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
   .about-feature { display: flex; align-items: flex-start; gap: 0.75rem; }
   .about-feature-icon { font-size: 1.2rem; margin-top: 2px; }
-  .about-feature-text h4 { color: white; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 600; margin-bottom: 2px; }
+  .about-feature-text h4 { color: white; font-family: var(--font-sans); font-size: 0.9rem; font-weight: 600; margin-bottom: 2px; }
   .about-feature-text p { font-size: 0.8rem; color: rgba(255,255,255,0.55); }
 
   @media (max-width: 768px) {
@@ -1048,7 +1184,7 @@ const CSS = `
   }
   .why-media-icon { font-size: 2rem; margin-bottom: 0.35rem; }
   .why-media-title {
-    font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1.05rem;
+    font-family: var(--font-sans); font-weight: 700; font-size: 1.05rem;
     color: white; margin-bottom: 0.25rem;
   }
   .why-media-sub {
@@ -1087,7 +1223,7 @@ const CSS = `
     display: flex; align-items: center; justify-content: center; font-size: 1.6rem;
   }
   .why-title {
-    font-family: 'DM Sans', sans-serif; font-size: 0.98rem; font-weight: 700;
+    font-family: var(--font-sans); font-size: 0.98rem; font-weight: 700;
     color: var(--peak); margin-bottom: 0.45rem;
   }
   .why-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.55; }
@@ -1101,7 +1237,7 @@ const CSS = `
   }
   .service-card:hover { border-color: var(--glacier); box-shadow: var(--shadow); transform: translateY(-3px); }
   .service-icon { font-size: 2rem; flex-shrink: 0; color: var(--pine); display: flex; align-items: center; margin-top: 2px; }
-  .service-title { font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 600; color: var(--peak); margin-bottom: 0.35rem; }
+  .service-title { font-family: var(--font-sans); font-size: 0.95rem; font-weight: 600; color: var(--peak); margin-bottom: 0.35rem; }
   .service-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
 
   /* ── GALLERY ── */
@@ -1273,7 +1409,7 @@ const CSS = `
   .form-group label { font-size: 0.78rem; font-weight: 600; color: var(--peak); letter-spacing: 0.05em; }
   .form-group input, .form-group select, .form-group textarea {
     border: 1.5px solid var(--border); border-radius: var(--radius-sm);
-    padding: 0.65rem 0.9rem; font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+    padding: 0.65rem 0.9rem; font-family: var(--font-sans); font-size: 0.9rem;
     color: var(--text); background: var(--snow); outline: none; transition: var(--transition);
   }
   .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
@@ -1283,7 +1419,7 @@ const CSS = `
   .modal-footer { display: flex; gap: 0.75rem; margin-top: 1.5rem; }
   .modal-total { background: var(--ice); border-radius: var(--radius-sm); padding: 1rem 1.25rem; margin-top: 1rem; display: flex; justify-content: space-between; align-items: center; }
   .modal-total-label { font-size: 0.85rem; color: var(--muted); }
-  .modal-total-price { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 700; color: var(--peak); }
+  .modal-total-price { font-family: var(--font-serif); font-size: 1.4rem; font-weight: 700; color: var(--peak); }
   .success-box { text-align: center; padding: 2rem 0; }
   .success-icon { font-size: 3.5rem; margin-bottom: 1rem; }
   .success-box h3 { font-size: 1.6rem; color: var(--peak); margin-bottom: 0.5rem; }
@@ -1320,10 +1456,10 @@ const CSS = `
   .footer { background: #0a1e2b; padding: 3.5rem 1.5rem 1.5rem; }
   .footer-inner { max-width: 1200px; margin: 0 auto; }
   .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2.5rem; margin-bottom: 3rem; }
-  .footer-brand-name { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: white; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 10px; }
+  .footer-brand-name { font-family: var(--font-serif); font-size: 1.4rem; color: white; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 10px; }
   .footer-brand-img { width: 58px; height: 58px; object-fit: cover; background: #ffffff; border-radius: 50%; padding: 0; box-shadow: 0 3px 12px rgba(0,0,0,0.45); border: 2px solid rgba(255,255,255,0.9); flex-shrink: 0; }
   .footer-brand-desc { font-size: 0.85rem; color: rgba(255,255,255,0.55); line-height: 1.7; }
-  .footer-col h4 { color: rgba(255,255,255,0.75); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 1rem; font-family: 'DM Sans', sans-serif; font-weight: 600; }
+  .footer-col h4 { color: rgba(255,255,255,0.75); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 1rem; font-family: var(--font-sans); font-weight: 600; }
   .footer-col a { display: block; color: rgba(255,255,255,0.55); text-decoration: none; font-size: 0.85rem; margin-bottom: 0.6rem; transition: color 0.2s; }
   .footer-col a:hover { color: var(--gold); }
   .footer-social { display: flex; gap: 0.75rem; margin-top: 1.25rem; }
@@ -1376,7 +1512,7 @@ const CSS = `
     position: fixed; bottom: 4.5rem; right: 1.5rem; z-index: 999;
     display: flex; align-items: center; gap: 0.5rem;
     background: var(--gold); color: white; border: none; border-radius: 50px;
-    padding: 0.95rem 1.5rem; font-family: 'DM Sans', sans-serif;
+    padding: 0.95rem 1.5rem; font-family: var(--font-sans);
     font-size: 0.95rem; font-weight: 600; letter-spacing: 0.02em;
     box-shadow: 0 6px 24px rgba(200,150,62,0.5); cursor: pointer; transition: var(--transition);
     text-decoration: none;
@@ -1515,17 +1651,17 @@ const CSS = `
     border: 1px solid rgba(200,150,62,0.35); color: var(--gold);
     display: flex; align-items: center; justify-content: center;
   }
-  .pol-card h3 { font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 700; color: white; }
+  .pol-card h3 { font-family: var(--font-sans); font-size: 1rem; font-weight: 700; color: white; }
   .pol-card ul { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
   .pol-card li { display: flex; gap: 0.65rem; font-size: 0.88rem; color: rgba(255,255,255,0.72); line-height: 1.6; }
-  .pol-num { font-family: 'Cormorant Garamond', serif; font-weight: 700; color: var(--gold); font-size: 0.85rem; min-width: 1.4em; padding-top: 1px; }
+  .pol-num { font-family: var(--font-serif); font-weight: 700; color: var(--gold); font-size: 0.85rem; min-width: 1.4em; padding-top: 1px; }
   .pol-contact {
     max-width: 760px; margin: 3rem auto 0; text-align: center;
     background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12);
     border-radius: 20px; padding: 2.5rem 1.5rem;
     animation: rgItemIn 0.55s cubic-bezier(0.22, 1, 0.9, 1) 0.3s both;
   }
-  .pol-contact h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.7rem; color: white; margin-bottom: 0.4rem; }
+  .pol-contact h3 { font-family: var(--font-serif); font-size: 1.7rem; color: white; margin-bottom: 0.4rem; }
   .pol-contact p { color: rgba(255,255,255,0.65); font-size: 0.95rem; margin-bottom: 1.5rem; }
   .pol-contact-btns { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
   @media (max-width: 720px) {
@@ -1724,6 +1860,9 @@ const HERO_SNOWFLAKES = Array.from({ length: 28 }, (_, i) => ({
 function Hero() {
   const ref = useRef(null);
   const templeScalerRef = useRef(null);
+  const mandalaRef = useRef(null);
+  const [scrollyStage, setScrollyStage] = useState(0);
+  const [scrollPct, setScrollPct] = useState(0);
 
   // 60 FPS IntersectionObserver: pauses background CSS animations when scrolled out of view
   useEffect(() => {
@@ -1736,26 +1875,52 @@ function Hero() {
     return () => observer.disconnect();
   }, []);
 
-  // 60 FPS Scroll-driven Zoom Out:
-  // Starts zoomed in at 1.25x scale at top of hero, zooms out smoothly to 1.0x as user scrolls down!
+  // 60 FPS Scroll-driven Circular Rolling Temple & Scrollytelling
   useEffect(() => {
     let ticking = false;
+    let lastStage = 0;
+    let lastPct = 0;
+
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
+          const scrollY = window.scrollY;
+          const heroHeight = ref.current ? ref.current.offsetHeight : 800;
+          const progress = Math.min(1, Math.max(0, scrollY / (heroHeight * 0.95)));
+
+          // Compound Circular Rolling & Orbital Motion
+          const angle = progress * Math.PI; // 0 to PI
+          const orbitX = (-Math.sin(angle) * 55).toFixed(2);
+          const orbitY = (progress * 75 - (1 - Math.cos(angle)) * 25).toFixed(2);
+          const rollDeg = (progress * 38).toFixed(2); // rolls gracefully on circular arc
+          const scale = (1.18 - progress * 0.18).toFixed(3);
+
           if (templeScalerRef.current) {
-            const scrollY = window.scrollY;
-            const heroHeight = ref.current ? ref.current.offsetHeight : 800;
-            const progress = Math.min(1, Math.max(0, scrollY / (heroHeight * 0.85)));
-            const scale = (1.25 - progress * 0.25).toFixed(4);
-            const translateY = (progress * 45).toFixed(2);
-            templeScalerRef.current.style.transform = `scale3d(${scale}, ${scale}, 1) translate3d(0, ${translateY}px, 0)`;
+            templeScalerRef.current.style.transform = `translate3d(${orbitX}px, ${orbitY}px, 0) rotate(${rollDeg}deg) scale3d(${scale}, ${scale}, 1)`;
           }
+
+          if (mandalaRef.current) {
+            mandalaRef.current.style.transform = `rotate(${(progress * 360).toFixed(1)}deg)`;
+          }
+
+          // Scrollytelling Stage Update (only set state when values change)
+          const pct = Math.round(progress * 100);
+          const stage = progress < 0.35 ? 0 : progress < 0.7 ? 1 : 2;
+          if (pct !== lastPct) {
+            lastPct = pct;
+            setScrollPct(pct);
+          }
+          if (stage !== lastStage) {
+            lastStage = stage;
+            setScrollyStage(stage);
+          }
+
           ticking = false;
         });
         ticking = true;
       }
     };
+
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
@@ -1765,9 +1930,26 @@ function Hero() {
     <section className="hero" id="hero" ref={ref}>
       <div className="hero-bg" style={{ backgroundImage: `url(${aboutLandscape})` }} />
 
-      {/* 60 FPS Animated Sacred Shiva Temple with Devotees in Prayer */}
+      {/* 60 FPS Animated Sacred Shiva Temple with Devotees in Prayer & Real Adi-Kailash Image */}
       <div className="temple-viewport" aria-hidden="true">
         <div className="temple-scaler" ref={templeScalerRef}>
+          {/* Sacred Celestial Mandala Halo - Circular Rolling Motion */}
+          <div className="temple-mandala-ring" ref={mandalaRef} />
+
+          {/* Authentic Real Photograph of Sacred Adi-Kailash Temple & Parvati Kund */}
+          <div className="adi-kailash-shrine-frame">
+            <img
+              src={adiKailashTemple}
+              alt="Sacred Adi-Kailash Temple at holy Parvati Kund"
+              className="adi-kailash-img"
+            />
+            <div className="shrine-light-rays" />
+            <div className="shrine-plaque">
+              <span>🚩 Sacred Adi-Kailash Dham · Parvati Kund (14,990 ft)</span>
+            </div>
+          </div>
+
+          {/* SVG Layer: Moving Devotees Praying to Lord Shiva, Aarti, Trishul, and Jyotirlinga Glow */}
           <svg
             className="temple-svg"
             viewBox="0 0 1000 600"
@@ -1816,7 +1998,6 @@ function Hero() {
             <path d="M0 450 L120 310 L280 430 L430 250 L500 200 L580 260 L750 410 L890 320 L1000 460 L1000 600 L0 600 Z" fill="#0d2330" opacity="0.7" />
             <path d="M0 480 L180 380 L350 490 L500 320 L660 480 L840 370 L1000 500 L1000 600 L0 600 Z" fill="#081822" opacity="0.85" />
 
-            {/* ── SACRED SHIVA TEMPLE STRUCTURE (Kedarnath / Adi Kailash Style) ── */}
             {/* Main Temple Shikhar (Tiered Spire) */}
             <path d="M490 85 L510 85 L525 150 L475 150 Z" fill="#c8963e" />
             <path d="M472 150 L528 150 L545 230 L455 230 Z" fill="url(#templeStone)" stroke="#4a6d7f" strokeWidth="2" />
@@ -1868,13 +2049,6 @@ function Hero() {
               <path d="M502 46 L545 56 L502 68 Z" fill="#ff7700" />
             </g>
 
-            {/* Brass Temple Bell Swaying with Chains */}
-            <g className="bell-swing">
-              <line x1="380" y1="460" x2="380" y2="480" stroke="#c8963e" strokeWidth="2" />
-              <path d="M372 480 C372 472 388 472 388 480 L391 494 C393 499 367 499 369 494 Z" fill="#d4a348" stroke="#8a5a18" strokeWidth="1.5" />
-              <circle cx="380" cy="497" r="2.5" fill="#f5d070" />
-            </g>
-
             {/* Temple Courtyard Steps and Plinth */}
             <path d="M220 540 L780 540 L840 600 L160 600 Z" fill="#14242f" stroke="#253a47" strokeWidth="2" />
             <line x1="200" y1="560" x2="800" y2="560" stroke="#253a47" strokeWidth="2" />
@@ -1882,17 +2056,22 @@ function Hero() {
 
             {/* Lit Diyas (Oil Lamps) along Temple Steps */}
             <g>
-              {/* Diya Left */}
               <ellipse cx="260" cy="558" rx="8" ry="4" fill="#8b5a2b" />
               <circle cx="260" cy="552" r="7" fill="url(#aartiFlameGrad)" className="aarti-glow" />
-              {/* Diya Right */}
               <ellipse cx="740" cy="558" rx="8" ry="4" fill="#8b5a2b" />
               <circle cx="740" cy="552" r="7" fill="url(#aartiFlameGrad)" className="aarti-glow" />
             </g>
 
+            {/* Floating Bilva Leaves & Sacred Flowers */}
+            <g className="bilva-leaf">
+              <path d="M480 430 C475 425, 470 435, 480 440 C490 435, 485 425, 480 430 Z" fill="#4caf50" opacity="0.85" />
+              <path d="M472 435 C468 430, 465 438, 472 442 C478 438, 475 430, 472 435 Z" fill="#388e3c" opacity="0.8" />
+              <path d="M488 435 C484 430, 481 438, 488 442 C494 438, 491 430, 488 435 Z" fill="#388e3c" opacity="0.8" />
+            </g>
+
             {/* ── PEOPLE / DEVOTEES TAKING PRAYERS OF LORD SHIVA ── */}
-            {/* Devotee 1 (Left - Performing Aarti with multi-tiered Deepam) */}
-            <g className="pranam-devotee">
+            {/* Devotee 1 (Left - Circular Aarti Offering with Stepped Deepam) */}
+            <g className="aarti-wave-circ">
               <path d="M410 575 C410 535, 424 532, 432 532 C440 532, 452 535, 450 575 Z" fill="#0d1b22" />
               <circle cx="431" cy="520" r="11" fill="#0d1b22" />
               <path d="M434 536 L446 530 L458 534" stroke="#0d1b22" strokeWidth="5" strokeLinecap="round" />
@@ -1901,21 +2080,37 @@ function Hero() {
               <path d="M462 516 Q458 495 466 480 T460 455" stroke="rgba(255,255,255,0.4)" strokeWidth="2.5" fill="none" strokeLinecap="round" className="dhoop-smoke" />
             </g>
 
-            {/* Devotee 2 (Center-Right - In Deep Pranam / Folded Hands Anjali Mudra) */}
-            <g className="pranam-devotee" style={{ animationDelay: "1s" }}>
-              <path d="M535 575 C535 538, 545 534, 554 534 C563 534, 575 538, 575 575 Z" fill="#0d1b22" />
-              <circle cx="554" cy="522" r="10.5" fill="#0d1b22" />
-              <path d="M545 538 L552 530 M563 538 L556 530" stroke="#0d1b22" strokeWidth="4.5" strokeLinecap="round" />
-              <ellipse cx="554" cy="528" rx="3.5" ry="5.5" fill="#e6af55" />
+            {/* Devotee 2 (Center Left - In Deep Pranam / Folded Hands Anjali Mudra) */}
+            <g className="pranam-devotee" style={{ animationDelay: "0.6s" }}>
+              <path d="M475 578 C475 540, 485 536, 492 536 C500 536, 510 540, 510 578 Z" fill="#0d1b22" />
+              <circle cx="492" cy="524" r="10.5" fill="#0d1b22" />
+              <path d="M485 540 L491 532 M500 540 L494 532" stroke="#0d1b22" strokeWidth="4" strokeLinecap="round" />
+              <ellipse cx="492" cy="530" rx="3" ry="5" fill="#f5c26b" />
             </g>
 
-            {/* Devotee 3 (Far Right - Standing Family in prayer) */}
-            <g className="pranam-devotee" style={{ animationDelay: "0.5s" }}>
-              <path d="M660 580 C660 540, 672 538, 680 538 C688 538, 700 540, 700 580 Z" fill="#0b171e" />
-              <circle cx="680" cy="526" r="10" fill="#0b171e" />
-              <path d="M672 542 L679 536 L686 542" stroke="#0b171e" strokeWidth="4" strokeLinecap="round" />
-              <path d="M640 580 C640 554, 648 552, 653 552 C658 552, 666 554, 666 580 Z" fill="#0b171e" />
-              <circle cx="653" cy="544" r="7.5" fill="#0b171e" />
+            {/* Devotee 3 (Center - Walking in Sacred Parikrama / Circumambulation) */}
+            <g className="parikrama-walk">
+              <path d="M530 580 C530 542, 540 538, 548 538 C556 538, 566 542, 565 580 Z" fill="#0a1720" />
+              <circle cx="548" cy="525" r="10.5" fill="#0a1720" />
+              <path d="M542 544 L548 537 L554 544" stroke="#0a1720" strokeWidth="4" strokeLinecap="round" />
+              <path d="M536 575 L542 585 M556 575 L552 585" stroke="#f5c26b" strokeWidth="2" strokeLinecap="round" />
+            </g>
+
+            {/* Devotee 4 (Center Right - Seated Yogi in Shiva Dhyana / Meditation) */}
+            <g className="pranam-devotee" style={{ animationDelay: "1.2s" }}>
+              <ellipse cx="605" cy="578" rx="20" ry="8" fill="#0b171e" />
+              <path d="M592 578 C592 550, 600 544, 605 544 C610 544, 618 550, 618 578 Z" fill="#0b171e" />
+              <circle cx="605" cy="534" r="9" fill="#0b171e" />
+              <path d="M595 554 L605 558 L615 554" stroke="#0b171e" strokeWidth="3" strokeLinecap="round" />
+            </g>
+
+            {/* Devotee 5 (Right - Family in Devout Prayer) */}
+            <g className="pranam-devotee" style={{ animationDelay: "0.4s" }}>
+              <path d="M665 580 C665 540, 676 538, 684 538 C692 538, 702 540, 702 580 Z" fill="#0b171e" />
+              <circle cx="684" cy="526" r="10" fill="#0b171e" />
+              <path d="M676 542 L683 536 L690 542" stroke="#0b171e" strokeWidth="4" strokeLinecap="round" />
+              <path d="M645 580 C645 554, 652 552, 657 552 C662 552, 670 554, 670 580 Z" fill="#0b171e" />
+              <circle cx="657" cy="544" r="7.5" fill="#0b171e" />
             </g>
           </svg>
         </div>
@@ -1937,9 +2132,10 @@ function Hero() {
           />
         ))}
       </div>
+
       <div className="hero-content">
         <div className="hero-badge">
-          <Sparkles size={14} strokeWidth={2.2} fill="currentColor" /> Top-Rated Homestay on Adi Kailash Route
+          Top-Rated Homestay on Adi Kailash Route
         </div>
         <h1 style={{ display: "none" }}>Best Homestay in Haat, Dharchula - Shiv Darshan Homestay</h1>
         <h2 style={{
@@ -1948,8 +2144,8 @@ function Hero() {
           color: "white",
           textShadow: "0 3px 25px rgba(0,0,0,0.6)", 
           marginBottom: "0.75rem",
-          letterSpacing: "-0.01em",
-          fontFamily: "'Cormorant Garamond', serif"
+          letterSpacing: "-0.015em",
+          fontFamily: "var(--font-serif)"
         }}>
           Shiv Darshan
           <br />
@@ -1972,6 +2168,19 @@ function Hero() {
           ))}
         </div>
       </div>
+
+      {/* Scrollytelling Pilgrimage Status HUD */}
+      <div className="hero-scrolly-indicator" role="status" aria-live="polite">
+        <div className="scrolly-badge">
+          {scrollyStage === 0 && "🏔️ Sacred Adi Kailash Peak & Parvati Kund Darshan"}
+          {scrollyStage === 1 && "🪔 Devotees Praying to Lord Shiva · Live Morning Aarti"}
+          {scrollyStage === 2 && "🔱 Har Har Mahadev · Gateway at Shiv Darshan Homestay"}
+        </div>
+        <div className="scrolly-track">
+          <div className="scrolly-progress" style={{ width: `${Math.max(10, scrollPct)}%` }} />
+        </div>
+      </div>
+
       <div className="hero-scroll">
         <div className="hero-scroll-line" />
         <div className="hero-scroll-dot" />
@@ -3034,7 +3243,7 @@ function About() {
               boxShadow: "0 8px 24px rgba(0,0,0,0.18)",
               textAlign: "center",
               zIndex: 10,
-              fontFamily: "'DM Sans', sans-serif",
+              fontFamily: "var(--font-sans)",
               whiteSpace: "nowrap",
               border: "1px solid rgba(200, 150, 62, 0.35)",
             }}
