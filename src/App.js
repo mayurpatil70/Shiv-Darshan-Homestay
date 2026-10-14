@@ -58,7 +58,7 @@ import roomTriple from "./assets/images/client/room-triple.jpg";
 import roomTwin2 from "./assets/images/client/room-twin-2.jpg";
 import bathroomClean from "./assets/images/client/bathroom-clean.jpg";
 import welcomePoojaGuests from "./assets/images/client/welcome-pooja-guests.jpg";
-import adiKailashTemple from "./assets/images/client/adi-kailash-temple.jpg";
+import adiKailashHero from "./assets/images/client/adi-kailash-hero-wide.jpg";
 
 // Brand logo and owner profile images
 const logoImg = shivLogo;
@@ -370,21 +370,47 @@ const CSS = `
      bigger offset to land headings clear of it rather than under it. */
   @media (max-width: 768px) { html { scroll-padding-top: 56px; } }
 
-  /* ── SCROLL REVEAL ──
-     Blocks marked .reveal ease up as they reach the viewport, so the page
-     arrives rather than snapping past. Only opacity and transform move — the
-     document never changes height, so anchors and scroll positions stay true. */
+  /* ── SCROLLYTELLING COMPONENT REVEAL ──
+     Blocks marked .reveal ease up gracefully as they enter the viewport,
+     giving an immersive storytelling progression as the user scrolls. */
   .reveal {
-    opacity: 0; transform: translateY(24px);
-    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-                transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    transform: translate3d(0, 32px, 0) scale(0.985);
+    transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
   }
-  .reveal.is-visible { opacity: 1; transform: translateY(0); }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  /* Storytelling stagger for list items & cards within revealed sections */
+  .reveal.is-visible .why-card {
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+  }
+  .reveal.is-visible .service-card {
+    animation: scrollyItemRise 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .reveal.is-visible .service-card:nth-child(1) { animation-delay: 0.04s; }
+  .reveal.is-visible .service-card:nth-child(2) { animation-delay: 0.10s; }
+  .reveal.is-visible .service-card:nth-child(3) { animation-delay: 0.16s; }
+  .reveal.is-visible .service-card:nth-child(4) { animation-delay: 0.22s; }
+  .reveal.is-visible .service-card:nth-child(5) { animation-delay: 0.28s; }
+  .reveal.is-visible .service-card:nth-child(6) { animation-delay: 0.34s; }
+  .reveal.is-visible .service-card:nth-child(7) { animation-delay: 0.40s; }
+  .reveal.is-visible .service-card:nth-child(8) { animation-delay: 0.46s; }
+
+  @keyframes scrollyItemRise {
+    from { opacity: 0; transform: translate3d(0, 18px, 0); }
+    to   { opacity: 1; transform: translate3d(0, 0, 0); }
+  }
 
   /* Reduced motion: no glide and no reveal — everything is simply already there */
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     .reveal { opacity: 1; transform: none; transition: none; }
+    .reveal.is-visible .service-card { animation: none; opacity: 1; transform: none; }
   }
 
   body {
@@ -503,226 +529,141 @@ const CSS = `
     100% { transform: translate3d(-10px, 108vh, 0); opacity: 0.2; }
   }
 
-  /* ── 60 FPS SCROLLYTELLING SACRED ADI KAILASH TEMPLE & DEVOTEES SCENE ── */
-  .temple-viewport {
+  /* ── REAL ADI KAILASH TEMPLE HERO BACKGROUND & MOVING PEOPLE ── */
+  .hero-bg {
+    position: absolute; inset: 0;
+    background-size: cover;
+    background-position: center 30%;
+    background-repeat: no-repeat;
+    transform: scale(1.04);
+    will-change: transform;
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  /* Moving Pilgrims & Devotees Layer on Hero Section */
+  .hero-people-layer {
     position: absolute; inset: 0;
     pointer-events: none;
-    overflow: hidden;
-    z-index: 1;
-    display: flex; align-items: flex-end; justify-content: center;
-    perspective: 1200px;
-  }
-  .temple-scaler {
-    width: 100%; height: 100%;
-    display: flex; align-items: flex-end; justify-content: center;
-    transform-origin: 50% 70%;
-    will-change: transform;
-    backface-visibility: hidden;
-    transform: scale3d(1.18, 1.18, 1);
-    transition: transform 0.05s linear;
-  }
-
-  /* Sacred Celestial Mandala Halo - Rolls in continuous 360° circular motion */
-  .temple-mandala-ring {
-    position: absolute;
-    bottom: 4%;
-    left: 50%;
-    width: min(720px, 86vw);
-    height: min(720px, 86vw);
-    margin-left: calc(min(720px, 86vw) / -2);
-    margin-bottom: -100px;
-    border-radius: 50%;
-    border: 2px dashed rgba(200, 150, 62, 0.45);
-    box-shadow: 0 0 70px rgba(200, 150, 62, 0.28), inset 0 0 70px rgba(200, 150, 62, 0.16);
-    background: radial-gradient(circle, rgba(200, 150, 62, 0.14) 0%, rgba(200, 150, 62, 0.04) 50%, rgba(10, 30, 42, 0) 72%);
-    animation: mandalaSpin 45s linear infinite;
-    pointer-events: none;
-    z-index: 1;
-    will-change: transform;
-  }
-  @keyframes mandalaSpin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-
-  /* Real Authentic Photograph of Adi-Kailash Temple & Holy Parvati Kund */
-  .adi-kailash-shrine-frame {
-    position: absolute;
-    bottom: 8%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: min(600px, 84vw);
-    height: min(380px, 54vw);
-    border-radius: 240px 240px 24px 24px;
-    overflow: hidden;
-    border: 3px solid rgba(245, 208, 112, 0.75);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 50px rgba(200, 150, 62, 0.35);
     z-index: 2;
-    background: #081720;
-  }
-  .adi-kailash-img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    object-position: center 36%;
-    filter: brightness(0.92) contrast(1.08) saturate(1.15);
-    transform: scale(1.02);
-    transition: transform 0.6s ease;
-  }
-  .shrine-light-rays {
-    position: absolute; inset: 0;
-    background: radial-gradient(ellipse at 50% 20%, rgba(255, 230, 130, 0.28) 0%, rgba(200, 150, 62, 0.08) 45%, rgba(5, 18, 26, 0.55) 100%);
-    mix-blend-mode: screen;
-    pointer-events: none;
-  }
-  .shrine-plaque {
-    position: absolute; bottom: 0; left: 0; right: 0;
-    background: linear-gradient(to top, rgba(8, 20, 28, 0.95) 0%, rgba(8, 20, 28, 0.7) 65%, transparent 100%);
-    padding: 20px 12px 9px;
-    text-align: center;
-    color: #fce79f;
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.07em;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.85);
-    display: flex; align-items: center; justify-content: center; gap: 6px;
-  }
-
-  .temple-svg {
-    position: relative;
-    width: 100%;
-    max-width: 1400px;
-    height: 85%;
-    max-height: 720px;
-    object-fit: cover;
-    filter: drop-shadow(0 15px 35px rgba(0,0,0,0.6));
-    z-index: 3;
-  }
-
-  /* Live 60 FPS GPU-accelerated keyframe animations for devotees & Shiva aura */
-  .aarti-wave-circ {
-    transform-origin: 430px 530px;
-    animation: aartiCircWave 2.8s ease-in-out infinite alternate;
-    will-change: transform;
-  }
-  @keyframes aartiCircWave {
-    0% { transform: rotate(-8deg) translate3d(-3px, 2px, 0); }
-    50% { transform: rotate(7deg) translate3d(4px, -4px, 0); }
-    100% { transform: rotate(-4deg) translate3d(-1px, 0, 0); }
-  }
-  .aarti-glow {
-    animation: aartiFlamePulse 1.6s ease-in-out infinite alternate;
-    transform-origin: center;
-    will-change: opacity, transform;
-  }
-  @keyframes aartiFlamePulse {
-    0% { opacity: 0.75; transform: scale(0.96); filter: drop-shadow(0 0 12px rgba(255,180,40,0.8)); }
-    50% { opacity: 1; transform: scale(1.08); filter: drop-shadow(0 0 24px rgba(255,210,70,1)); }
-    100% { opacity: 0.85; transform: scale(1); filter: drop-shadow(0 0 16px rgba(255,170,30,0.9)); }
-  }
-  .trishul-halo {
-    animation: trishulAuraPulse 3s ease-in-out infinite alternate;
-    transform-origin: 500px 115px;
-    will-change: opacity, transform;
-  }
-  @keyframes trishulAuraPulse {
-    0% { opacity: 0.6; transform: scale(0.95); }
-    100% { opacity: 1; transform: scale(1.12); filter: drop-shadow(0 0 20px rgba(255,215,80,0.9)); }
-  }
-  .dhwaja-flutter {
-    animation: dhwajaWaveAnim 2.4s ease-in-out infinite alternate;
-    transform-origin: 512px 90px;
-    will-change: transform;
-  }
-  @keyframes dhwajaWaveAnim {
-    0% { transform: skewX(-4deg) scaleX(0.96); }
-    100% { transform: skewX(6deg) scaleX(1.04); }
-  }
-  .dhoop-smoke {
-    animation: smokeRiseAnim 4.5s linear infinite;
-    will-change: transform, opacity;
-  }
-  @keyframes smokeRiseAnim {
-    0% { transform: translate3d(0, 0, 0) scale(0.8); opacity: 0.1; }
-    40% { opacity: 0.7; }
-    100% { transform: translate3d(-18px, -65px, 0) scale(1.4); opacity: 0; }
-  }
-  .pranam-devotee {
-    animation: devoteePrayAnim 3.8s ease-in-out infinite alternate;
-    transform-origin: bottom center;
-    will-change: transform;
-  }
-  @keyframes devoteePrayAnim {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-3px); }
-  }
-  .parikrama-walk {
-    animation: parikramaWalkAnim 7s ease-in-out infinite;
-    will-change: transform;
-  }
-  @keyframes parikramaWalkAnim {
-    0% { transform: translate3d(-35px, 0, 0); }
-    50% { transform: translate3d(35px, -3px, 0); }
-    100% { transform: translate3d(-35px, 0, 0); }
-  }
-  .bilva-leaf {
-    animation: bilvaLeafDrift 7.5s linear infinite;
-    will-change: transform, opacity;
-  }
-  @keyframes bilvaLeafDrift {
-    0% { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 0; }
-    20% { opacity: 0.85; }
-    80% { opacity: 0.85; }
-    100% { transform: translate3d(-60px, 85px, 0) rotate(160deg); opacity: 0; }
-  }
-
-  /* Scrollytelling Progress Bar HUD */
-  .hero-scrolly-indicator {
-    position: absolute;
-    bottom: 5.5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 4;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    background: rgba(10, 30, 42, 0.75);
-    border: 1px solid rgba(200, 150, 62, 0.45);
-    padding: 6px 18px 8px;
-    border-radius: 30px;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 25px rgba(0,0,0,0.4);
-    max-width: 90vw;
-  }
-  .scrolly-badge {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #fce79f;
-    letter-spacing: 0.04em;
-    white-space: nowrap;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
-  }
-  .scrolly-track {
-    width: 140px;
-    height: 3px;
-    background: rgba(255,255,255,0.18);
-    border-radius: 3px;
+    display: flex; align-items: flex-end; justify-content: center;
     overflow: hidden;
   }
-  .scrolly-progress {
-    height: 100%;
-    background: linear-gradient(90deg, #c8963e, #fce79f);
-    border-radius: 3px;
-    transition: width 0.1s ease-out;
-    box-shadow: 0 0 8px #fce79f;
+  .hero-people-svg {
+    width: 100%; height: 55%;
+    max-height: 480px;
+    object-fit: cover;
+    filter: drop-shadow(0 6px 16px rgba(0,0,0,0.55));
+  }
+  .trekker-walk-1 {
+    animation: trekkerWalkPath1 14s linear infinite;
+    will-change: transform;
+  }
+  @keyframes trekkerWalkPath1 {
+    0%   { transform: translate3d(-140px, 18px, 0); opacity: 0; }
+    8%   { opacity: 1; }
+    50%  { transform: translate3d(70px, -8px, 0); }
+    92%  { opacity: 1; }
+    100% { transform: translate3d(280px, -32px, 0); opacity: 0; }
+  }
+  .trekker-walk-2 {
+    animation: trekkerWalkPath2 16s linear infinite;
+    will-change: transform;
+  }
+  @keyframes trekkerWalkPath2 {
+    0%   { transform: translate3d(-90px, 20px, 0); opacity: 0; }
+    8%   { opacity: 0.95; }
+    50%  { transform: translate3d(90px, -6px, 0); }
+    92%  { opacity: 0.95; }
+    100% { transform: translate3d(290px, -26px, 0); opacity: 0; }
+  }
+  .trekker-walk-3 {
+    animation: trekkerWalkPath3 18s linear infinite;
+    will-change: transform;
+  }
+  @keyframes trekkerWalkPath3 {
+    0%   { transform: translate3d(-120px, 24px, 0); opacity: 0; }
+    8%   { opacity: 0.95; }
+    50%  { transform: translate3d(80px, -4px, 0); }
+    92%  { opacity: 0.95; }
+    100% { transform: translate3d(300px, -24px, 0); opacity: 0; }
+  }
+  .trekker-bob {
+    animation: trekkerBobAnim 0.7s ease-in-out infinite alternate;
+  }
+  @keyframes trekkerBobAnim {
+    0%   { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(0, -3px, 0); }
+  }
+  .trekker-step-1 {
+    animation: trekkerLegSwing 0.7s ease-in-out infinite alternate;
+    transform-origin: center top;
+  }
+  .trekker-step-2 {
+    animation: trekkerLegSwing 0.7s ease-in-out infinite alternate-reverse;
+    transform-origin: center top;
+  }
+  @keyframes trekkerLegSwing {
+    0%   { transform: rotate(-8deg); }
+    100% { transform: rotate(8deg); }
+  }
+  .hero-flag-flutter {
+    animation: flagFlutterAnim 2.2s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+  @keyframes flagFlutterAnim {
+    0%   { transform: scaleX(0.88) skewY(-2deg); }
+    100% { transform: scaleX(1.15) skewY(3deg); }
+  }
+  .devotee-lamp-glow {
+    animation: lampPulse 1.8s ease-in-out infinite alternate;
+    will-change: opacity, transform;
+  }
+  @keyframes lampPulse {
+    0%   { opacity: 0.6; transform: scale(0.9); }
+    100% { opacity: 1; transform: scale(1.15); }
+  }
+
+  /* ── GLOBAL SCROLLYTELLING READING BAR ── */
+  .scrolly-reading-bar {
+    position: fixed; top: 0; left: 0; height: 3.5px;
+    background: linear-gradient(90deg, #c8963e, #f5d070, #ffffff);
+    box-shadow: 0 0 12px rgba(245, 208, 112, 0.85), 0 0 24px rgba(200, 150, 62, 0.6);
+    z-index: 10001;
+    pointer-events: none;
+    transition: width 0.08s linear;
+    will-change: width;
+  }
+
+  /* ── SCROLLYTELLING CHAPTER PILL ── */
+  .scrolly-chapter {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(200, 150, 62, 0.12);
+    border: 1px solid rgba(200, 150, 62, 0.38);
+    color: var(--gold);
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0.32rem 1rem; border-radius: 50px;
+    margin-bottom: 0.85rem;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 2px 14px rgba(200, 150, 62, 0.16);
+    transition: all 0.3s ease;
+  }
+  .scrolly-chapter:hover {
+    background: rgba(200, 150, 62, 0.2);
+    border-color: var(--gold);
+    transform: translateY(-1px);
+  }
+  .scrolly-chapter::before {
+    content: "✦";
+    color: var(--gold);
+    font-size: 0.8rem;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-bg { animation: none; }
+    .hero-bg { animation: none; transform: none !important; }
     .hero-snow { display: none; }
-    .temple-scaler { transform: none !important; }
-    .temple-mandala-ring { animation: none !important; }
-    .aarti-wave-circ, .aarti-glow, .trishul-halo, .dhwaja-flutter, .dhoop-smoke, .pranam-devotee, .parikrama-walk, .bilva-leaf { animation: none; }
+    .trekker-walk-1, .trekker-walk-2, .trekker-walk-3, .trekker-bob, .trekker-step-1, .trekker-step-2, .hero-flag-flutter, .devotee-lamp-glow { animation: none; }
+    .scrolly-reading-bar { display: none; }
   }
   .hero-overlay {
     position: absolute; inset: 0;
@@ -1859,10 +1800,8 @@ const HERO_SNOWFLAKES = Array.from({ length: 28 }, (_, i) => ({
 
 function Hero() {
   const ref = useRef(null);
-  const templeScalerRef = useRef(null);
-  const mandalaRef = useRef(null);
-  const [scrollyStage, setScrollyStage] = useState(0);
-  const [scrollPct, setScrollPct] = useState(0);
+  const heroBgRef = useRef(null);
+  const heroContentRef = useRef(null);
 
   // 60 FPS IntersectionObserver: pauses background CSS animations when scrolled out of view
   useEffect(() => {
@@ -1875,245 +1814,108 @@ function Hero() {
     return () => observer.disconnect();
   }, []);
 
-  // 60 FPS Scroll-driven Circular Rolling Temple & Scrollytelling
+  // 60 FPS Scrollytelling Parallax for Hero
   useEffect(() => {
     let ticking = false;
-    let lastStage = 0;
-    let lastPct = 0;
-
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
           const scrollY = window.scrollY;
-          const heroHeight = ref.current ? ref.current.offsetHeight : 800;
-          const progress = Math.min(1, Math.max(0, scrollY / (heroHeight * 0.95)));
-
-          // Compound Circular Rolling & Orbital Motion
-          const angle = progress * Math.PI; // 0 to PI
-          const orbitX = (-Math.sin(angle) * 55).toFixed(2);
-          const orbitY = (progress * 75 - (1 - Math.cos(angle)) * 25).toFixed(2);
-          const rollDeg = (progress * 38).toFixed(2); // rolls gracefully on circular arc
-          const scale = (1.18 - progress * 0.18).toFixed(3);
-
-          if (templeScalerRef.current) {
-            templeScalerRef.current.style.transform = `translate3d(${orbitX}px, ${orbitY}px, 0) rotate(${rollDeg}deg) scale3d(${scale}, ${scale}, 1)`;
+          if (heroBgRef.current) {
+            heroBgRef.current.style.transform = `scale(1.04) translate3d(0, ${(scrollY * 0.16).toFixed(2)}px, 0)`;
           }
-
-          if (mandalaRef.current) {
-            mandalaRef.current.style.transform = `rotate(${(progress * 360).toFixed(1)}deg)`;
+          if (heroContentRef.current) {
+            heroContentRef.current.style.transform = `translate3d(0, ${(scrollY * 0.28).toFixed(2)}px, 0)`;
+            heroContentRef.current.style.opacity = Math.max(0, 1 - scrollY / 700).toFixed(3);
           }
-
-          // Scrollytelling Stage Update (only set state when values change)
-          const pct = Math.round(progress * 100);
-          const stage = progress < 0.35 ? 0 : progress < 0.7 ? 1 : 2;
-          if (pct !== lastPct) {
-            lastPct = pct;
-            setScrollPct(pct);
-          }
-          if (stage !== lastStage) {
-            lastStage = stage;
-            setScrollyStage(stage);
-          }
-
           ticking = false;
         });
         ticking = true;
       }
     };
-
-    handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <section className="hero" id="hero" ref={ref}>
-      <div className="hero-bg" style={{ backgroundImage: `url(${aboutLandscape})` }} />
+      {/* Real High-Resolution Adi Kailash Temple & Mountain Background Stretched Across Hero */}
+      <div
+        className="hero-bg"
+        ref={heroBgRef}
+        style={{ backgroundImage: `url(${adiKailashHero})` }}
+      />
 
-      {/* 60 FPS Animated Sacred Shiva Temple with Devotees in Prayer & Real Adi-Kailash Image */}
-      <div className="temple-viewport" aria-hidden="true">
-        <div className="temple-scaler" ref={templeScalerRef}>
-          {/* Sacred Celestial Mandala Halo - Circular Rolling Motion */}
-          <div className="temple-mandala-ring" ref={mandalaRef} />
+      {/* Moving People & Pilgrims on Hero Section Trail & Ridge */}
+      <div className="hero-people-layer" aria-hidden="true">
+        <svg
+          className="hero-people-svg"
+          viewBox="0 0 1200 400"
+          preserveAspectRatio="xMidYBottom meet"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <radialGradient id="lampGlow" cx="50%" cy="50%" r="50%">
+              <stop stopColor="#ffe270" stopOpacity="0.9" />
+              <stop offset="60%" stopColor="#ff9900" stopOpacity="0.4" />
+              <stop offset="100%" stopColor="#ff6600" stopOpacity="0" />
+            </radialGradient>
+          </defs>
 
-          {/* Authentic Real Photograph of Sacred Adi-Kailash Temple & Parvati Kund */}
-          <div className="adi-kailash-shrine-frame">
-            <img
-              src={adiKailashTemple}
-              alt="Sacred Adi-Kailash Temple at holy Parvati Kund"
-              className="adi-kailash-img"
-            />
-            <div className="shrine-light-rays" />
-            <div className="shrine-plaque">
-              <span>🚩 Sacred Adi-Kailash Dham · Parvati Kund (14,990 ft)</span>
-            </div>
-          </div>
+          {/* Saffron Flag on Temple Mast Fluttering in High Himalayan Wind */}
+          <g className="hero-flag-flutter" style={{ transformOrigin: "602px 145px" }}>
+            <path d="M602 145 L632 153 L602 163 Z" fill="#ff7700" opacity="0.95" />
+          </g>
 
-          {/* SVG Layer: Moving Devotees Praying to Lord Shiva, Aarti, Trishul, and Jyotirlinga Glow */}
-          <svg
-            className="temple-svg"
-            viewBox="0 0 1000 600"
-            preserveAspectRatio="xMidYBottom meet"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <defs>
-              <linearGradient id="skyGlow" x1="500" y1="0" x2="500" y2="400" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#f5c26b" stopOpacity="0.45" />
-                <stop offset="0.6" stopColor="#c8963e" stopOpacity="0.15" />
-                <stop offset="1" stopColor="#0a1e2b" stopOpacity="0" />
-              </linearGradient>
-              <linearGradient id="templeStone" x1="500" y1="80" x2="500" y2="520" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#3d5a6a" />
-                <stop offset="0.5" stopColor="#253e4c" />
-                <stop offset="1" stopColor="#142834" />
-              </linearGradient>
-              <linearGradient id="templeRoof" x1="500" y1="120" x2="500" y2="350" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#554030" />
-                <stop offset="1" stopColor="#2a1f18" />
-              </linearGradient>
-              <linearGradient id="sanctumGlow" x1="500" y1="360" x2="500" y2="480" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#ffe680" stopOpacity="0.95" />
-                <stop offset="0.7" stopColor="#ff9900" stopOpacity="0.6" />
-                <stop offset="1" stopColor="#cc4400" stopOpacity="0.1" />
-              </linearGradient>
-              <radialGradient id="trishulAuraGrad" cx="50%" cy="50%" r="50%">
-                <stop stopColor="#ffe680" stopOpacity="0.9" />
-                <stop offset="60%" stopColor="#ffb300" stopOpacity="0.4" />
-                <stop offset="100%" stopColor="#ff8800" stopOpacity="0" />
-              </radialGradient>
-              <radialGradient id="aartiFlameGrad" cx="50%" cy="50%" r="50%">
-                <stop stopColor="#ffffff" stopOpacity="1" />
-                <stop offset="35%" stopColor="#ffea66" stopOpacity="0.9" />
-                <stop offset="70%" stopColor="#ff7700" stopOpacity="0.7" />
-                <stop offset="100%" stopColor="#cc2200" stopOpacity="0" />
-              </radialGradient>
-            </defs>
-
-            {/* Sacred Sunrise Aura behind Shikhar */}
-            <circle cx="500" cy="180" r="260" fill="url(#skyGlow)" />
-            <circle cx="500" cy="115" r="90" fill="url(#trishulAuraGrad)" className="trishul-halo" />
-
-            {/* Sacred Himalayan Mountain Silhouette backdrop */}
-            <path d="M0 450 L120 310 L280 430 L430 250 L500 200 L580 260 L750 410 L890 320 L1000 460 L1000 600 L0 600 Z" fill="#0d2330" opacity="0.7" />
-            <path d="M0 480 L180 380 L350 490 L500 320 L660 480 L840 370 L1000 500 L1000 600 L0 600 Z" fill="#081822" opacity="0.85" />
-
-            {/* Main Temple Shikhar (Tiered Spire) */}
-            <path d="M490 85 L510 85 L525 150 L475 150 Z" fill="#c8963e" />
-            <path d="M472 150 L528 150 L545 230 L455 230 Z" fill="url(#templeStone)" stroke="#4a6d7f" strokeWidth="2" />
-            <path d="M450 230 L550 230 L572 320 L428 320 Z" fill="url(#templeStone)" stroke="#4a6d7f" strokeWidth="2" />
-            <path d="M420 320 L580 320 L610 420 L390 420 Z" fill="url(#templeStone)" stroke="#3a5665" strokeWidth="2" />
-
-            {/* Tiered Decorative Ridges */}
-            <line x1="470" y1="175" x2="530" y2="175" stroke="#f0c060" strokeWidth="2" />
-            <line x1="460" y1="205" x2="540" y2="205" stroke="#f0c060" strokeWidth="2" />
-            <line x1="440" y1="260" x2="560" y2="260" stroke="#f0c060" strokeWidth="2.5" />
-            <line x1="430" y1="290" x2="570" y2="290" stroke="#f0c060" strokeWidth="2.5" />
-            <line x1="410" y1="355" x2="590" y2="355" stroke="#f0c060" strokeWidth="3" />
-            <line x1="400" y1="390" x2="600" y2="390" stroke="#f0c060" strokeWidth="3" />
-
-            {/* Temple Mandapa Roof & Sloping Wooden Overhang */}
-            <path d="M340 420 L660 420 L700 460 L300 460 Z" fill="url(#templeRoof)" stroke="#7a5538" strokeWidth="2" />
-            <path d="M320 460 L680 460 L680 540 L320 540 Z" fill="#1b2f3b" />
-
-            {/* Temple Pillars */}
-            <rect x="350" y="460" width="22" height="80" fill="#304958" rx="2" />
-            <rect x="420" y="460" width="20" height="80" fill="#304958" rx="2" />
-            <rect x="560" y="460" width="20" height="80" fill="#304958" rx="2" />
-            <rect x="630" y="460" width="22" height="80" fill="#304958" rx="2" />
-
-            {/* Garbhagriha Inner Sanctum Glow */}
-            <rect x="450" y="460" width="100" height="80" fill="#101e26" />
-            <circle cx="500" cy="500" r="48" fill="url(#sanctumGlow)" className="aarti-glow" />
-
-            {/* Sacred Shiva Lingam with Tripundra */}
-            <ellipse cx="500" cy="522" rx="24" ry="10" fill="#080e12" />
-            <path d="M488 522 C488 495, 512 495, 512 522 Z" fill="#080e12" />
-            {/* Tripundra (3 holy lines) on Shiva Lingam */}
-            <line x1="494" y1="504" x2="506" y2="504" stroke="#ffffff" strokeWidth="1.2" opacity="0.9" />
-            <line x1="493" y1="507" x2="507" y2="507" stroke="#ffffff" strokeWidth="1.2" opacity="0.9" />
-            <line x1="494" y1="510" x2="506" y2="510" stroke="#ffffff" strokeWidth="1.2" opacity="0.9" />
-            <circle cx="500" cy="507" r="1.5" fill="#e62020" />
-
-            {/* Sacred Golden Kalash and Shiva Trishul with Damru */}
-            <ellipse cx="500" cy="85" rx="14" ry="7" fill="#f5c26b" stroke="#7a5520" strokeWidth="1.5" />
-            <circle cx="500" cy="74" r="8" fill="#f0b440" />
-            <path d="M498 66 L502 66 L503 36 L497 36 Z" fill="#f5c26b" />
-            {/* Shiva Trishul Prongs */}
-            <path d="M500 24 L500 50 M488 32 C488 44 496 46 500 46 C504 46 512 44 512 32 M488 32 L484 28 M512 32 L516 28 M500 24 L498 18 L502 18 Z" stroke="#ffe082" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-            {/* Damru on Trishul */}
-            <path d="M495 44 L505 48 L495 48 L505 44 Z" fill="#d88d2a" stroke="#fff" strokeWidth="0.8" />
-
-            {/* Saffron Dhwaja (Temple Flag) Fluttering */}
-            <g className="dhwaja-flutter">
-              <path d="M502 46 L545 56 L502 68 Z" fill="#ff7700" />
+          {/* Moving Trekker 1: Walking along Mountain Trail with Trek Pole & Backpack */}
+          <g className="trekker-walk-1">
+            <g className="trekker-bob">
+              <path d="M360 330 C360 300, 368 296, 375 296 C382 296, 390 300, 390 330 Z" fill="#122530" />
+              <circle cx="375" cy="288" r="8.5" fill="#122530" />
+              <path d="M356 305 C354 300, 354 316, 357 322 Z" fill="#c8963e" stroke="#122530" strokeWidth="2" />
+              <line x1="388" y1="298" x2="394" y2="338" stroke="#f5d070" strokeWidth="2.5" strokeLinecap="round" />
+              <line className="trekker-step-1" x1="368" y1="330" x2="364" y2="346" stroke="#122530" strokeWidth="4" strokeLinecap="round" />
+              <line className="trekker-step-2" x1="382" y1="330" x2="386" y2="346" stroke="#122530" strokeWidth="4" strokeLinecap="round" />
             </g>
+          </g>
 
-            {/* Temple Courtyard Steps and Plinth */}
-            <path d="M220 540 L780 540 L840 600 L160 600 Z" fill="#14242f" stroke="#253a47" strokeWidth="2" />
-            <line x1="200" y1="560" x2="800" y2="560" stroke="#253a47" strokeWidth="2" />
-            <line x1="180" y1="580" x2="820" y2="580" stroke="#253a47" strokeWidth="2" />
-
-            {/* Lit Diyas (Oil Lamps) along Temple Steps */}
-            <g>
-              <ellipse cx="260" cy="558" rx="8" ry="4" fill="#8b5a2b" />
-              <circle cx="260" cy="552" r="7" fill="url(#aartiFlameGrad)" className="aarti-glow" />
-              <ellipse cx="740" cy="558" rx="8" ry="4" fill="#8b5a2b" />
-              <circle cx="740" cy="552" r="7" fill="url(#aartiFlameGrad)" className="aarti-glow" />
+          {/* Moving Trekker 2: Walking with Saffron Shawl towards the Temple */}
+          <g className="trekker-walk-2">
+            <g className="trekker-bob">
+              <path d="M420 334 C420 306, 428 302, 435 302 C442 302, 450 306, 450 334 Z" fill="#ff7700" opacity="0.92" />
+              <circle cx="435" cy="294" r="8" fill="#122530" />
+              <line className="trekker-step-2" x1="428" y1="334" x2="424" y2="348" stroke="#122530" strokeWidth="3.5" strokeLinecap="round" />
+              <line className="trekker-step-1" x1="442" y1="334" x2="446" y2="348" stroke="#122530" strokeWidth="3.5" strokeLinecap="round" />
             </g>
+          </g>
 
-            {/* Floating Bilva Leaves & Sacred Flowers */}
-            <g className="bilva-leaf">
-              <path d="M480 430 C475 425, 470 435, 480 440 C490 435, 485 425, 480 430 Z" fill="#4caf50" opacity="0.85" />
-              <path d="M472 435 C468 430, 465 438, 472 442 C478 438, 475 430, 472 435 Z" fill="#388e3c" opacity="0.8" />
-              <path d="M488 435 C484 430, 481 438, 488 442 C494 438, 491 430, 488 435 Z" fill="#388e3c" opacity="0.8" />
+          {/* Moving Trekker 3: Pilgrim carrying Sacred Saffron Flag towards Temple */}
+          <g className="trekker-walk-3">
+            <g className="trekker-bob">
+              <path d="M280 342 C280 316, 287 312, 294 312 C301 312, 308 316, 308 342 Z" fill="#1b3545" />
+              <circle cx="294" cy="305" r="7.5" fill="#1b3545" />
+              <line x1="298" y1="282" x2="304" y2="348" stroke="#f5d070" strokeWidth="2.2" strokeLinecap="round" />
+              <path d="M298 282 L316 288 L298 296 Z" fill="#ff7700" />
+              <line className="trekker-step-1" x1="288" y1="342" x2="284" y2="356" stroke="#1b3545" strokeWidth="3.5" strokeLinecap="round" />
+              <line className="trekker-step-2" x1="300" y1="342" x2="304" y2="356" stroke="#1b3545" strokeWidth="3.5" strokeLinecap="round" />
             </g>
+          </g>
 
-            {/* ── PEOPLE / DEVOTEES TAKING PRAYERS OF LORD SHIVA ── */}
-            {/* Devotee 1 (Left - Circular Aarti Offering with Stepped Deepam) */}
-            <g className="aarti-wave-circ">
-              <path d="M410 575 C410 535, 424 532, 432 532 C440 532, 452 535, 450 575 Z" fill="#0d1b22" />
-              <circle cx="431" cy="520" r="11" fill="#0d1b22" />
-              <path d="M434 536 L446 530 L458 534" stroke="#0d1b22" strokeWidth="5" strokeLinecap="round" />
-              <ellipse cx="462" cy="533" rx="10" ry="3.5" fill="#f5c26b" stroke="#996611" strokeWidth="1" />
-              <circle cx="462" cy="524" r="14" fill="url(#aartiFlameGrad)" className="aarti-glow" />
-              <path d="M462 516 Q458 495 466 480 T460 455" stroke="rgba(255,255,255,0.4)" strokeWidth="2.5" fill="none" strokeLinecap="round" className="dhoop-smoke" />
-            </g>
+          {/* Devotees on the Ridge near Temple in Prayer */}
+          <g className="temple-devotee-1">
+            <path d="M585 270 C585 248, 592 245, 597 245 C602 245, 609 248, 609 270 Z" fill="#10222d" />
+            <circle cx="597" cy="239" r="6.5" fill="#10222d" />
+            <path d="M592 254 L597 248 L602 254" stroke="#f5c26b" strokeWidth="3" strokeLinecap="round" />
+            <circle cx="597" cy="246" r="10" fill="url(#lampGlow)" className="devotee-lamp-glow" />
+          </g>
 
-            {/* Devotee 2 (Center Left - In Deep Pranam / Folded Hands Anjali Mudra) */}
-            <g className="pranam-devotee" style={{ animationDelay: "0.6s" }}>
-              <path d="M475 578 C475 540, 485 536, 492 536 C500 536, 510 540, 510 578 Z" fill="#0d1b22" />
-              <circle cx="492" cy="524" r="10.5" fill="#0d1b22" />
-              <path d="M485 540 L491 532 M500 540 L494 532" stroke="#0d1b22" strokeWidth="4" strokeLinecap="round" />
-              <ellipse cx="492" cy="530" rx="3" ry="5" fill="#f5c26b" />
-            </g>
-
-            {/* Devotee 3 (Center - Walking in Sacred Parikrama / Circumambulation) */}
-            <g className="parikrama-walk">
-              <path d="M530 580 C530 542, 540 538, 548 538 C556 538, 566 542, 565 580 Z" fill="#0a1720" />
-              <circle cx="548" cy="525" r="10.5" fill="#0a1720" />
-              <path d="M542 544 L548 537 L554 544" stroke="#0a1720" strokeWidth="4" strokeLinecap="round" />
-              <path d="M536 575 L542 585 M556 575 L552 585" stroke="#f5c26b" strokeWidth="2" strokeLinecap="round" />
-            </g>
-
-            {/* Devotee 4 (Center Right - Seated Yogi in Shiva Dhyana / Meditation) */}
-            <g className="pranam-devotee" style={{ animationDelay: "1.2s" }}>
-              <ellipse cx="605" cy="578" rx="20" ry="8" fill="#0b171e" />
-              <path d="M592 578 C592 550, 600 544, 605 544 C610 544, 618 550, 618 578 Z" fill="#0b171e" />
-              <circle cx="605" cy="534" r="9" fill="#0b171e" />
-              <path d="M595 554 L605 558 L615 554" stroke="#0b171e" strokeWidth="3" strokeLinecap="round" />
-            </g>
-
-            {/* Devotee 5 (Right - Family in Devout Prayer) */}
-            <g className="pranam-devotee" style={{ animationDelay: "0.4s" }}>
-              <path d="M665 580 C665 540, 676 538, 684 538 C692 538, 702 540, 702 580 Z" fill="#0b171e" />
-              <circle cx="684" cy="526" r="10" fill="#0b171e" />
-              <path d="M676 542 L683 536 L690 542" stroke="#0b171e" strokeWidth="4" strokeLinecap="round" />
-              <path d="M645 580 C645 554, 652 552, 657 552 C662 552, 670 554, 670 580 Z" fill="#0b171e" />
-              <circle cx="657" cy="544" r="7.5" fill="#0b171e" />
-            </g>
-          </svg>
-        </div>
+          <g className="temple-devotee-2">
+            <path d="M635 272 C635 250, 642 247, 647 247 C652 247, 659 250, 659 272 Z" fill="#10222d" />
+            <circle cx="647" cy="241" r="6.5" fill="#10222d" />
+            <path d="M642 256 L647 250 L652 256" stroke="#10222d" strokeWidth="3" strokeLinecap="round" />
+          </g>
+        </svg>
       </div>
 
       <div className="hero-overlay" />
@@ -2133,7 +1935,7 @@ function Hero() {
         ))}
       </div>
 
-      <div className="hero-content">
+      <div className="hero-content" ref={heroContentRef}>
         <div className="hero-badge">
           Top-Rated Homestay on Adi Kailash Route
         </div>
@@ -2166,18 +1968,6 @@ function Hero() {
               <div className="hero-stat-label">{l}</div>
             </div>
           ))}
-        </div>
-      </div>
-
-      {/* Scrollytelling Pilgrimage Status HUD */}
-      <div className="hero-scrolly-indicator" role="status" aria-live="polite">
-        <div className="scrolly-badge">
-          {scrollyStage === 0 && "🏔️ Sacred Adi Kailash Peak & Parvati Kund Darshan"}
-          {scrollyStage === 1 && "🪔 Devotees Praying to Lord Shiva · Live Morning Aarti"}
-          {scrollyStage === 2 && "🔱 Har Har Mahadev · Gateway at Shiv Darshan Homestay"}
-        </div>
-        <div className="scrolly-track">
-          <div className="scrolly-progress" style={{ width: `${Math.max(10, scrollPct)}%` }} />
         </div>
       </div>
 
@@ -2253,6 +2043,8 @@ function Rooms({ onBook }) {
     >
       <div className="section-header-row reveal">
         <div>
+          <span className="scrolly-chapter">Chapter 3 · Rest for Pilgrims</span>
+          <br />
           <span className="section-label">
             <BedDouble
               size={14}
@@ -2990,6 +2782,8 @@ function Gallery() {
   return (
     <div className="gallery-bg" id="gallery">
       <div className="gallery-inner reveal">
+        <span className="scrolly-chapter">Chapter 5 · Sacred Chronicles</span>
+        <br />
         <span className="section-label">
           <Camera
             size={14}
@@ -3118,6 +2912,8 @@ function VideoSection() {
   return (
     <div className="video-bg" id="video">
       <div className="video-inner reveal">
+        <span className="scrolly-chapter">Chapter 6 · Live Mountain Walkthrough</span>
+        <br />
         <span className="section-label">
           <Camera
             size={14}
@@ -3194,19 +2990,23 @@ function VideoSection() {
 function Services() {
   return (
     <section className="section" id="services">
-      <span className="section-label">
-        <Sparkles
-          size={14}
-          strokeWidth={2.2}
-          style={{ verticalAlign: "-2px", marginRight: "5px" }}
-        />
-        Services
-      </span>
-      <h2 className="section-title">Everything You Need</h2>
-      <p className="section-sub">
-        Beyond comfortable rooms, we offer experiences that make your Himalayan
-        journey unforgettable.
-      </p>
+      <div className="reveal" style={{ marginBottom: "1.25rem" }}>
+        <span className="scrolly-chapter">Chapter 4 · Himalayan Care</span>
+        <br />
+        <span className="section-label">
+          <Sparkles
+            size={14}
+            strokeWidth={2.2}
+            style={{ verticalAlign: "-2px", marginRight: "5px" }}
+          />
+          Services
+        </span>
+        <h2 className="section-title">Everything You Need</h2>
+        <p className="section-sub">
+          Beyond comfortable rooms, we offer experiences that make your Himalayan
+          journey unforgettable.
+        </p>
+      </div>
       <div className="services-grid reveal">
         {SERVICES.map(({ Icon, title, desc }) => (
           <div key={title} className="service-card">
@@ -3292,6 +3092,8 @@ function About() {
           </div>
         </div>
         <div className="about-text">
+          <span className="scrolly-chapter">Chapter 1 · The Mountain Abode</span>
+          <br />
           <span className="section-label">
             <HomeIcon
               size={14}
@@ -3410,21 +3212,25 @@ function WhyStay() {
 
   return (
     <section className="section" id="why">
-      <span className="section-label">
-        <Heart
-          size={14}
-          strokeWidth={2.2}
-          style={{ verticalAlign: "-2px", marginRight: "5px" }}
-        />
-        Why Stay With Us
-      </span>
-      <h2 className="section-title">Why Stay With Us?</h2>
-      <p className="section-sub">
-        Five reasons travelers choose Shiv Darshan Homestay — and keep coming back.
-        <span style={{ display: "block", fontSize: "0.82rem", color: "var(--gold)", marginTop: "4px" }}>
-          (Hover or tap any card to view the real photo)
+      <div className="reveal" style={{ marginBottom: "1.25rem" }}>
+        <span className="scrolly-chapter">Chapter 2 · Sacred Yatra Experience</span>
+        <br />
+        <span className="section-label">
+          <Heart
+            size={14}
+            strokeWidth={2.2}
+            style={{ verticalAlign: "-2px", marginRight: "5px" }}
+          />
+          Why Stay With Us
         </span>
-      </p>
+        <h2 className="section-title">Why Stay With Us?</h2>
+        <p className="section-sub">
+          Five reasons travelers choose Shiv Darshan Homestay — and keep coming back.
+          <span style={{ display: "block", fontSize: "0.82rem", color: "var(--gold)", marginTop: "4px" }}>
+            (Hover or tap any card to view the real photo)
+          </span>
+        </p>
+      </div>
       <div className="why-grid reveal">
         {reasons.map(({ icon, title, desc, img, caption }, i) => (
           <div
@@ -3620,6 +3426,8 @@ function Testimonials() {
   return (
     <div className="testimonials-bg">
       <div className="testimonials-inner reveal">
+        <span className="scrolly-chapter">Chapter 7 · Pilgrim Voices</span>
+        <br />
         <span className="section-label">
           <MessageSquare
             size={14}
@@ -3737,19 +3545,23 @@ ${form.message}`;
 
   return (
     <section className="section" id="contact">
-      <span className="section-label">
-        <Mail
-          size={14}
-          strokeWidth={2.2}
-          style={{ verticalAlign: "-2px", marginRight: "5px" }}
-        />
-        Contact
-      </span>
-      <h2 className="section-title">Get in Touch</h2>
-      <p className="section-sub">
-        Have questions? We're always happy to help you plan the perfect mountain
-        getaway.
-      </p>
+      <div className="reveal" style={{ marginBottom: "1.25rem" }}>
+        <span className="scrolly-chapter">Chapter 8 · Connect With Us</span>
+        <br />
+        <span className="section-label">
+          <Mail
+            size={14}
+            strokeWidth={2.2}
+            style={{ verticalAlign: "-2px", marginRight: "5px" }}
+          />
+          Contact
+        </span>
+        <h2 className="section-title">Get in Touch</h2>
+        <p className="section-sub">
+          Have questions? We're always happy to help you plan the perfect mountain
+          getaway.
+        </p>
+      </div>
       <div className="contact-grid reveal">
         <div className="contact-info">
           <h3>Reach Us Directly</h3>
@@ -4376,6 +4188,33 @@ export default function App() {
     document.body.style.position = "relative";
   }, []);
 
+  // Global reading progress bar ref for 60 FPS scrollytelling tracker
+  const readingBarRef = useRef(null);
+
+  // 60 FPS Scrollytelling Global Reading Progress Bar
+  useEffect(() => {
+    let frame = 0;
+    const updateReadingProgress = () => {
+      frame = 0;
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      if (total > 0 && readingBarRef.current) {
+        const pct = Math.min(100, Math.max(0, (window.scrollY / total) * 100));
+        readingBarRef.current.style.width = `${pct.toFixed(1)}%`;
+      }
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(updateReadingProgress);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    updateReadingProgress();
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
+
   // Phones only: the floating Book Now pill keeps riding the bottom-right
   // corner (identical to desktop) until the footer's Directions row scrolls
   // into view, then it parks itself right beside that link instead of sitting
@@ -4475,6 +4314,8 @@ export default function App() {
       }}
     >
       <style>{CSS}</style>
+      {/* 60 FPS Scrollytelling Global Reading Progress Bar */}
+      <div ref={readingBarRef} className="scrolly-reading-bar" style={{ width: "0%" }} />
       <Navbar />
       <Hero />
       <About />
