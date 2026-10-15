@@ -586,6 +586,7 @@ const CSS = `
 
   /* ── SCROLLYTELLING CURTAIN & PINNED HERO ── */
   .hero-scroll-pin {
+    position: -webkit-sticky;
     position: sticky;
     top: 0;
     left: 0;
@@ -877,8 +878,10 @@ const CSS = `
     backdrop-filter: blur(16px);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
     animation: heroItemRise 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    overflow: hidden;
     max-width: 100%;
+    box-sizing: border-box;
   }
   .hero-dest-tab {
     display: inline-flex;
@@ -1169,69 +1172,91 @@ const CSS = `
       max-width: 92%;
     }
     .hero-dest-selector {
-      width: 100%;
-      max-width: 320px;
-      border-radius: 50px;
-      padding: 3px;
-      gap: 4px;
-      margin: 0 auto 0.7rem;
-      display: flex;
-      background: rgba(4, 15, 23, 0.35) !important;
+      display: flex !important;
+      flex-direction: row !important;
+      flex-wrap: nowrap !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 100% !important;
+      max-width: 295px !important;
+      border-radius: 50px !important;
+      overflow: hidden !important;
+      padding: 2.5px !important;
+      gap: 3px !important;
+      margin: 0 auto 0.65rem !important;
+      background: rgba(4, 15, 23, 0.4) !important;
       border: 1px solid rgba(255, 255, 255, 0.22) !important;
       backdrop-filter: none !important;
       -webkit-backdrop-filter: none !important;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25) !important;
+      box-sizing: border-box !important;
     }
     .hero-dest-tab {
-      flex: 1 1 50%;
-      justify-content: center;
-      padding: 0.38rem 0.45rem;
-      font-size: 0.72rem;
-      border-radius: 40px;
-      gap: 4px;
-      background: transparent;
-      color: rgba(255, 255, 255, 0.88);
+      flex: 1 1 50% !important;
+      min-width: 0 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 0.3rem 0.35rem !important;
+      font-size: 0.68rem !important;
+      border-radius: 40px !important;
+      gap: 3px !important;
+      background: transparent !important;
+      color: rgba(255, 255, 255, 0.88) !important;
+      white-space: nowrap !important;
+      box-sizing: border-box !important;
+      border: 1px solid transparent !important;
+      overflow: hidden !important;
     }
     .hero-dest-emoji {
-      font-size: 0.88rem !important;
+      font-size: 0.78rem !important;
+      line-height: 1 !important;
+      flex-shrink: 0 !important;
     }
     .hero-dest-badge {
-      font-size: 0.58rem !important;
-      padding: 1px 4px !important;
-      border-radius: 6px !important;
+      font-size: 0.54rem !important;
+      padding: 1px 3px !important;
+      border-radius: 4px !important;
       background: rgba(0, 0, 0, 0.3) !important;
-      color: rgba(255, 255, 255, 0.85);
+      color: rgba(255, 255, 255, 0.85) !important;
+      flex-shrink: 0 !important;
     }
     .hero-dest-tab.is-active {
-      background: rgba(200, 150, 62, 0.36) !important;
+      background: rgba(200, 150, 62, 0.38) !important;
       border: 1px solid rgba(245, 208, 112, 0.85) !important;
       color: #ffffff !important;
-      box-shadow: 0 0 14px rgba(200, 150, 62, 0.32) !important;
-      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+      box-shadow: 0 0 10px rgba(200, 150, 62, 0.3) !important;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7) !important;
     }
     .hero-dest-tab.is-active .hero-dest-badge {
       background: rgba(0, 0, 0, 0.35) !important;
       color: #ffe49e !important;
     }
     .hero-cta-group {
-      flex-direction: row;
-      width: 100%;
-      max-width: 320px;
-      gap: 0.5rem;
-      margin: 0 auto 0.7rem;
+      display: flex !important;
+      flex-direction: row !important;
+      flex-wrap: nowrap !important;
+      width: 100% !important;
+      max-width: 295px !important;
+      gap: 0.45rem !important;
+      margin: 0 auto 0.65rem !important;
+      box-sizing: border-box !important;
     }
     .hero-btn-primary,
     .hero-btn-secondary {
-      flex: 1 1 50%;
-      justify-content: center;
-      padding: 0.55rem 0.6rem;
-      font-size: 0.76rem;
-      white-space: nowrap;
-      border-radius: 50px;
+      flex: 1 1 50% !important;
+      min-width: 0 !important;
+      justify-content: center !important;
+      padding: 0.48rem 0.45rem !important;
+      font-size: 0.73rem !important;
+      white-space: nowrap !important;
+      border-radius: 50px !important;
+      box-sizing: border-box !important;
       backdrop-filter: none !important;
       -webkit-backdrop-filter: none !important;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25) !important;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7) !important;
+      overflow: hidden !important;
     }
     .hero-btn-primary {
       background: rgba(200, 150, 62, 0.38) !important;
@@ -1244,24 +1269,26 @@ const CSS = `
       color: #ffffff !important;
     }
     .hero-scene-meta {
-      width: 100%;
-      max-width: 320px;
-      border-radius: 50px;
-      padding: 0.26rem 0.6rem;
-      gap: 0.3rem 0.55rem;
-      margin: 0 auto 0.6rem;
+      width: 100% !important;
+      max-width: 295px !important;
+      border-radius: 50px !important;
+      padding: 0.24rem 0.5rem !important;
+      gap: 0.25rem 0.45rem !important;
+      margin: 0 auto 0.55rem !important;
       background: rgba(4, 15, 23, 0.3) !important;
       border: 1px solid rgba(255, 255, 255, 0.16) !important;
       backdrop-filter: none !important;
       -webkit-backdrop-filter: none !important;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      overflow: hidden !important;
     }
-    .hero-meta-item { font-size: 0.64rem; }
+    .hero-meta-item { font-size: 0.62rem !important; }
     .hero-meta-label { opacity: 0.75; }
     .hero-meta-val { color: #f5d070; font-weight: 600; }
-    .hero-scroll { display: none; }
+    .hero-scroll { display: none !important; }
     .curtain-content-wrapper {
-      box-shadow: 0 -12px 28px rgba(0, 0, 0, 0.35);
+      border-radius: 26px 26px 0 0 !important;
+      box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.45) !important;
     }
   }
 
@@ -2386,27 +2413,20 @@ function Hero() {
 
   // 60 FPS Scrollytelling: Hero content recedes down and fades smoothly as curtain rises
   useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    // On mobile devices, native CSS sticky + curtain-content-wrapper handles 60-120fps scrolling on the GPU compositor
-    if (window.innerWidth <= 768) {
-      if (heroStageRef.current) heroStageRef.current.style.transform = "";
-      if (heroContentRef.current) {
-        heroContentRef.current.style.transform = "";
-        heroContentRef.current.style.opacity = "";
-      }
-      return;
-    }
-
     let ticking = false;
+    let heroEl = ref.current;
+    let heroHeight = heroEl ? heroEl.offsetHeight : window.innerHeight;
+
+    const measure = () => {
+      heroEl = ref.current;
+      heroHeight = heroEl ? heroEl.offsetHeight : window.innerHeight;
+    };
+    window.addEventListener("resize", measure, { passive: true });
+
     const handleScroll = () => {
-      if (window.innerWidth <= 768) return;
       if (!ticking) {
         window.requestAnimationFrame(() => {
           const scrollY = window.scrollY;
-          const heroEl = ref.current;
-          const heroHeight = heroEl ? heroEl.offsetHeight : window.innerHeight;
-
           if (scrollY <= heroHeight) {
             // Background mountain subtly moves down for majestic depth
             if (heroStageRef.current) {
@@ -2424,7 +2444,10 @@ function Hero() {
       }
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", measure);
+    };
   }, []);
 
   const currentMeta = SCENE_DETAILS[activeScene] || SCENE_DETAILS.adiKailash;
@@ -4903,9 +4926,9 @@ export default function App() {
       document.head.appendChild(meta);
     }
     meta.content = "width=device-width, initial-scale=1.0, maximum-scale=1.0";
-    // Prevent any element from causing horizontal scroll
-    document.documentElement.style.overflowX = "hidden";
-    document.body.style.overflowX = "hidden";
+    // Clip horizontal overflow without breaking position: sticky
+    document.documentElement.style.overflowX = "clip";
+    document.body.style.overflowX = "clip";
     document.body.style.width = "100%";
     document.body.style.position = "relative";
   }, []);
@@ -5031,7 +5054,6 @@ export default function App() {
       style={{
         width: "100%",
         maxWidth: "100%",
-        overflowX: "hidden",
         position: "relative",
       }}
     >
