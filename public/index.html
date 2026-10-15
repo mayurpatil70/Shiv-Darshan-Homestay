@@ -1,65 +1,247 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" prefix="og: https://ogp.me/ns#">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#1a3a4a" />
+    <meta name="theme-color" content="#0e2a3c" />
+
+    <!-- Primary SEO Meta Tags -->
+    <title>Shiv Darshan Homestay | Best Homestay in Dharchula, Uttarakhand (Adi Kailash &amp; Om Parvat Route)</title>
     <meta
       name="description"
-      content="Shiv Darshan Homestay in Haat, Dharchula Dehat, Uttarakhand. Experience divine Himalayan views, authentic home-cooked hospitality, and the perfect base for your Adi Kailash & Om Parvat pilgrimage."
+      content="Stay at Shiv Darshan Homestay in Haat, Dharchula. The premier Himalayan homestay base for Adi Kailash &amp; Om Parvat pilgrims. Valley views, private parking, 24/7 hot water &amp; organic Kumaoni meals by host Govind Singh Dhami. Call/WhatsApp: +91 94567 61865."
     />
-    <meta name="keywords" content="Shiv Darshan Homestay, Shiv Darshan Dharchula, homestay in Haat Dharchula, Dharchula homestay, Uttarakhand homestay, Adi Kailash route homestay, Om Parvat stay, budget homestay Dharchula" />
+    <meta
+      name="keywords"
+      content="Shiv Darshan Homestay, best homestay in Dharchula, homestay in Haat Dharchula, Dharchula homestay with parking, Adi Kailash yatra homestay, Om Parvat yatra stay, Dharchula budget hotel, rooms in Dharchula, Govind Singh Dhami Dharchula, Pithoragarh homestays, inner line permit Dharchula homestay, Jolingkong yatra base camp, Parvati Kund stay, Kumaoni food homestay Dharchula"
+    />
+    <meta name="author" content="Govind Singh Dhami" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+
+    <!-- Canonical & Alternate Language URLs -->
+    <link rel="canonical" href="https://shivdarshan-homestay.vercel.app/" />
+    <link rel="alternate" hreflang="en-IN" href="https://shivdarshan-homestay.vercel.app/" />
+    <link rel="alternate" hreflang="hi-IN" href="https://shivdarshan-homestay.vercel.app/" />
+    <link rel="alternate" hreflang="x-default" href="https://shivdarshan-homestay.vercel.app/" />
+
+    <!-- Local GEO & AEO Meta Tags (Google Local, Maps & AI Engine Grounding) -->
+    <meta name="geo.region" content="IN-UT" />
+    <meta name="geo.placename" content="Haat, Dharchula, Pithoragarh, Uttarakhand" />
+    <meta name="geo.position" content="29.838753;80.528128" />
+    <meta name="ICBM" content="29.838753, 80.528128" />
+
+    <!-- Google Search Console & Bing Webmaster Verification Placeholders -->
+    <meta name="google-site-verification" content="GOOGLE_SEARCH_CONSOLE_VERIFICATION_KEY" />
+    <meta name="msvalidate.01" content="BING_WEBMASTER_VERIFICATION_KEY" />
+
+    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Shiv Darshan Homestay" />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="og:locale:alternate" content="hi_IN" />
+    <meta property="og:site_name" content="Shiv Darshan Homestay, Haat, Dharchula" />
     <meta property="og:url" content="https://shivdarshan-homestay.vercel.app/" />
-    <meta property="og:title" content="Shiv Darshan Homestay — More Than a Stay, It Feels Like Home" />
-    <meta property="og:description" content="Stay where the sacred Himalayas begin. Boutique mountain homestay in Haat, Dharchula — premier base for Adi Kailash &amp; Om Parvat pilgrims." />
+    <meta property="og:title" content="Shiv Darshan Homestay | Best Homestay in Dharchula (Adi Kailash &amp; Om Parvat Route)" />
+    <meta property="og:description" content="Boutique mountain homestay in Haat, Dharchula — premier staging base for Adi Kailash &amp; Om Parvat pilgrims. Panoramic valley views, secure parking &amp; warm Kumaoni hospitality." />
     <meta property="og:image" content="https://shivdarshan-homestay.vercel.app/cover.jpg" />
     <meta property="og:image:secure_url" content="https://shivdarshan-homestay.vercel.app/cover.jpg" />
     <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Shiv Darshan Homestay Logo - Haat, Dharchula, Uttarakhand" />
+    <meta property="og:image:alt" content="Shiv Darshan Homestay - Haat, Dharchula, Uttarakhand" />
+
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Shiv Darshan Homestay — More Than a Stay, It Feels Like Home" />
-    <meta name="twitter:description" content="Stay where the sacred Himalayas begin. Boutique mountain homestay in Haat, Dharchula — premier base for Adi Kailash &amp; Om Parvat pilgrims." />
+    <meta name="twitter:title" content="Shiv Darshan Homestay | Best Homestay in Dharchula, Uttarakhand" />
+    <meta name="twitter:description" content="Stay where the sacred Himalayas begin. Premier base in Haat, Dharchula for Adi Kailash &amp; Om Parvat yatris. Valley views, private parking &amp; home-cooked meals." />
     <meta name="twitter:image" content="https://shivdarshan-homestay.vercel.app/cover.jpg" />
-    <meta name="twitter:image:alt" content="Shiv Darshan Homestay Logo" />
+    <meta name="twitter:image:alt" content="Shiv Darshan Homestay in Haat, Dharchula, Uttarakhand" />
+
+    <!-- Web App Manifest -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <title>Shiv Darshan Homestay | Haat, Dharchula, Uttarakhand | Adi Kailash Route</title>
-    <!-- Google Fonts: Plus Jakarta Sans (Modern Clean UI) & Playfair Display (Luxury Editorial Serif) -->
+
+    <!-- Google Fonts: Plus Jakarta Sans & Playfair Display -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Google Analytics 4 (GA4) Tracking Script -->
+    <!-- To activate: Replace G-XXXXXXXXXX with your Google Analytics Measurement ID -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX', {
+        page_title: document.title,
+        page_location: window.location.href,
+        send_page_view: true
+      });
+    </script>
+
+    <!-- Comprehensive Structured Data: LodgingBusiness, BedAndBreakfast, FAQPage & Breadcrumb -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "LodgingBusiness",
-      "name": "Shiv Darshan Homestay",
-      "description": "Boutique mountain homestay in Haat, Dharchula Dehat, Pithoragarh, Uttarakhand. Divine Himalayan views, authentic home-cooked meals, and prime stay on the Adi Kailash yatra route.",
-      "url": "https://www.google.com/maps/place/Shiv+Darshan+Homestay,+Haat,+Dharchula,+Uttarakhand+262545/@29.8387531,80.5281281,17z/data=!4m2!3m1!1s0x39a6b500714b2e71:0xdac163c161923889",
-      "telephone": "+919456761865",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Haat, Dharchula Dehat",
-        "addressLocality": "Dharchula",
-        "addressRegion": "Uttarakhand",
-        "postalCode": "262545",
-        "addressCountry": "IN"
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": ["LodgingBusiness", "BedAndBreakfast", "Hotel"],
+        "@id": "https://shivdarshan-homestay.vercel.app/#homestay",
+        "name": "Shiv Darshan Homestay",
+        "alternateName": [
+          "Shiv Darshan Homestay Dharchula",
+          "शिव दर्शन होम स्टे",
+          "Shiv Darshan Haat"
+        ],
+        "description": "Premier boutique mountain homestay located in Haat, Dharchula Dehat, Pithoragarh, Uttarakhand. Offering panoramic Himalayan views, 24/7 hot water, private parking, organic home-cooked Kumaoni meals, and direct pilgrimage guidance for the Adi Kailash and Om Parvat Yatra routes.",
+        "url": "https://shivdarshan-homestay.vercel.app/",
+        "hasMap": "https://www.google.com/maps/place/Shiv+Darshan+Homestay,+Haat,+Dharchula,+Uttarakhand+262545/@29.8387531,80.5281281,17z/data=!4m2!3m1!1s0x39a6b500714b2e71:0xdac163c161923889",
+        "telephone": "+919456761865",
+        "email": "shivdarshanhomestay@gmail.com",
+        "priceRange": "₹1000 - ₹3500",
+        "currenciesAccepted": "INR",
+        "paymentAccepted": "Cash, UPI, Google Pay, PhonePe, Paytm, Bank Transfer",
+        "checkinTime": "12:00",
+        "checkoutTime": "11:00",
+        "image": [
+          "https://shivdarshan-homestay.vercel.app/cover.jpg",
+          "https://shivdarshan-homestay.vercel.app/shiv-darshan-logo.jpg"
+        ],
+        "logo": "https://shivdarshan-homestay.vercel.app/shiv-darshan-logo.jpg",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Haat, Dharchula Dehat",
+          "addressLocality": "Dharchula",
+          "addressRegion": "Uttarakhand",
+          "postalCode": "262545",
+          "addressCountry": "IN"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 29.8387531,
+          "longitude": 80.5281281
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "bestRating": "5",
+          "worstRating": "1",
+          "reviewCount": "500",
+          "ratingCount": "500"
+        },
+        "founder": {
+          "@type": "Person",
+          "name": "Govind Singh Dhami",
+          "jobTitle": "Owner & Host"
+        },
+        "amenityFeature": [
+          { "@type": "LocationFeatureSpecification", "name": "Free Private Vehicle Parking", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "High-Speed Wi-Fi", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "24/7 Running Hot Water", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Home Cooked Organic Kumaoni Meals", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Himalayan & Kali River Valley View", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Open-Air Mountain Terrace", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Adi Kailash Yatra Inner Line Permit Guidance", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "4x4 Bolero & Trekking Guide Arrangements", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Helipad Pick & Drop Assistance (4 km)", "value": true }
+        ]
       },
-      "image": "https://shivdarshanhomestay.in/cover.jpg",
-      "priceRange": "₹1000 - ₹3500",
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.9",
-        "reviewCount": "500"
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Where is Shiv Darshan Homestay located in Dharchula?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Shiv Darshan Homestay is located in the peaceful village of Haat, Dharchula Dehat, Pithoragarh, Uttarakhand 262545. It is just 5 to 10 minutes from Dharchula town center and main market, situated in a quiet, green Himalayan hillside with road access."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is Shiv Darshan Homestay the best base for the Adi Kailash and Om Parvat Yatra?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, Shiv Darshan Homestay is the premier staging base for pilgrims embarking on the Adi Kailash (Chhota Kailash) and Om Parvat Yatra. Yatris stay here to acclimatize, obtain their mandatory Inner Line Permits (ILP) and medical fitness clearance in Dharchula, and arrange 4x4 Bolero mountain vehicles for the journey toward Gunji, Jolingkong, and Nabhidhang."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does Shiv Darshan Homestay offer safe car and bike parking?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, unlike crowded market hotels in Dharchula, Shiv Darshan Homestay features dedicated roadside private parking with safe, on-site space for private cars, SUVs, and motorcycles."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What room types and prices are available at Shiv Darshan Homestay?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The homestay offers Deluxe Double Valley View Rooms and Family Triple Rooms ranging between ₹1,000 and ₹3,500 per night. All rooms feature comfortable bedding, clean bathrooms, 24/7 hot water geysers, Wi-Fi, and panoramic mountain views."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What food options are available at Shiv Darshan Homestay?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Guests enjoy fresh, home-cooked Kumaoni and North Indian vegetarian meals prepared with organic local ingredients, including pahadi dal, Bhatt ki Churkani, Mandua (ragi) rotis, seasonal pahadi vegetables, and Himalayan herbal tea."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can the homestay help with Inner Line Permits (ILP) and local 4x4 taxi hire?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, host Govind Singh Dhami and family provide full guidance for the Dharchula SDM office Inner Line Permit (ILP) process, medical certificates, route updates, and trusted local 4x4 Bolero mountain drivers for the Adi Kailash and Om Parvat route."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How can I book a room or contact Shiv Darshan Homestay?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "You can contact or book directly via WhatsApp or call at +91 94101 35726 or +91 94567 61865, or through the booking form on this website. Advance booking is recommended during peak pilgrimage months (May–June and September–November)."
+            }
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://shivdarshan-homestay.vercel.app/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Uttarakhand Homestays",
+            "item": "https://shivdarshan-homestay.vercel.app/#about"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Dharchula Homestays",
+            "item": "https://shivdarshan-homestay.vercel.app/#location"
+          },
+          {
+            "@type": "ListItem",
+            "position": 4,
+            "name": "Shiv Darshan Homestay",
+            "item": "https://shivdarshan-homestay.vercel.app/"
+          }
+        ]
       }
-    }
+    ]
     </script>
   </head>
   <body>
@@ -67,6 +249,3 @@
     <div id="root"></div>
   </body>
 </html>
-
-
-

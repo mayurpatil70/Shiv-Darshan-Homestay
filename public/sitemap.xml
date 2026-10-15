@@ -1,9 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
-    <loc>https://shivdarshanhomestay.com/</loc>
-    <lastmod>2026-10-14</lastmod>
+    <loc>https://shivdarshan-homestay.vercel.app/</loc>
+    <lastmod>2026-10-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://shivdarshan-homestay.vercel.app/cover.jpg</image:loc>
+      <image:title>Shiv Darshan Homestay — Haat, Dharchula, Uttarakhand</image:title>
+      <image:caption>Premier boutique mountain homestay in Haat, Dharchula for Adi Kailash and Om Parvat pilgrims.</image:caption>
+      <image:geo_location>Dharchula, Uttarakhand, India</image:geo_location>
+    </image:image>
+    <image:image>
+      <image:loc>https://shivdarshan-homestay.vercel.app/shiv-darshan-logo.jpg</image:loc>
+      <image:title>Shiv Darshan Homestay Official Brand Logo</image:title>
+      <image:caption>Authentic homestay logo representing Lord Shiva, Adi Kailash, and Om Parvat.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://shivdarshan-homestay.vercel.app/#rooms</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://shivdarshan-homestay.vercel.app/#services</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://shivdarshan-homestay.vercel.app/#gallery</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://shivdarshan-homestay.vercel.app/#faq</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://shivdarshan-homestay.vercel.app/#location</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://shivdarshan-homestay.vercel.app/#contact</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
   </url>
 </urlset>

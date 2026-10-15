@@ -46,6 +46,8 @@ import {
   ArrowUp,
   Navigation,
   ExternalLink,
+  HelpCircle,
+  ChevronDown,
 } from "lucide-react";
 import shivLogo from "./assets/images/client/logo-new.jpg";
 import aboutLandscape from "./assets/images/client/about-landscape.jpg";
@@ -2378,6 +2380,103 @@ const CSS = `
     .gmap-action-btns { width: 100%; justify-content: stretch; }
     .gmap-action-btns > a { flex: 1 1 100%; justify-content: center; text-align: center; }
   }
+
+  /* ── FAQ & PILGRIM GUIDE ACCORDION (AEO & SEO) ── */
+  .faq-section {
+    padding: 3.5rem 1.5rem 4rem;
+    max-width: 1050px;
+    margin: 0 auto;
+    position: relative;
+    box-sizing: border-box;
+  }
+  .faq-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    margin-top: 2rem;
+  }
+  .faq-item {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+  }
+  .faq-item:hover {
+    border-color: rgba(245, 208, 112, 0.4);
+    background: rgba(255, 255, 255, 0.06);
+  }
+  .faq-item.is-open {
+    border-color: rgba(245, 208, 112, 0.55);
+    background: rgba(200, 150, 62, 0.07);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  }
+  .faq-question-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.15rem 1.4rem;
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 1.02rem;
+    font-weight: 600;
+    font-family: inherit;
+    text-align: left;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .faq-question-btn:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: -2px;
+  }
+  .faq-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--gold);
+    flex-shrink: 0;
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.3s ease;
+  }
+  .faq-item.is-open .faq-icon-wrapper {
+    transform: rotate(180deg);
+    background: rgba(200, 150, 62, 0.3);
+  }
+  .faq-answer-pane {
+    padding: 0 1.4rem 1.25rem;
+    font-size: 0.92rem;
+    color: rgba(255, 255, 255, 0.82);
+    line-height: 1.7;
+    border-top: 1px dashed rgba(255, 255, 255, 0.08);
+    margin-top: -0.2rem;
+    padding-top: 0.9rem;
+    animation: fadeIn 0.3s ease both;
+  }
+  .faq-cta-banner {
+    margin-top: 2.5rem;
+    text-align: center;
+    background: rgba(14, 38, 54, 0.7);
+    border: 1px solid rgba(245, 208, 112, 0.3);
+    border-radius: 18px;
+    padding: 1.5rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+  @media (max-width: 720px) {
+    .faq-section { padding: 3rem 1.25rem; }
+    .faq-question-btn { padding: 1rem 1.15rem; font-size: 0.94rem; }
+    .faq-answer-pane { padding: 0 1.15rem 1.1rem; font-size: 0.88rem; }
+    .faq-cta-banner { flex-direction: column; text-align: center; justify-content: center; }
+  }
 `;
 
 // ─── HOTEL POLICIES (footer → policy page) ───────────────────────────────
@@ -2517,6 +2616,7 @@ function Navbar() {
     ["#gallery", "Gallery"],
     ["#services", "Services"],
     ["#about", "About"],
+    ["#faq", "FAQs"],
     ["#contact", "Contact"],
   ];
 
@@ -4433,6 +4533,119 @@ function Testimonials() {
   );
 }
 
+// ─── PILGRIM & GUEST FAQ DATA (AEO & SEO KEYWORDS) ─────────────────────────
+const FAQS = [
+  {
+    q: "Where is Shiv Darshan Homestay located in Dharchula?",
+    a: "Shiv Darshan Homestay is situated peacefully in the scenic village of Haat, Dharchula Dehat, Pithoragarh, Uttarakhand (PIN: 262545). Located just 5 to 10 minutes from Dharchula town center and the shared taxi stand, it offers serene Himalayan valley views away from town noise, with direct motorable road access."
+  },
+  {
+    q: "Is Shiv Darshan Homestay the best base for the Adi Kailash & Om Parvat Yatra?",
+    a: "Yes! Dharchula is the mandatory gateway and staging base for the sacred Adi Kailash (Chhota Kailash) and Om Parvat pilgrimages. Yatris stay at Shiv Darshan Homestay to acclimatize (elevation ~915 m), complete their Inner Line Permit (ILP) and medical checkup, and arrange dependable 4x4 mountain vehicles for the route through Tawaghat, Gunji, Jolingkong, and Nabhidhang."
+  },
+  {
+    q: "Does Shiv Darshan Homestay have private vehicle parking?",
+    a: "Yes. Unlike congested market hotels in Dharchula, Shiv Darshan Homestay offers dedicated, safe roadside private parking directly on the premises for personal cars, SUVs, and motorbikes."
+  },
+  {
+    q: "What room types and tariffs are available?",
+    a: "We offer spacious Deluxe Double Mountain View Rooms and Family Triple Rooms ranging between ₹1,000 and ₹3,500 per night. All rooms include comfortable warm bedding, clean private attached bathrooms, 24/7 running hot water geysers, complimentary Wi-Fi, and panoramic mountain balconies."
+  },
+  {
+    q: "What kind of food is served at the homestay?",
+    a: "Guests are served fresh, home-cooked Kumaoni and North Indian vegetarian meals prepared with organic local ingredients. Signature dishes include Pahadi dal, Bhatt ki Churkani, Mandua (ragi) rotis, seasonal pahadi greens, and fresh Himalayan herbal tea. Pure satvik meals are gladly prepared upon request for pilgrims."
+  },
+  {
+    q: "Can host Govind Singh Dhami help with Inner Line Permits (ILP) and 4x4 Bolero hire?",
+    a: "Yes! Host Govind Singh Dhami and his family provide personalized assistance for the Dharchula SDM office Inner Line Permit (ILP) documentation, police clearance, medical fitness certificates, daily route updates, and trusted local 4x4 Bolero camper arrangements with experienced Himalayan drivers."
+  },
+  {
+    q: "How do I reach Shiv Darshan Homestay, Dharchula?",
+    a: "Dharchula is accessible by scenic road from Kathgodam/Haldwani (approx. 270 km, 8–9 hours) and Pithoragarh (approx. 90 km, 3 hours). The nearest railway station is Kathgodam (KGM); nearest airports are Pantnagar (PGH) and Pithoragarh Naini Saini Airport. Regular Uttarakhand Roadways buses and shared taxis run to Dharchula daily."
+  },
+  {
+    q: "How can I book a room or contact the homestay?",
+    a: "You can book directly via WhatsApp or call at +91 94101 35726 or +91 94567 61865, or submit an enquiry through our online booking form. Advance reservations are strongly encouraged during peak pilgrimage months (May–June and September–November)."
+  }
+];
+
+function Faq() {
+  const [openIdx, setOpenIdx] = useState(0);
+
+  return (
+    <section className="faq-section" id="faq">
+      <div className="reveal" style={{ textAlign: "center", marginBottom: "1.75rem" }}>
+        <span className="scrolly-chapter">FAQ · Pilgrims' Guide &amp; Answers</span>
+        <br />
+        <span className="section-label">
+          <HelpCircle size={14} strokeWidth={2.2} style={{ verticalAlign: "-2px", marginRight: "5px" }} />
+          Frequently Asked Questions
+        </span>
+        <h2 className="section-title">Everything You Need to Know</h2>
+        <p className="section-sub" style={{ maxWidth: "680px", margin: "0 auto" }}>
+          Clear, helpful answers for travelers and pilgrims visiting Haat, Dharchula, and embarking on the sacred
+          Adi Kailash &amp; Om Parvat Yatra routes.
+        </p>
+      </div>
+
+      <div className="faq-container reveal">
+        {FAQS.map((faq, i) => {
+          const isOpen = openIdx === i;
+          return (
+            <div key={i} className={`faq-item${isOpen ? " is-open" : ""}`}>
+              <button
+                type="button"
+                className="faq-question-btn"
+                onClick={() => setOpenIdx(isOpen ? -1 : i)}
+                aria-expanded={isOpen}
+              >
+                <span>{faq.q}</span>
+                <span className="faq-icon-wrapper">
+                  <ChevronDown size={18} strokeWidth={2.2} />
+                </span>
+              </button>
+              {isOpen && (
+                <div className="faq-answer-pane">
+                  {faq.a}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="faq-cta-banner reveal">
+        <div style={{ textAlign: "left" }}>
+          <h4 style={{ color: "#ffffff", fontSize: "1.05rem", marginBottom: "0.25rem" }}>
+            Have a specific question about your pilgrimage route or stay?
+          </h4>
+          <p style={{ color: "rgba(255,255,255,0.72)", fontSize: "0.85rem", margin: 0 }}>
+            Chat directly with host Govind Singh Dhami for permit assistance, route status, and room availability.
+          </p>
+        </div>
+        <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+          <a
+            href={WA_BOOKING_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="whatsapp-btn"
+            style={{ padding: "0.65rem 1.1rem", fontSize: "0.85rem" }}
+          >
+            <MessageCircle size={16} strokeWidth={2.2} /> WhatsApp Inquiry
+          </a>
+          <a
+            href="tel:+919456761865"
+            className="btn-primary"
+            style={{ padding: "0.65rem 1.1rem", fontSize: "0.85rem" }}
+          >
+            <Phone size={15} strokeWidth={2.2} /> Call +91 94567 61865
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Contact() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [sent, setSent] = useState(false);
@@ -5091,6 +5304,7 @@ function Footer({ bookRowRef, toTopRef, onPolicies }) {
               ["#video", "Tour Video"],
               ["#services", "Services"],
               ["#about", "Our Story"],
+              ["#faq", "FAQs & Guide"],
             ].map(([h, l]) => (
               <a key={h} href={h}>
                 {l}
@@ -5099,6 +5313,7 @@ function Footer({ bookRowRef, toTopRef, onPolicies }) {
           </div>
           <div className="footer-col">
             <h4>Support</h4>
+            <a href="#faq">Pilgrim FAQs</a>
             <a href="#contact">Contact Us</a>
             <a href="#rooms">Book a Room</a>
             {/* Both open the in-app policies page, so the fragments name that page
@@ -5644,6 +5859,7 @@ export default function App() {
         <Gallery />
         <VideoSection />
         <Testimonials />
+        <Faq />
         <Contact />
         <LocationMap />
         <Footer
