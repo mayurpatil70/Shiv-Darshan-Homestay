@@ -48,6 +48,9 @@ import {
   ExternalLink,
   HelpCircle,
   ChevronDown,
+  Compass,
+  Layers,
+  Crosshair,
 } from "lucide-react";
 import shivLogo from "./assets/images/client/logo-new.jpg";
 import aboutLandscape from "./assets/images/client/about-landscape.jpg";
@@ -2280,7 +2283,30 @@ const CSS = `
     overflow: hidden;
     cursor: pointer;
   }
+  .gmap-satellite-base-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .gmap-satellite-base-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 38%;
+    display: block;
+    filter: brightness(0.96) contrast(1.05);
+    transition: transform 0.4s ease;
+  }
+  .gmap-viewport:hover .gmap-satellite-base-img {
+    transform: scale(1.018);
+  }
   .gmap-viewport svg {
+    position: relative;
+    z-index: 2;
     width: 100%;
     height: 100%;
     display: block;
@@ -2292,10 +2318,140 @@ const CSS = `
   .gmap-interactive-anchor {
     position: absolute;
     inset: 0;
-    z-index: 10;
+    z-index: 5;
     display: block;
     text-decoration: none;
     -webkit-tap-highlight-color: transparent;
+  }
+  .gmap-map-controls-top {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 14;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    pointer-events: auto;
+  }
+  .gmap-layer-toggle {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(10, 25, 36, 0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(245, 208, 112, 0.45);
+    border-radius: 8px;
+    padding: 3px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  }
+  .gmap-layer-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.76rem;
+    font-weight: 600;
+    font-family: inherit;
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.2s ease;
+  }
+  .gmap-layer-btn.is-active {
+    background: rgba(200, 150, 62, 0.38);
+    color: #f5d070;
+    border: 1px solid rgba(245, 208, 112, 0.7);
+  }
+  .gmap-compass-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(10, 25, 36, 0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #f5d070;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+  .gmap-compass-btn:hover {
+    transform: rotate(15deg);
+    border-color: var(--gold);
+  }
+  .gmap-map-controls-bottom {
+    position: absolute;
+    bottom: 14px;
+    right: 14px;
+    z-index: 14;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    pointer-events: auto;
+  }
+  .gmap-zoom-group {
+    display: flex;
+    flex-direction: column;
+    background: rgba(10, 25, 36, 0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  }
+  .gmap-zoom-btn {
+    width: 34px;
+    height: 34px;
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 1.15rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .gmap-zoom-btn:hover {
+    background: rgba(245, 208, 112, 0.28);
+    color: #f5d070;
+  }
+  .gmap-zoom-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.12);
+  }
+  .gmap-recenter-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background: rgba(10, 25, 36, 0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(245, 208, 112, 0.45);
+    color: #f5d070;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+  .gmap-recenter-btn:hover {
+    transform: scale(1.08);
+    background: rgba(200, 150, 62, 0.35);
   }
   .gmap-hover-hint {
     position: absolute;
@@ -2390,13 +2546,19 @@ const CSS = `
   @media (max-width: 640px) {
     .gmap-section { padding: 2rem 0.75rem 2.5rem; }
     .gmap-card-wrapper { border-radius: 18px; }
-    .gmap-viewport { height: 330px; }
+    .gmap-viewport { height: 350px; }
     .gmap-top-bar { padding: 0.7rem 0.85rem; }
     .gmap-search-pill { font-size: 0.74rem; padding: 0.35rem 0.75rem; }
     .gmap-top-badges { gap: 0.35rem; }
     .gmap-rating-badge, .gmap-status-badge, .gmap-satellite-badge { font-size: 0.68rem; padding: 0.25rem 0.5rem; }
     .gmap-poi-secondary { display: none; }
     .gmap-hover-hint { font-size: 0.7rem; padding: 0.35rem 0.75rem; bottom: 0.65rem; }
+    .gmap-map-controls-top { top: 8px; right: 8px; gap: 4px; }
+    .gmap-layer-btn { font-size: 0.68rem; padding: 3px 6px; }
+    .gmap-compass-btn { width: 28px; height: 28px; font-size: 0.7rem; }
+    .gmap-map-controls-bottom { bottom: 8px; right: 8px; }
+    .gmap-zoom-btn { width: 28px; height: 28px; font-size: 1rem; }
+    .gmap-recenter-btn { width: 28px; height: 28px; }
     .gmap-info-strip { padding: 1rem; flex-direction: column; align-items: stretch; gap: 1rem; }
     .gmap-info-address { font-size: 0.85rem; }
     .gmap-info-meta { font-size: 0.74rem; gap: 0.5rem; }
@@ -5018,7 +5180,74 @@ function LocationMap() {
             <span style={{ display: "none" }}>Open Shiv Darshan Homestay in Google Maps</span>
           </a>
 
-          {/* SVG Realistic Satellite Map View with Geodetic Landmarks */}
+          {/* Layer 1: Hardware-accelerated High-Res Satellite Terrain Photography */}
+          <picture className="gmap-satellite-base-layer">
+            <source srcSet={`${process.env.PUBLIC_URL || ""}/satellite/dharchula_satellite_base.webp`} type="image/webp" />
+            <img
+              src={`${process.env.PUBLIC_URL || ""}/satellite/dharchula_satellite_base.jpg`}
+              alt="Authentic satellite terrain view of Haat, Kali River, and Dharchula valley"
+              className="gmap-satellite-base-img"
+              loading="eager"
+            />
+          </picture>
+
+          {/* Layer 2: Interactive Google Maps Navigation Controls */}
+          <div className="gmap-map-controls-top">
+            <div className="gmap-layer-toggle" title="Google Maps Layer Mode">
+              <span className="gmap-layer-btn is-active">
+                <Layers size={13} strokeWidth={2.2} />
+                🛰️ Satellite (Hybrid)
+              </span>
+            </div>
+            <a
+              href={MAPS_LOCATION_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="gmap-compass-btn"
+              title="Compass North · Open in Google Maps"
+              aria-label="Compass North"
+            >
+              <Compass size={17} strokeWidth={2.2} />
+            </a>
+          </div>
+
+          <div className="gmap-map-controls-bottom">
+            <div className="gmap-zoom-group">
+              <a
+                href={MAPS_LOCATION_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="gmap-zoom-btn"
+                title="Zoom in on Google Maps"
+                aria-label="Zoom In"
+              >
+                +
+              </a>
+              <div className="gmap-zoom-divider" />
+              <a
+                href={MAPS_LOCATION_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="gmap-zoom-btn"
+                title="Zoom out on Google Maps"
+                aria-label="Zoom Out"
+              >
+                −
+              </a>
+            </div>
+            <a
+              href={MAPS_DIRECTIONS_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="gmap-recenter-btn"
+              title="Navigate to Shiv Darshan Homestay"
+              aria-label="Navigate to Shiv Darshan Homestay"
+            >
+              <Crosshair size={16} strokeWidth={2.4} />
+            </a>
+          </div>
+
+          {/* Layer 3: SVG Realistic Satellite Map Hybrid Overlays & Geodetic Landmarks */}
           <svg
             viewBox="60 10 904 600"
             preserveAspectRatio="xMidYMid meet"
@@ -5039,14 +5268,16 @@ function LocationMap() {
               </filter>
             </defs>
 
-            {/* Real Photorealistic Satellite Base Imagery */}
+            {/* In-SVG Satellite Base Fallback */}
             <image
-              href="/satellite/dharchula_satellite_base.jpg"
+              href={`${process.env.PUBLIC_URL || ""}/satellite/dharchula_satellite_base.jpg`}
+              xlinkHref={`${process.env.PUBLIC_URL || ""}/satellite/dharchula_satellite_base.jpg`}
               x="0"
               y="0"
               width="1024"
               height="768"
               preserveAspectRatio="none"
+              opacity="0.95"
             />
 
             {/* High-contrast atmospheric tone tint */}
