@@ -911,30 +911,15 @@ const CSS = `
     box-shadow: 0 4px 18px rgba(200, 150, 62, 0.45);
     border-color: rgba(255, 255, 255, 0.3);
   }
-  .hero-dest-svg {
-    display: inline-block;
-    vertical-align: middle;
-    flex-shrink: 0;
-    color: currentColor;
-    transition: transform 0.25s ease;
-  }
-  .hero-dest-tab:hover .hero-dest-svg {
-    transform: scale(1.1);
-  }
-  .hero-dest-om {
-    font-size: 1.18rem;
-    font-weight: 700;
+  .hero-dest-emoji {
+    font-size: 1.05rem;
     line-height: 1;
     display: inline-block;
-    color: currentColor;
+    vertical-align: middle;
     transition: transform 0.25s ease;
   }
-  .hero-dest-tab:hover .hero-dest-om {
-    transform: scale(1.12);
-  }
-  .hero-dest-tab:not(.is-active) .hero-dest-svg,
-  .hero-dest-tab:not(.is-active) .hero-dest-om {
-    color: var(--gold);
+  .hero-dest-tab:hover .hero-dest-emoji {
+    transform: scale(1.16);
   }
   .hero-dest-badge {
     font-size: 0.68rem;
@@ -2432,7 +2417,6 @@ function Hero() {
       <div className="hero-content" ref={heroContentRef}>
         {/* Eyebrow badge */}
         <div className="hero-eyebrow">
-          <span className="hero-eyebrow-accent">✦</span>
           THE SACRED HIMALAYAS · DHARCHULA, UTTARAKHAND
         </div>
 
@@ -2474,7 +2458,7 @@ function Hero() {
             onClick={() => handleSelectScene("adiKailash")}
             onKeyDown={(e) => handleTabKeyDown(e, "adiKailash")}
           >
-            <MountainSnow size={18} strokeWidth={2.2} className="hero-dest-svg" />
+            <span className="hero-dest-emoji" role="img" aria-label="Mountain">🏔️</span>
             <span>Adi Kailash</span>
             <span className="hero-dest-badge">5,945 m</span>
           </button>
@@ -2487,7 +2471,7 @@ function Hero() {
             onClick={() => handleSelectScene("omParvat")}
             onKeyDown={(e) => handleTabKeyDown(e, "omParvat")}
           >
-            <span className="hero-dest-om">ॐ</span>
+            <span className="hero-dest-emoji" role="img" aria-label="Om">🕉️</span>
             <span>Om Parvat</span>
             <span className="hero-dest-badge">5,590 m</span>
           </button>
