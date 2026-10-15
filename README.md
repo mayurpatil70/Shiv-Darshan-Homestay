@@ -7,7 +7,7 @@ Official web application for **Shiv Darshan Homestay**, located in Haat, Dharchu
 Shiv Darshan Homestay offers boutique Himalayan accommodation and authentic Kumaoni hospitality along the sacred Adi Kailash & Om Parvat route. Hosted by **Govind Singh Dhami**.
 
 - **Location**: Haat, Dharchula Dehat, Pithoragarh, Uttarakhand 262545
-- **Google Maps**: [Directions Link](https://maps.app.goo.gl/rQN7wv5mMmsVjdkQ6?g_st=aw)
+- **Google Maps**: [Directions Link](https://www.google.com/maps/place/Shiv+Darshan+Homestay,+Haat,+Dharchula,+Uttarakhand+262545/@29.8387531,80.5281281,17z/data=!4m2!3m1!1s0x39a6b500714b2e71:0xdac163c161923889)
 - **Instagram**: [@shiv__darshan12345](https://instagram.com/shiv__darshan12345?utm_source=qr&mdxt=bHg3bnRxNWc2djE2)
 
 ---

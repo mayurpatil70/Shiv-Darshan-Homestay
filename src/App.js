@@ -44,6 +44,8 @@ import {
   Ban,
   AlertTriangle,
   ArrowUp,
+  Navigation,
+  ExternalLink,
 } from "lucide-react";
 import shivLogo from "./assets/images/client/logo-new.jpg";
 import aboutLandscape from "./assets/images/client/about-landscape.jpg";
@@ -109,9 +111,14 @@ const getWaUrl = (number = WA_NUMBER, customMsg = WA_BOOKING_MESSAGE) =>
 const WA_BOOKING_URL = getWaUrl(WA_NUMBER);
 const WA_BOOKING_URL_2 = getWaUrl(WA_NUMBER_2);
 
-// Exact Google Maps listing for Shiv Darshan Homestay
-const MAPS_URL = "https://maps.app.goo.gl/rQN7wv5mMmsVjdkQ6?g_st=aw";
-const GOOGLE_REVIEW_URL = "https://maps.app.goo.gl/rQN7wv5mMmsVjdkQ6?g_st=aw";
+// Exact Google Maps listing & directions URLs for Shiv Darshan Homestay (Haat, Dharchula)
+// Direct canonical google.com/maps endpoints prevent ERR_CONNECTION_TIMED_OUT on desktop
+// broadband/Jio networks while opening native Google Maps navigation on mobile phones.
+const MAPS_LOCATION_URL =
+  "https://www.google.com/maps/place/Shiv+Darshan+Homestay,+Haat,+Dharchula,+Uttarakhand+262545/@29.8387531,80.5281281,17z/data=!4m2!3m1!1s0x39a6b500714b2e71:0xdac163c161923889";
+const MAPS_DIRECTIONS_URL =
+  "https://www.google.com/maps/dir/?api=1&destination=Shiv+Darshan+Homestay,+Haat,+Dharchula&destination_place_id=0x39a6b500714b2e71:0xdac163c161923889";
+const GOOGLE_REVIEW_URL = MAPS_LOCATION_URL;
 const INSTAGRAM_URL = "https://instagram.com/shiv__darshan12345?utm_source=qr&mdxt=bHg3bnRxNWc2djE2";
 
 // Helper: sends email via EmailJS REST API (no npm package needed)
@@ -2170,6 +2177,206 @@ const CSS = `
     .pol-card { padding: 1.25rem 1.1rem 1.1rem; }
     .pol-contact { padding: 2rem 1.25rem; }
   }
+
+  /* ── GOOGLE MAP GRAPHICAL CARD (Above Footer) ── */
+  .gmap-section {
+    padding: 3.5rem 1.5rem 4rem;
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+  .gmap-card-wrapper {
+    background: linear-gradient(175deg, rgba(14, 38, 54, 0.94) 0%, rgba(8, 22, 32, 0.98) 100%);
+    border: 1px solid rgba(245, 208, 112, 0.32);
+    border-radius: 24px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), 0 4px 14px rgba(0, 0, 0, 0.35);
+    overflow: hidden;
+    position: relative;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .gmap-card-wrapper:hover {
+    border-color: rgba(245, 208, 112, 0.6);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65), 0 0 25px rgba(200, 150, 62, 0.15);
+  }
+  .gmap-top-bar {
+    background: rgba(4, 15, 23, 0.88);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.85rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .gmap-search-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    padding: 0.45rem 0.9rem;
+    border-radius: 50px;
+    font-size: 0.82rem;
+    color: #ffffff;
+    max-width: 100%;
+  }
+  .gmap-search-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 500;
+  }
+  .gmap-top-badges {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .gmap-rating-badge {
+    background: rgba(200, 150, 62, 0.2);
+    border: 1px solid rgba(245, 208, 112, 0.4);
+    color: #f5d070;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.3rem 0.65rem;
+    border-radius: 50px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .gmap-status-badge {
+    background: rgba(34, 197, 94, 0.15);
+    border: 1px solid rgba(34, 197, 94, 0.4);
+    color: #4ade80;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.3rem 0.65rem;
+    border-radius: 50px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .gmap-viewport {
+    position: relative;
+    width: 100%;
+    height: 440px;
+    background: #091a24;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .gmap-viewport svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+  .gmap-viewport:hover svg {
+    transform: scale(1.015);
+  }
+  .gmap-interactive-anchor {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    display: block;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .gmap-hover-hint {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(10, 30, 42, 0.88);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(245, 208, 112, 0.5);
+    color: #f5d070;
+    padding: 0.45rem 1rem;
+    border-radius: 50px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    pointer-events: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+    z-index: 15;
+  }
+  .gmap-viewport:hover .gmap-hover-hint {
+    transform: translateX(-50%) scale(1.05);
+    background: rgba(200, 150, 62, 0.95);
+    color: #040f17;
+    border-color: #ffffff;
+  }
+  .gmap-info-strip {
+    background: rgba(4, 15, 23, 0.92);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+  .gmap-info-left {
+    flex: 1 1 320px;
+    min-width: 0;
+  }
+  .gmap-info-address {
+    font-size: 0.92rem;
+    color: #ffffff;
+    font-weight: 600;
+    line-height: 1.4;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    margin-bottom: 0.35rem;
+  }
+  .gmap-info-meta {
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.7);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .gmap-meta-code {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    color: #f5d070;
+  }
+  .gmap-action-btns {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+  }
+  @keyframes gmapRadarPulse {
+    0% { r: 14px; opacity: 0.9; stroke-width: 2px; }
+    50% { opacity: 0.4; }
+    100% { r: 44px; opacity: 0; stroke-width: 0.5px; }
+  }
+  @keyframes gmapPinBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-7px); }
+  }
+  .gmap-pin-group {
+    animation: gmapPinBounce 2.8s ease-in-out infinite;
+    transform-origin: 480px 220px;
+  }
+  @media (max-width: 768px) {
+    .gmap-section { padding: 2.5rem 1rem 3rem; }
+    .gmap-viewport { height: 320px; }
+    .gmap-top-bar { padding: 0.75rem 1rem; }
+    .gmap-info-strip { padding: 1rem; flex-direction: column; align-items: stretch; }
+    .gmap-action-btns { width: 100%; justify-content: stretch; }
+    .gmap-action-btns > a { flex: 1 1 100%; justify-content: center; text-align: center; }
+  }
 `;
 
 // ─── HOTEL POLICIES (footer → policy page) ───────────────────────────────
@@ -2334,7 +2541,7 @@ function Navbar() {
           </a>
         ))}
         <a
-          href={MAPS_URL}
+          href={MAPS_DIRECTIONS_URL}
           target="_blank"
           rel="noopener noreferrer"
           className="nav-cta"
@@ -4479,6 +4686,337 @@ function scrollToTop() {
   glideTo(0);
 }
 
+// ─── GOOGLE MAPS 4-COLOR LOGO ──────────────────────────────────────────────
+function GoogleMapsLogo({ size = 20 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}>
+      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#EA4335" />
+      <path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 5.21 2.94 8.04L12 9V2z" fill="#4285F4" />
+      <path d="M7.94 17.04C9.69 19.87 12 22 12 22s2.31-2.13 4.06-4.96L12 9l-4.06 8.04z" fill="#FBBC05" />
+      <path d="M12 2v7l4.06 8.04C17.81 14.21 19 11.38 19 9c0-3.87-3.13-7-7-7z" fill="#34A853" />
+      <circle cx="12" cy="9" r="3.2" fill="#FFFFFF" />
+      <circle cx="12" cy="9" r="2.1" fill="#D93025" />
+    </svg>
+  );
+}
+
+// ─── GOOGLE MAP GRAPHICAL CARD COMPONENT ────────────────────────────────────
+function LocationMap() {
+  return (
+    <section className="gmap-section" id="location">
+      <div className="reveal" style={{ textAlign: "center", marginBottom: "1.75rem" }}>
+        <span className="scrolly-chapter">Chapter 9 · Pilgrimage Map &amp; Route</span>
+        <br />
+        <span className="section-label">
+          <MapPin size={14} strokeWidth={2.2} style={{ verticalAlign: "-2px", marginRight: "5px" }} />
+          Google Maps Location
+        </span>
+        <h2 className="section-title">Find Us in Haat, Dharchula</h2>
+        <p className="section-sub" style={{ maxWidth: "680px", margin: "0 auto" }}>
+          Shiv Darshan Homestay is situated peacefully in Haat village, Dharchula — right along the sacred
+          gateway highway to Adi Kailash and Om Parvat. Click the interactive map card below to open Google Maps.
+        </p>
+      </div>
+
+      <div className="gmap-card-wrapper reveal">
+        {/* Google Maps Brand & Search Bar */}
+        <div className="gmap-top-bar">
+          <div className="gmap-search-pill">
+            <GoogleMapsLogo size={20} />
+            <span className="gmap-search-text">
+              Shiv Darshan Homestay, Haat, Dharchula, Uttarakhand 262545
+            </span>
+          </div>
+          <div className="gmap-top-badges">
+            <div className="gmap-rating-badge">
+              ★ 4.9 · 500+ Reviews
+            </div>
+            <div className="gmap-status-badge">
+              ● Open 24 Hours
+            </div>
+          </div>
+        </div>
+
+        {/* Graphical Map Viewport with interactive link */}
+        <div className="gmap-viewport">
+          <a
+            href={MAPS_LOCATION_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="gmap-interactive-anchor"
+            aria-label="Open Shiv Darshan Homestay in Google Maps"
+          >
+            <span style={{ display: "none" }}>Open Shiv Darshan Homestay in Google Maps</span>
+          </a>
+
+          {/* SVG Cartographic Mountain & River Terrain of Haat, Dharchula */}
+          <svg viewBox="0 0 1000 480" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="terrainGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#0b2330" />
+                <stop offset="50%" stopColor="#103144" />
+                <stop offset="100%" stopColor="#081822" />
+              </linearGradient>
+              <linearGradient id="riverGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#0284c7" />
+                <stop offset="50%" stopColor="#0ea5e9" />
+                <stop offset="100%" stopColor="#38bdf8" />
+              </linearGradient>
+              <radialGradient id="auraGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#f5d070" stopOpacity="0.8" />
+                <stop offset="45%" stopColor="#f5d070" stopOpacity="0.25" />
+                <stop offset="100%" stopColor="#f5d070" stopOpacity="0" />
+              </radialGradient>
+              <filter id="cardShadow" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="6" stdDeviation="6" floodColor="#000000" floodOpacity="0.6" />
+              </filter>
+            </defs>
+
+            {/* Base Mountain Valley Terrain */}
+            <rect width="1000" height="480" fill="url(#terrainGrad)" />
+
+            {/* Topographic Elevation Contours */}
+            <path d="M-50,80 Q200,40 450,110 T950,60" fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="36" />
+            <path d="M-50,180 Q250,130 520,210 T1050,160" fill="none" stroke="rgba(255,255,255,0.035)" strokeWidth="48" />
+            <path d="M-50,320 Q220,260 480,330 T1050,290" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="52" />
+            <path d="M-50,440 Q300,380 600,430 T1050,420" fill="none" stroke="rgba(255,255,255,0.025)" strokeWidth="40" />
+
+            {/* Kali River (Indo - Nepal Border) */}
+            <path
+              d="M 860,-20 C 800,100 730,190 670,270 C 620,340 580,410 540,500"
+              fill="none"
+              stroke="url(#riverGrad)"
+              strokeWidth="38"
+              strokeLinecap="round"
+              opacity="0.85"
+            />
+            {/* Kali River Shimmer Current lines */}
+            <path
+              d="M 860,-20 C 800,100 730,190 670,270 C 620,340 580,410 540,500"
+              fill="none"
+              stroke="#ffffff"
+              strokeWidth="2.5"
+              strokeDasharray="18 12"
+              opacity="0.5"
+            />
+
+            {/* Nepal Territory Backdrop */}
+            <path
+              d="M 860,-20 C 800,100 730,190 670,270 C 620,340 580,410 540,500 L 1000,500 L 1000,-20 Z"
+              fill="rgba(6, 18, 26, 0.45)"
+            />
+            {/* Country and Valley Labels */}
+            <text x="820" y="380" fill="rgba(255,255,255,0.3)" fontSize="13" fontWeight="600" letterSpacing="1.5">
+              {"NEPAL 🇳🇵 (Darchula)"}
+            </text>
+            <text x="730" y="240" fill="#38bdf8" fontSize="11" fontWeight="600" fontStyle="italic" letterSpacing="1">
+              {"~ Kali River (Border) ~"}
+            </text>
+            <text x="60" y="440" fill="rgba(255,255,255,0.4)" fontSize="14" fontWeight="600" letterSpacing="1.5">
+              {"INDIA 🇮🇳 (Uttarakhand)"}
+            </text>
+
+            {/* Tawaghat - Dharchula - Lipulekh Highway (NH 107A - Pilgrimage Route) */}
+            <path
+              d="M 40,460 Q 180,390 310,330 T 470,230 T 630,120 T 780,-10"
+              fill="none"
+              stroke="#eab308"
+              strokeWidth="11"
+              strokeLinecap="round"
+            />
+            {/* Highway White Dashed Line */}
+            <path
+              d="M 40,460 Q 180,390 310,330 T 470,230 T 630,120 T 780,-10"
+              fill="none"
+              stroke="#ffffff"
+              strokeWidth="2"
+              strokeDasharray="12 10"
+            />
+
+            {/* Village approach road curving directly into Haat & Homestay */}
+            <path
+              d="M 390,285 Q 440,260 480,225"
+              fill="none"
+              stroke="#facc15"
+              strokeWidth="7"
+              strokeLinecap="round"
+            />
+            <path
+              d="M 390,285 Q 440,260 480,225"
+              fill="none"
+              stroke="#ffffff"
+              strokeWidth="1.5"
+              strokeDasharray="6 6"
+            />
+
+            {/* Dharchula Town Area Marker */}
+            <g transform="translate(190, 370)">
+              <circle cx="0" cy="0" r="16" fill="rgba(255,255,255,0.12)" />
+              <circle cx="0" cy="0" r="6" fill="#f5d070" />
+              <rect x="-80" y="14" width="160" height="26" rx="13" fill="rgba(4,15,23,0.8)" stroke="rgba(255,255,255,0.18)" />
+              <text x="0" y="31" fill="#ffffff" fontSize="11" fontWeight="600" textAnchor="middle">
+                {"🏙️ Dharchula Town Center"}
+              </text>
+            </g>
+
+            {/* Route Arrows */}
+            <g transform="translate(680, 80)">
+              <rect x="-10" y="-14" width="220" height="28" rx="14" fill="rgba(4,15,23,0.85)" stroke="rgba(245,208,112,0.4)" />
+              <text x="100" y="4" fill="#f5d070" fontSize="11.5" fontWeight="700" textAnchor="middle">
+                {"🏔️ Adi Kailash & Om Parvat ↗"}
+              </text>
+            </g>
+            <g transform="translate(40, 410)">
+              <rect x="0" y="-14" width="170" height="28" rx="14" fill="rgba(4,15,23,0.85)" stroke="rgba(255,255,255,0.18)" />
+              <text x="85" y="4" fill="#e2e8f0" fontSize="11" fontWeight="600" textAnchor="middle">
+                {"↙ Pithoragarh / Tanakpur"}
+              </text>
+            </g>
+
+            {/* ── HIGHLIGHTED SHIV DARSHAN HOMESTAY PROPERTY (HAAT) ── */}
+            <g transform="translate(480, 220)">
+              {/* Golden Ground Aura */}
+              <ellipse cx="0" cy="0" rx="70" ry="35" fill="url(#auraGlow)" />
+
+              {/* Pulsing Radar Rings */}
+              <circle cx="0" cy="0" r="15" fill="none" stroke="#f5d070" style={{ animation: "gmapRadarPulse 2.4s infinite cubic-bezier(0.1, 0.7, 0.1, 1)" }} />
+              <circle cx="0" cy="0" r="15" fill="none" stroke="#f5d070" style={{ animation: "gmapRadarPulse 2.4s infinite cubic-bezier(0.1, 0.7, 0.1, 1) 0.8s" }} />
+              <circle cx="0" cy="0" r="15" fill="none" stroke="#f5d070" style={{ animation: "gmapRadarPulse 2.4s infinite cubic-bezier(0.1, 0.7, 0.1, 1) 1.6s" }} />
+
+              {/* Animated Bouncing Google Maps Marker Pin */}
+              <g className="gmap-pin-group">
+                {/* Pin Shadow */}
+                <ellipse cx="0" cy="1" rx="10" ry="4" fill="rgba(0,0,0,0.6)" />
+
+                {/* Red Google 3D Pin */}
+                <path
+                  d="M 0,-48 C -14,-48 -24,-37 -24,-23 C -24,-7 0,0 0,0 C 0,0 24,-7 24,-23 C 24,-37 14,-48 0,-48 Z"
+                  fill="#EA4335"
+                  stroke="#f5d070"
+                  strokeWidth="2"
+                  filter="url(#cardShadow)"
+                />
+                {/* Inner white circle */}
+                <circle cx="0" cy="-26" r="9.5" fill="#FFFFFF" />
+                {/* Sacred Om center */}
+                <text x="0" y="-22" fontSize="11" textAnchor="middle" fill="#04121d" fontWeight="900">
+                  ॐ
+                </text>
+              </g>
+
+              {/* Floating Info Tooltip Banner above Pin */}
+              <g transform="translate(0, -68)" filter="url(#cardShadow)">
+                <rect x="-135" y="-38" width="270" height="42" rx="10" fill="#0a1d29" stroke="#f5d070" strokeWidth="1.6" />
+                <polygon points="0,4 -6,-1 6,-1" fill="#0a1d29" stroke="#f5d070" strokeWidth="1.6" />
+                <rect x="-4" y="-3" width="8" height="3" fill="#0a1d29" />
+                <text x="0" y="-21" fill="#ffffff" fontSize="12" fontWeight="700" textAnchor="middle">
+                  {"📍 Shiv Darshan Homestay (Haat)"}
+                </text>
+                <text x="0" y="-7" fill="#f5d070" fontSize="10.5" fontWeight="600" textAnchor="middle">
+                  {"★★★★★ 4.9 · Premier Pilgrimage Lodge"}
+                </text>
+              </g>
+            </g>
+
+            {/* Google Watermark Bottom Left */}
+            <g transform="translate(30, 460)">
+              <text x="0" y="0" fill="rgba(255,255,255,0.45)" fontSize="13" fontWeight="700" letterSpacing="0.5">
+                Google
+              </text>
+              <text x="60" y="-1" fill="rgba(255,255,255,0.3)" fontSize="9.5">
+                {"| Map data ©2026 Google / Haat, Dharchula"}
+              </text>
+            </g>
+
+            {/* Map Scale Bottom Right */}
+            <g transform="translate(870, 455)">
+              <line x1="0" y1="0" x2="60" y2="0" stroke="rgba(255,255,255,0.5)" strokeWidth="2" />
+              <line x1="0" y1="-4" x2="0" y2="4" stroke="rgba(255,255,255,0.5)" strokeWidth="2" />
+              <line x1="60" y1="-4" x2="60" y2="4" stroke="rgba(255,255,255,0.5)" strokeWidth="2" />
+              <text x="30" y="-6" fill="rgba(255,255,255,0.5)" fontSize="9.5" textAnchor="middle">
+                200 m
+              </text>
+            </g>
+          </svg>
+
+          {/* Interactive Click Hint Pill */}
+          <div className="gmap-hover-hint">
+            <span>{"🗺️ Click map to open in Google Maps & Navigation ↗"}</span>
+          </div>
+        </div>
+
+        {/* Card Footer Info & Direct Redirection Buttons */}
+        <div className="gmap-info-strip">
+          <div className="gmap-info-left">
+            <div className="gmap-info-address">
+              <MapPin size={17} strokeWidth={2.2} color="var(--gold)" style={{ flexShrink: 0, marginTop: "2px" }} />
+              <span>Shiv Darshan Homestay, Haat, Dharchula Dehat, Pithoragarh, Uttarakhand – 262545</span>
+            </div>
+            <div className="gmap-info-meta">
+              <span>Plus Code: <strong className="gmap-meta-code">RGQH+G79 Dharchula</strong></span>
+              <span>•</span>
+              <span>GPS: <strong>29.8388° N, 80.5281° E</strong></span>
+              <span>•</span>
+              <span style={{ color: "#4ade80" }}>🚗 Roadside Parking Available</span>
+            </div>
+          </div>
+          <div className="gmap-action-btns">
+            <a
+              href={MAPS_LOCATION_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "7px",
+                padding: "0.65rem 1.15rem",
+                fontSize: "0.85rem",
+              }}
+            >
+              <MapPin size={15} strokeWidth={2.2} />
+              Open in Google Maps
+              <ExternalLink size={13} strokeWidth={2.2} />
+            </a>
+            <a
+              href={MAPS_DIRECTIONS_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-secondary"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "7px",
+                padding: "0.65rem 1.15rem",
+                fontSize: "0.85rem",
+              }}
+            >
+              <Navigation size={15} strokeWidth={2.2} />
+              Get Directions
+            </a>
+            <a
+              href="tel:+919456761865"
+              className="btn-ghost"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "6px",
+                padding: "0.65rem 0.95rem",
+                fontSize: "0.85rem",
+                color: "var(--gold)",
+                border: "1px solid rgba(245, 208, 112, 0.4)",
+              }}
+            >
+              <Phone size={14} strokeWidth={2.2} />
+              Route Help: 94567 61865
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Footer({ bookRowRef, toTopRef, onPolicies }) {
   return (
     <footer className="footer">
@@ -4616,7 +5154,7 @@ function Footer({ bookRowRef, toTopRef, onPolicies }) {
               WhatsApp (9456761865)
             </a>
             <div className="footer-book-row" ref={bookRowRef}>
-              <a href={MAPS_URL} target="_blank" rel="noopener noreferrer">
+              <a href={MAPS_DIRECTIONS_URL} target="_blank" rel="noopener noreferrer">
                 <MapPin
                   size={13}
                   strokeWidth={2.2}
@@ -5087,6 +5625,7 @@ export default function App() {
         <VideoSection />
         <Testimonials />
         <Contact />
+        <LocationMap />
         <Footer
           bookRowRef={footerBookRowRef}
           toTopRef={footerTopRef}
