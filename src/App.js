@@ -58,6 +58,9 @@ import roomTriple from "./assets/images/client/room-triple.jpg";
 import roomTwin2 from "./assets/images/client/room-twin-2.jpg";
 import bathroomClean from "./assets/images/client/bathroom-clean.jpg";
 import welcomePoojaGuests from "./assets/images/client/welcome-pooja-guests.jpg";
+import adiKailashPeakHd from "./assets/images/client/adi-kailash-peak-hd.webp";
+import adiKailashUserPortrait from "./assets/images/client/adi-kailash-user-portrait.jpg";
+import omParvatNabhidhangHd from "./assets/images/client/om-parvat-nabhidhang-hd.webp";
 
 // Brand logo and owner profile images
 const logoImg = shivLogo;
@@ -490,26 +493,93 @@ const CSS = `
     .nav-links.open .nav-cta { text-align: center; padding: 0.6rem 1.25rem; }
   }
 
-  /* ── HERO ── */
+  /* ── CINEMATIC ADI KAILASH & OM PARVAT HERO ── */
   .hero {
-    height: 100vh; min-height: 600px;
-    position: relative; display: flex; align-items: center; justify-content: center;
-    overflow: hidden;
+    position: relative;
     width: 100%;
     max-width: 100%;
-    padding: 110px 0 3rem; /* keeps hero content clear of the fixed 70px navbar */
+    min-height: 88svh;
+    height: 94svh;
+    max-height: 1080px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 95px 1.5rem 3rem;
+    background: #071520;
   }
-  /* ── HERO VIDEO BACKGROUND (ADAPTED FULL WIDESCREEN, ZERO BLACK BARS) ── */
-  .hero-video-wrapper {
-    position: absolute; inset: -2%;
-    width: 104%; height: 104%;
+  .hero-stage {
+    position: absolute;
+    inset: -3%;
+    width: 106%;
+    height: 106%;
     overflow: hidden;
     z-index: 0;
-    background: #091a26;
-    transform: scale(1.02);
+    background: #06131c;
     will-change: transform;
     pointer-events: none;
   }
+  .hero-scene-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.85s cubic-bezier(0.33, 1, 0.68, 1), transform 0.85s cubic-bezier(0.33, 1, 0.68, 1);
+    will-change: opacity, transform;
+    pointer-events: none;
+  }
+  .hero-scene-layer.is-active {
+    opacity: 1;
+    visibility: visible;
+  }
+  .hero-img {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: contrast(1.04) brightness(0.95);
+    will-change: transform;
+  }
+  /* Ken Burns motion: authentic, slow, restrained breathing */
+  .hero-scene-layer.scene-adi.is-active .hero-img {
+    animation: kenBurnsAdi 24s ease-in-out infinite alternate;
+  }
+  .hero-scene-layer.scene-om.is-active .hero-img {
+    animation: kenBurnsOm 24s ease-in-out infinite alternate;
+  }
+  @keyframes kenBurnsAdi {
+    0%   { transform: scale(1.0) translate3d(0, 0, 0); }
+    100% { transform: scale(1.045) translate3d(0.8%, -0.8%, 0); }
+  }
+  @keyframes kenBurnsOm {
+    0%   { transform: scale(1.045) translate3d(-0.6%, 0.6%, 0); }
+    100% { transform: scale(1.0) translate3d(0, 0, 0); }
+  }
+
+  /* Desktop vs Mobile art direction for Adi Kailash */
+  .hero-img-desktop {
+    display: block !important;
+    object-position: center 30%;
+  }
+  .hero-img-mobile {
+    display: none !important;
+    object-position: center 20%;
+  }
+  /* Om Parvat framing: centered on the sacred natural ॐ snow ridge */
+  .hero-img-om {
+    display: block;
+    object-position: center 32%;
+  }
+
+  @media (max-width: 768px) {
+    .hero-img-desktop { display: none !important; }
+    .hero-img-mobile { display: block !important; }
+    .hero-img-om { object-position: 50% 18% !important; }
+  }
+
+  /* Live 60 FPS Drone Video Layer */
   .hero-video-bg {
     position: absolute;
     top: 0; left: 0;
@@ -519,7 +589,6 @@ const CSS = `
     pointer-events: none !important;
     filter: contrast(1.04) brightness(0.92);
   }
-  /* Explicitly hide any native browser play/pause icons, overlays, or start buttons */
   .hero-video-bg::-webkit-media-controls,
   .hero-video-bg::-webkit-media-controls-start-playback-button,
   .hero-video-bg::-webkit-media-controls-play-button,
@@ -534,38 +603,30 @@ const CSS = `
     width: 0 !important;
     height: 0 !important;
   }
-  /* Desktop Video: 60 FPS Widescreen drone panorama */
   .hero-video-desktop {
     display: block !important;
     object-position: center 30%;
   }
-  /* Mobile Video: Vertical 9:16 snow & clouds trek reel */
   .hero-video-mobile {
     display: none !important;
     object-position: center 36%;
   }
-  /* Mobile & Portrait Screens: seamlessly show 9:16 reel, hide desktop widescreen */
   @media (max-width: 768px), (max-width: 960px) and (orientation: portrait) {
-    .hero-video-desktop {
-      display: none !important;
-    }
-    .hero-video-mobile {
-      display: block !important;
-    }
-  }
-  /* Fallback static hero image if video fails to load or during reduced motion */
-  .hero-bg {
-    position: absolute; inset: -2%;
-    width: 104%; height: 104%;
-    background-size: cover;
-    background-position: center 32%;
-    background-repeat: no-repeat;
-    transform: scale(1.04);
-    will-change: transform;
-    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    .hero-video-desktop { display: none !important; }
+    .hero-video-mobile { display: block !important; }
   }
 
-  /* Drifting snow particles layer (Snow Fall Only) */
+  /* Editorial Contrast Layer (Multi-stop gradient keeping peak radiant & text crystal clear) */
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 36%, rgba(8, 22, 32, 0.08) 0%, rgba(8, 22, 32, 0.44) 62%, rgba(5, 15, 23, 0.85) 100%),
+      linear-gradient(180deg, rgba(6, 17, 26, 0.65) 0%, rgba(6, 17, 26, 0.16) 26%, rgba(6, 17, 26, 0.46) 66%, rgba(5, 14, 21, 0.94) 100%);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* Gentle Snow Fall Layer */
   .hero-snow {
     position: absolute; inset: 0;
     pointer-events: none;
@@ -586,40 +647,6 @@ const CSS = `
     50%  { transform: translate3d(22px, 55vh, 0); }
     88%  { opacity: 0.8; }
     100% { transform: translate3d(-16px, 110vh, 0); opacity: 0; }
-  }
-
-  /* Dual Action Hero CTAs */
-  .hero-cta-group {
-    display: flex; gap: 1rem; justify-content: center; align-items: center;
-    margin-bottom: 2.25rem; flex-wrap: wrap;
-  }
-  .hero-btn-primary {
-    display: inline-flex; align-items: center; gap: 0.55rem;
-    background: linear-gradient(135deg, #d4a047 0%, #c8963e 50%, #ad7d2b 100%);
-    color: #0b1a24; padding: 0.82rem 1.85rem; border-radius: 50px;
-    font-size: 0.92rem; font-weight: 700; letter-spacing: 0.02em;
-    text-decoration: none; box-shadow: 0 8px 24px rgba(200, 150, 62, 0.45);
-    transition: all 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
-  }
-  .hero-btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 30px rgba(200, 150, 62, 0.65);
-    background: linear-gradient(135deg, #e5b35a 0%, #d4a047 50%, #ba8933 100%);
-    color: #07121a;
-  }
-  .hero-btn-secondary {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    background: rgba(255, 255, 255, 0.12);
-    border: 1.5px solid rgba(255, 255, 255, 0.35);
-    color: #ffffff; padding: 0.82rem 1.75rem; border-radius: 50px;
-    font-size: 0.92rem; font-weight: 600; text-decoration: none;
-    backdrop-filter: blur(10px); transition: all 0.28s ease;
-  }
-  .hero-btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.24);
-    border-color: #ffffff; color: #ffffff;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
   }
 
   /* ── GLOBAL SCROLLYTELLING READING BAR ── */
@@ -658,65 +685,329 @@ const CSS = `
     font-size: 0.8rem;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .hero-video-bg, .hero-video-wrapper { display: none !important; }
-    .hero-bg { animation: none; transform: none !important; display: block; }
-    .hero-snow { display: none; }
-    .scrolly-reading-bar { display: none; }
-  }
-  .hero-overlay {
-    position: absolute; inset: 0;
-    background: linear-gradient(
-      180deg,
-      rgba(8, 22, 32, 0.45) 0%,
-      rgba(8, 22, 32, 0.22) 32%,
-      rgba(8, 22, 32, 0.58) 72%,
-      rgba(8, 22, 32, 0.92) 100%
-    );
-    z-index: 2;
-    pointer-events: none;
-  }
+  /* Staggered Cinematic Foreground Content */
   .hero-content {
-    position: relative; z-index: 3; text-align: center;
-    padding: 0 1.5rem; max-width: 900px;
-    animation: heroFade 1.2s ease forwards;
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    padding: 0 1.5rem;
+    max-width: 980px;
+    margin: 0 auto;
+    will-change: transform, opacity;
   }
-  @keyframes heroFade { from { opacity:0; transform: translateY(30px); } to { opacity:1; transform: translateY(0); } }
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.28);
-    color: #ffffff; padding: 0.4rem 1.25rem; border-radius: 50px;
-    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
-    margin-bottom: 1.25rem; backdrop-filter: blur(12px);
-    box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+
+  @keyframes heroItemRise {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 22px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
   }
-  .hero h1 {
-    font-size: clamp(2.8rem, 7vw, 5.5rem); font-weight: 700; color: white;
-    text-shadow: 0 2px 25px rgba(0,0,0,0.5); margin-bottom: 0.75rem;
-    letter-spacing: -0.01em;
+
+  /* Eyebrow badge */
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(10, 26, 38, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    color: rgba(255, 255, 255, 0.92);
+    padding: 0.42rem 1.3rem;
+    border-radius: 50px;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 1.1rem;
+    backdrop-filter: blur(14px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+    animation: heroItemRise 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
   }
-  .hero h1 span { color: var(--gold); font-style: italic; }
-  .hero-tagline {
-    font-size: clamp(1rem, 2.5vw, 1.3rem); color: rgba(255,255,255,0.9);
-    font-family: var(--font-sans); font-weight: 400; letter-spacing: 0.01em;
-    margin-bottom: 2.5rem;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.4);
+  .hero-eyebrow-accent {
+    color: var(--gold);
+    font-size: 0.82rem;
   }
-  .hero-stats {
-    display: flex; gap: 2.5rem; justify-content: center; margin-bottom: 2.5rem; flex-wrap: wrap;
+
+  /* Main Headline: "Where the Himalayas Touch the Divine" */
+  .hero-headline {
+    font-family: var(--font-serif);
+    font-size: clamp(2.35rem, 5.6vw, 4.6rem);
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+    margin-bottom: 0.65rem;
+    text-shadow: 0 3px 28px rgba(0, 0, 0, 0.6);
+    animation: heroItemRise 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
   }
-  .hero-stat { text-align: center; }
-  .hero-stat-num { font-family: var(--font-serif); font-size: 2rem; font-weight: 700; color: var(--gold); }
-  .hero-stat-label { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.7); }
-  .hero-scroll { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); animation: bounce 2s infinite; z-index: 3; }
-  .hero-scroll-line { width: 1px; height: 50px; background: linear-gradient(to bottom, rgba(255,255,255,0.6), transparent); margin: 0 auto 6px; }
-  .hero-scroll-dot { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; margin: 0 auto; }
-  /* Pause background composites when idle off-screen */
+
+  /* Highlight: "Adi Kailash & Om Parvat" with dynamic Himalayan gold shimmer */
+  .hero-highlight {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    font-family: var(--font-serif);
+    font-size: clamp(1.35rem, 3.2vw, 2.3rem);
+    font-weight: 600;
+    margin-bottom: 1.1rem;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.5);
+    animation: heroItemRise 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+  }
+  .hero-hl-gold {
+    color: var(--gold);
+    font-style: italic;
+    transition: color 0.4s ease;
+  }
+  .hero-hl-sub {
+    color: rgba(255, 255, 255, 0.88);
+    transition: color 0.4s ease;
+  }
+  .hero-hl-sep {
+    color: rgba(200, 150, 62, 0.65);
+    font-weight: 400;
+  }
+
+  /* Supporting editorial copy */
+  .hero-supporting-copy {
+    font-size: clamp(0.96rem, 2vw, 1.15rem);
+    color: rgba(255, 255, 255, 0.92);
+    font-family: var(--font-sans);
+    font-weight: 400;
+    line-height: 1.6;
+    max-width: 760px;
+    margin: 0 auto 1.6rem;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+    transition: opacity 0.45s ease;
+    animation: heroItemRise 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.55s both;
+  }
+
+  /* Interactive Destination Selector */
+  .hero-dest-selector {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: rgba(8, 22, 33, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 5px;
+    border-radius: 50px;
+    margin-bottom: 1.85rem;
+    backdrop-filter: blur(16px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    animation: heroItemRise 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both;
+    flex-wrap: wrap;
+    max-width: 100%;
+  }
+  .hero-dest-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.52rem 1.15rem;
+    border-radius: 50px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.85);
+    font-family: var(--font-sans);
+    font-size: 0.84rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .hero-dest-tab:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+  }
+  .hero-dest-tab:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+  }
+  .hero-dest-tab.is-active {
+    background: linear-gradient(135deg, #e5b35a 0%, #c8963e 50%, #ad7d2b 100%);
+    color: #071520;
+    font-weight: 700;
+    box-shadow: 0 4px 18px rgba(200, 150, 62, 0.45);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+  .hero-dest-icon {
+    font-size: 0.95rem;
+  }
+  .hero-dest-badge {
+    font-size: 0.68rem;
+    opacity: 0.9;
+    padding: 1px 7px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.18);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .hero-dest-tab.is-active .hero-dest-badge {
+    background: rgba(7, 21, 32, 0.25);
+    color: #071520;
+  }
+
+  /* Dual Action Hero CTAs */
+  .hero-cta-group {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1.85rem;
+    flex-wrap: wrap;
+    animation: heroItemRise 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.85s both;
+  }
+  .hero-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    background: linear-gradient(135deg, #e5b35a 0%, #c8963e 50%, #ad7d2b 100%);
+    color: #071520;
+    padding: 0.86rem 2rem;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    box-shadow: 0 8px 26px rgba(200, 150, 62, 0.45);
+    transition: all 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .hero-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(200, 150, 62, 0.65);
+    background: linear-gradient(135deg, #f0c36b 0%, #d4a047 50%, #ba8933 100%);
+    color: #040d14;
+  }
+  .hero-btn-primary:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 3px;
+  }
+  .hero-btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1.5px solid rgba(255, 255, 255, 0.35);
+    color: #ffffff;
+    padding: 0.86rem 1.85rem;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    backdrop-filter: blur(10px);
+    transition: all 0.28s ease;
+  }
+  .hero-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.24);
+    border-color: #ffffff;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.4);
+  }
+  .hero-btn-secondary:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+  }
+
+  /* Scene Metadata / Altitude strip */
+  .hero-scene-meta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.25rem;
+    background: rgba(8, 22, 33, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 50px;
+    padding: 0.4rem 1.35rem;
+    backdrop-filter: blur(12px);
+    margin-bottom: 1.8rem;
+    flex-wrap: wrap;
+    animation: heroItemRise 0.85s cubic-bezier(0.16, 1, 0.3, 1) 1.0s both;
+  }
+  .hero-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.78rem;
+  }
+  .hero-meta-label {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 600;
+    font-size: 0.68rem;
+  }
+  .hero-meta-val {
+    color: var(--gold);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  .hero-meta-sep {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.35);
+  }
+
+  /* Subtle Scroll Indicator */
+  .hero-scroll {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    pointer-events: none;
+    animation: bounce 2.2s infinite;
+  }
+  .hero-scroll-line {
+    width: 1px;
+    height: 38px;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.6), transparent);
+    margin: 0 auto 5px;
+  }
+  .hero-scroll-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    margin: 0 auto;
+    box-shadow: 0 0 8px var(--gold);
+  }
+
+  /* Idle pause for CPU/GPU efficiency */
+  .hero.is-idle .hero-img,
   .hero.is-idle .hero-video-bg,
-  .hero.is-idle .hero-video-wrapper,
-  .hero.is-idle .hero-bg,
+  .hero.is-idle .hero-stage,
   .hero.is-idle .hero-snow span,
-  .hero.is-idle .hero-scroll { animation-play-state: paused !important; }
+  .hero.is-idle .hero-scroll {
+    animation-play-state: paused !important;
+  }
+
+  /* Prefers-reduced-motion accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    .hero-img,
+    .hero-scene-layer,
+    .hero-content,
+    .hero-eyebrow,
+    .hero-headline,
+    .hero-highlight,
+    .hero-supporting-copy,
+    .hero-dest-selector,
+    .hero-cta-group,
+    .hero-scene-meta {
+      animation: none !important;
+      transition: none !important;
+      transform: none !important;
+      opacity: 1 !important;
+    }
+    .hero-snow { display: none !important; }
+    .hero-scroll { animation: none !important; }
+    .hero-video-bg, .hero-video-wrapper { display: none !important; }
+    .scrolly-reading-bar { display: none !important; }
+  }
   @keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(8px); } }
 
   /* ── 16:9 VIDEO TOUR PLAYER ── */
@@ -746,20 +1037,72 @@ const CSS = `
   .video-16-9-iframe {
     width: 100%; height: 100%; border: none; display: block;
   }
-  /* Mobile: kill the huge centered dead-space — hero text starts just under the navbar */
+  /* Mobile: comfortable spacing under fixed navbar & stacked buttons */
   @media (max-width: 768px) {
     .hero {
-      height: auto; min-height: 100vh; min-height: 100svh;
+      height: auto;
+      min-height: 100vh;
+      min-height: 100svh;
+      padding: 96px 1.15rem 3.5rem;
       align-items: flex-start;
-      /* Extra top padding: a clear gap between the navbar and the
-         "Top-Rated Homestay" badge so the two never feel cramped */
-      padding: 114px 0 4rem;
+      justify-content: center;
     }
-    .hero-content { padding: 0 1.25rem; }
-    .hero-badge { margin-bottom: 1rem; }
-    .hero-tagline { margin-bottom: 1.75rem; }
-    .hero-stats { gap: 1.1rem 1.6rem; margin-bottom: 1.75rem; }
-    .hero-stat-num { font-size: 1.6rem; }
+    .hero-content { padding: 0 0.5rem; }
+    .hero-eyebrow {
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      padding: 0.35rem 1rem;
+      margin-bottom: 0.85rem;
+    }
+    .hero-headline {
+      font-size: clamp(2.05rem, 7.8vw, 2.9rem);
+      line-height: 1.15;
+      margin-bottom: 0.5rem;
+    }
+    .hero-highlight {
+      font-size: clamp(1.22rem, 4.8vw, 1.65rem);
+      margin-bottom: 0.85rem;
+    }
+    .hero-supporting-copy {
+      font-size: 0.94rem;
+      line-height: 1.55;
+      margin-bottom: 1.35rem;
+    }
+    .hero-dest-selector {
+      width: 100%;
+      border-radius: 20px;
+      padding: 4px;
+      gap: 4px;
+      margin-bottom: 1.5rem;
+    }
+    .hero-dest-tab {
+      flex: 1 1 45%;
+      justify-content: center;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.78rem;
+      border-radius: 16px;
+    }
+    .hero-cta-group {
+      flex-direction: column;
+      width: 100%;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .hero-btn-primary,
+    .hero-btn-secondary {
+      width: 100%;
+      justify-content: center;
+      padding: 0.82rem 1.25rem;
+      font-size: 0.92rem;
+    }
+    .hero-scene-meta {
+      width: 100%;
+      border-radius: 16px;
+      padding: 0.5rem 0.8rem;
+      gap: 0.6rem 0.9rem;
+      margin-bottom: 1.4rem;
+    }
+    .hero-meta-item { font-size: 0.72rem; }
   }
 
   /* ── SECTIONS ── */
@@ -1797,15 +2140,36 @@ const HERO_SNOWFLAKES = Array.from({ length: 34 }, (_, i) => ({
   drift: ((i * 23) % 50) - 25, // horizontal sway amplitude
 }));
 
+const SCENE_DETAILS = {
+  adiKailash: {
+    sanctuary: "Jolingkong · Parvati Kund",
+    altitude: "5,945 m (19,505 ft)",
+    subcopy: "Experience the sacred heights of Chhota Kailash, reflective waters of Parvati Kund, and heartfelt hospitality of Shiv Darshan Homestay in Dharchula.",
+  },
+  omParvat: {
+    sanctuary: "Nabhidhang · Sacred ॐ Ridge",
+    altitude: "5,590 m (18,340 ft)",
+    subcopy: "Witness the miraculous natural ॐ snow formation at Nabhidhang, timeless Himalayan tranquillity, and heartfelt hospitality of Shiv Darshan Homestay in Dharchula.",
+  },
+  video: {
+    sanctuary: "Kumaon Himalayas Aerial Tour",
+    altitude: "High Himalayan Yatra Corridor",
+    subcopy: "Glide above ancient pilgrimage trails, snowfields, and towering sacred peaks from Dharchula on the sacred Adi Kailash & Om Parvat circuit.",
+  },
+};
+
 function Hero() {
   const ref = useRef(null);
-  const heroBgRef = useRef(null);
+  const heroStageRef = useRef(null);
   const heroContentRef = useRef(null);
   const desktopVideoRef = useRef(null);
   const mobileVideoRef = useRef(null);
 
+  // Interactive Destination Scene State: 'adiKailash' (default) | 'omParvat' | 'video'
+  const [activeScene, setActiveScene] = useState("adiKailash");
+
   // Safe helper to play without interruption or race condition
-  const playVideo = (v) => {
+  const playVideo = useCallback((v) => {
     if (!v) return;
     v.muted = true;
     v.defaultMuted = true;
@@ -1816,44 +2180,43 @@ function Hero() {
         p.catch(() => {});
       }
     }
-  };
+  }, []);
 
-  const pauseVideo = (v) => {
+  const pauseVideo = useCallback((v) => {
     if (!v) return;
     if (!v.paused) {
       v.pause();
     }
-  };
-
-  // Immediate autoplay on visit + interaction fallback
-  useEffect(() => {
-    const desktop = desktopVideoRef.current;
-    const mobile = mobileVideoRef.current;
-
-    playVideo(desktop);
-    playVideo(mobile);
-
-    const unlock = () => {
-      if (window.scrollY < 400) {
-        playVideo(desktop);
-        playVideo(mobile);
-      }
-      window.removeEventListener("touchstart", unlock);
-      window.removeEventListener("click", unlock);
-      window.removeEventListener("scroll", unlock);
-    };
-    window.addEventListener("touchstart", unlock, { passive: true, once: true });
-    window.addEventListener("click", unlock, { passive: true, once: true });
-    window.addEventListener("scroll", unlock, { passive: true, once: true });
-
-    return () => {
-      window.removeEventListener("touchstart", unlock);
-      window.removeEventListener("click", unlock);
-      window.removeEventListener("scroll", unlock);
-    };
   }, []);
 
-  // 60 FPS IntersectionObserver: pauses when scrolled completely off-screen, resumes when back
+  // Handle scene switching with keyboard / click
+  const handleSelectScene = (sceneId) => {
+    setActiveScene(sceneId);
+    if (sceneId === "video") {
+      playVideo(desktopVideoRef.current);
+      playVideo(mobileVideoRef.current);
+    } else {
+      pauseVideo(desktopVideoRef.current);
+      pauseVideo(mobileVideoRef.current);
+    }
+  };
+
+  // Keyboard navigation for destination selector (ArrowLeft, ArrowRight)
+  const handleTabKeyDown = (e, currentId) => {
+    const sceneKeys = ["adiKailash", "omParvat", "video"];
+    const idx = sceneKeys.indexOf(currentId);
+    if (e.key === "ArrowRight") {
+      e.preventDefault();
+      const nextId = sceneKeys[(idx + 1) % sceneKeys.length];
+      handleSelectScene(nextId);
+    } else if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      const prevId = sceneKeys[(idx - 1 + sceneKeys.length) % sceneKeys.length];
+      handleSelectScene(prevId);
+    }
+  };
+
+  // 60 FPS IntersectionObserver: pauses background media when scrolled off-screen
   useEffect(() => {
     const el = ref.current;
     if (!el || !("IntersectionObserver" in window)) return;
@@ -1864,7 +2227,7 @@ function Hero() {
         if (!isVisible) {
           pauseVideo(desktopVideoRef.current);
           pauseVideo(mobileVideoRef.current);
-        } else if (window.scrollY < (el.offsetHeight * 0.7)) {
+        } else if (activeScene === "video" && window.scrollY < (el.offsetHeight * 0.7)) {
           playVideo(desktopVideoRef.current);
           playVideo(mobileVideoRef.current);
         }
@@ -1873,9 +2236,9 @@ function Hero() {
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [activeScene, playVideo, pauseVideo]);
 
-  // 60 FPS Scrollytelling Parallax & State-Tracked Scroll Down Stop / Scroll Up Resume
+  // 60 FPS Scrollytelling Parallax & State-Tracked Boundary Play/Pause
   useEffect(() => {
     let ticking = false;
     let isPastHero = false;
@@ -1888,8 +2251,8 @@ function Hero() {
           const heroHeight = heroEl ? heroEl.offsetHeight : window.innerHeight;
 
           // Parallax transform
-          if (heroBgRef.current) {
-            heroBgRef.current.style.transform = `scale(1.02) translate3d(0, ${(scrollY * 0.16).toFixed(2)}px, 0)`;
+          if (heroStageRef.current) {
+            heroStageRef.current.style.transform = `scale(1.02) translate3d(0, ${(scrollY * 0.16).toFixed(2)}px, 0)`;
           }
           if (heroContentRef.current) {
             heroContentRef.current.style.transform = `translate3d(0, ${(scrollY * 0.28).toFixed(2)}px, 0)`;
@@ -1903,7 +2266,7 @@ function Hero() {
             if (shouldPause) {
               pauseVideo(desktopVideoRef.current);
               pauseVideo(mobileVideoRef.current);
-            } else {
+            } else if (activeScene === "video") {
               playVideo(desktopVideoRef.current);
               playVideo(mobileVideoRef.current);
             }
@@ -1916,7 +2279,7 @@ function Hero() {
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [activeScene, playVideo, pauseVideo]);
 
   // Desktop Widescreen Video (60 FPS Drone Panorama)
   const DESKTOP_VIDEO_SRC =
@@ -1925,50 +2288,90 @@ function Hero() {
   const MOBILE_VIDEO_SRC =
     "https://res.cloudinary.com/b4c8jnri/video/upload/WhatsApp_Video_2026-10-15_at_1.04.53_AM.mp4";
 
+  const currentMeta = SCENE_DETAILS[activeScene] || SCENE_DETAILS.adiKailash;
+
   return (
     <section className="hero" id="hero" ref={ref}>
-      {/* Responsive Hero Video (Pure CSS-switched: Widescreen on Desktop, 9:16 Reel on Mobile) */}
-      <div className="hero-video-wrapper" ref={heroBgRef}>
-        {/* Desktop Landscape Video (Zero Black Bars, Native 60 FPS Ultrawide, No Middle Button) */}
-        <video
-          ref={desktopVideoRef}
-          className="hero-video-bg hero-video-desktop"
-          src={DESKTOP_VIDEO_SRC}
-          autoPlay
-          loop
-          muted
-          playsInline
-          webkit-playsinline="true"
-          preload="auto"
-          controls={false}
-          disablePictureInPicture
-          disableRemotePlayback
+      {/* Layer 1: Background Himalayan Mountain Scenes with Smooth Crossfade & Ken Burns */}
+      <div className="hero-stage" ref={heroStageRef}>
+        {/* Scene A: Adi Kailash (Chhota Kailash, 5,945m) */}
+        <div
+          className={`hero-scene-layer scene-adi ${activeScene === "adiKailash" ? "is-active" : ""}`}
+          aria-hidden={activeScene !== "adiKailash"}
         >
-          <source src={DESKTOP_VIDEO_SRC} type="video/mp4" />
-        </video>
+          {/* Desktop Widescreen (2560px HD Authentic Peak) */}
+          <img
+            src={adiKailashPeakHd}
+            alt="Authentic snow-covered pyramid peak of Adi Kailash (5,945m) near Jolingkong and Parvati Kund"
+            className="hero-img hero-img-desktop"
+            loading="eager"
+            fetchPriority="high"
+          />
+          {/* Mobile Art Direction (Authentic Portrait with dramatic Himalayan clouds and snowfield) */}
+          <img
+            src={adiKailashUserPortrait}
+            alt="Sacred Adi Kailash peak in portrait framing with swirling clouds"
+            className="hero-img hero-img-mobile"
+            loading="eager"
+            fetchPriority="high"
+          />
+        </div>
 
-        {/* Mobile Vertical Video (Zero Black Bars, 9:16 Cloud & Snow Trek Reel, No Middle Button) */}
-        <video
-          ref={mobileVideoRef}
-          className="hero-video-bg hero-video-mobile"
-          src={MOBILE_VIDEO_SRC}
-          autoPlay
-          loop
-          muted
-          playsInline
-          webkit-playsinline="true"
-          preload="auto"
-          controls={false}
-          disablePictureInPicture
-          disableRemotePlayback
+        {/* Scene B: Om Parvat (Nabhidhang, 5,590m with natural ॐ snow formation) */}
+        <div
+          className={`hero-scene-layer scene-om ${activeScene === "omParvat" ? "is-active" : ""}`}
+          aria-hidden={activeScene !== "omParvat"}
         >
-          <source src={MOBILE_VIDEO_SRC} type="video/mp4" />
-        </video>
+          <img
+            src={omParvatNabhidhangHd}
+            alt="Authentic Om Parvat (5,590m) from Nabhidhang showing the naturally formed sacred ॐ symbol in snow on dark rock"
+            className="hero-img hero-img-om"
+            loading="eager"
+          />
+        </div>
+
+        {/* Scene C: Live 60 FPS Drone Panorama & Mobile Reel */}
+        <div
+          className={`hero-scene-layer scene-video ${activeScene === "video" ? "is-active" : ""}`}
+          aria-hidden={activeScene !== "video"}
+        >
+          <video
+            ref={desktopVideoRef}
+            className="hero-video-bg hero-video-desktop"
+            src={DESKTOP_VIDEO_SRC}
+            loop
+            muted
+            playsInline
+            webkit-playsinline="true"
+            preload="auto"
+            controls={false}
+            disablePictureInPicture
+            disableRemotePlayback
+          >
+            <source src={DESKTOP_VIDEO_SRC} type="video/mp4" />
+          </video>
+          <video
+            ref={mobileVideoRef}
+            className="hero-video-bg hero-video-mobile"
+            src={MOBILE_VIDEO_SRC}
+            loop
+            muted
+            playsInline
+            webkit-playsinline="true"
+            preload="auto"
+            controls={false}
+            disablePictureInPicture
+            disableRemotePlayback
+          >
+            <source src={MOBILE_VIDEO_SRC} type="video/mp4" />
+          </video>
+        </div>
       </div>
 
+      {/* Layer 2: Editorial Contrast Vignette (Protects Text Readability while Leaving Peak Radiant) */}
       <div className="hero-overlay" />
 
-      {/* Gentle Snow Fall Only */}
+      {/* Layer 3: Gentle Himalayan Snow Fall Particles */}
       <div className="hero-snow" aria-hidden="true">
         {HERO_SNOWFLAKES.map((f, i) => (
           <span
@@ -1985,29 +2388,85 @@ function Hero() {
         ))}
       </div>
 
+      {/* Layer 4: Cinematic Foreground Content with Staggered Entrance */}
       <div className="hero-content" ref={heroContentRef}>
-        <div className="hero-badge">
-          ✦ Authentic Himalayan Homestay · Adi Kailash Yatra Route
+        {/* Eyebrow badge */}
+        <div className="hero-eyebrow">
+          <span className="hero-eyebrow-accent">✦</span>
+          THE SACRED HIMALAYAS · DHARCHULA, UTTARAKHAND
         </div>
+
         <h1 style={{ display: "none" }}>Best Homestay in Haat, Dharchula - Shiv Darshan Homestay</h1>
-        <h2 style={{
-          fontSize: "clamp(2.8rem, 7vw, 5.5rem)", 
-          fontWeight: 700, 
-          color: "white",
-          textShadow: "0 3px 25px rgba(0,0,0,0.6)", 
-          marginBottom: "0.75rem",
-          letterSpacing: "-0.015em",
-          fontFamily: "var(--font-serif)"
-        }}>
-          Shiv Darshan
-          <br />
-          <span style={{ color: "var(--gold)", fontStyle: "italic" }}>Home Stay</span>
+
+        {/* Main Headline */}
+        <h2 className="hero-headline">
+          Where the Himalayas Touch the Divine
         </h2>
-        <p className="hero-tagline">
-          More than a stay, it feels like home · Sacred Himalayan tranquility in Haat, Dharchula Dehat · Uttarakhand
+
+        {/* Dynamic Highlight: Adi Kailash & Om Parvat */}
+        <div className="hero-highlight">
+          <span className={activeScene === "adiKailash" ? "hero-hl-gold" : "hero-hl-sub"}>
+            Adi Kailash
+          </span>
+          <span className="hero-hl-sep">&amp;</span>
+          <span className={activeScene === "omParvat" ? "hero-hl-gold" : "hero-hl-sub"}>
+            Om Parvat
+          </span>
+        </div>
+
+        {/* Supporting Editorial Copy */}
+        <p className="hero-supporting-copy">
+          {currentMeta.subcopy}
         </p>
 
-        {/* Dual High-Conversion Call-to-Action Buttons */}
+        {/* Interactive Destination Selector */}
+        <div
+          className="hero-dest-selector"
+          role="tablist"
+          aria-label="Choose Himalayan Mountain Scene"
+        >
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeScene === "adiKailash"}
+            tabIndex={0}
+            className={`hero-dest-tab ${activeScene === "adiKailash" ? "is-active" : ""}`}
+            onClick={() => handleSelectScene("adiKailash")}
+            onKeyDown={(e) => handleTabKeyDown(e, "adiKailash")}
+          >
+            <span className="hero-dest-icon">🏔️</span>
+            <span>Adi Kailash</span>
+            <span className="hero-dest-badge">5,945 m</span>
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeScene === "omParvat"}
+            tabIndex={0}
+            className={`hero-dest-tab ${activeScene === "omParvat" ? "is-active" : ""}`}
+            onClick={() => handleSelectScene("omParvat")}
+            onKeyDown={(e) => handleTabKeyDown(e, "omParvat")}
+          >
+            <span className="hero-dest-icon">🕉️</span>
+            <span>Om Parvat</span>
+            <span className="hero-dest-badge">5,590 m</span>
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeScene === "video"}
+            tabIndex={0}
+            className={`hero-dest-tab ${activeScene === "video" ? "is-active" : ""}`}
+            onClick={() => handleSelectScene("video")}
+            onKeyDown={(e) => handleTabKeyDown(e, "video")}
+          >
+            <span className="hero-dest-icon">🎥</span>
+            <span>Aerial Tour</span>
+            <span className="hero-dest-badge">60 FPS</span>
+          </button>
+        </div>
+
+        {/* Primary and Secondary Call-to-Action Buttons */}
         <div className="hero-cta-group">
           <a
             href={WA_BOOKING_URL}
@@ -2015,32 +2474,37 @@ function Hero() {
             rel="noopener noreferrer"
             className="hero-btn-primary"
           >
-            <span>💬 Book on WhatsApp</span>
+            <span>💬 Book Your Stay</span>
           </a>
           <a
-            href="#rooms"
+            href="#about"
             className="hero-btn-secondary"
           >
-            <span>Explore Rooms & Tariffs ↓</span>
+            <span>Explore the Sacred Peaks ↓</span>
           </a>
         </div>
 
-        <div className="hero-stats">
-          {[
-            ["1000+", "Happy Pilgrims & Guests"],
-            ["Haat", "Dharchula, Uttarakhand"],
-            ["5,905 ft", "Himalayan Altitude"],
-            ["4.9★", "Google Guest Rating"],
-          ].map(([n, l]) => (
-            <div className="hero-stat" key={l}>
-              <div className="hero-stat-num">{n}</div>
-              <div className="hero-stat-label">{l}</div>
-            </div>
-          ))}
+        {/* Scene Elevation & Pilgrim Base Metadata */}
+        <div className="hero-scene-meta">
+          <div className="hero-meta-item">
+            <span className="hero-meta-label">Sanctuary:</span>
+            <span className="hero-meta-val">{currentMeta.sanctuary}</span>
+          </div>
+          <div className="hero-meta-sep" />
+          <div className="hero-meta-item">
+            <span className="hero-meta-label">Elevation:</span>
+            <span className="hero-meta-val">{currentMeta.altitude}</span>
+          </div>
+          <div className="hero-meta-sep" />
+          <div className="hero-meta-item">
+            <span className="hero-meta-label">Homestay:</span>
+            <span className="hero-meta-val">Shiv Darshan, Haat</span>
+          </div>
         </div>
       </div>
 
-      <div className="hero-scroll">
+      {/* Layer 5: Subtle Scroll Indicator */}
+      <div className="hero-scroll" aria-hidden="true">
         <div className="hero-scroll-line" />
         <div className="hero-scroll-dot" />
       </div>
