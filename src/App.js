@@ -341,7 +341,7 @@ const CSS = `
   html, body, #root {
     width: 100%;
     max-width: 100%;
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 
   :root {
@@ -427,7 +427,7 @@ const CSS = `
     color: var(--text);
     line-height: 1.6;
     letter-spacing: -0.01em;
-    overflow-x: hidden;
+    overflow-x: clip;
     position: relative;
     width: 100%;
   }
@@ -1177,14 +1177,14 @@ const CSS = `
       flex-wrap: nowrap !important;
       align-items: center !important;
       justify-content: center !important;
-      width: 100% !important;
-      max-width: 295px !important;
+      width: 95% !important;
+      max-width: 340px !important;
       border-radius: 50px !important;
       overflow: hidden !important;
-      padding: 2.5px !important;
-      gap: 3px !important;
-      margin: 0 auto 0.65rem !important;
-      background: rgba(4, 15, 23, 0.4) !important;
+      padding: 3px !important;
+      gap: 4px !important;
+      margin: 0 auto 0.7rem !important;
+      background: rgba(4, 15, 23, 0.42) !important;
       border: 1px solid rgba(255, 255, 255, 0.22) !important;
       backdrop-filter: none !important;
       -webkit-backdrop-filter: none !important;
@@ -1197,10 +1197,10 @@ const CSS = `
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
-      padding: 0.3rem 0.35rem !important;
-      font-size: 0.68rem !important;
+      padding: 0.38rem 0.5rem !important;
+      font-size: 0.72rem !important;
       border-radius: 40px !important;
-      gap: 3px !important;
+      gap: 4px !important;
       background: transparent !important;
       color: rgba(255, 255, 255, 0.88) !important;
       white-space: nowrap !important;
@@ -1209,16 +1209,16 @@ const CSS = `
       overflow: hidden !important;
     }
     .hero-dest-emoji {
-      font-size: 0.78rem !important;
+      font-size: 0.82rem !important;
       line-height: 1 !important;
       flex-shrink: 0 !important;
     }
     .hero-dest-badge {
-      font-size: 0.54rem !important;
-      padding: 1px 3px !important;
-      border-radius: 4px !important;
+      font-size: 0.56rem !important;
+      padding: 1.5px 4.5px !important;
+      border-radius: 5px !important;
       background: rgba(0, 0, 0, 0.3) !important;
-      color: rgba(255, 255, 255, 0.85) !important;
+      color: rgba(255, 255, 255, 0.88) !important;
       flex-shrink: 0 !important;
     }
     .hero-dest-tab.is-active {
@@ -1236,19 +1236,17 @@ const CSS = `
       display: flex !important;
       flex-direction: row !important;
       flex-wrap: nowrap !important;
-      width: 100% !important;
-      max-width: 295px !important;
-      gap: 0.45rem !important;
-      margin: 0 auto 0.65rem !important;
+      width: 95% !important;
+      max-width: 355px !important;
+      gap: 0.5rem !important;
+      margin: 0 auto 0.75rem !important;
       box-sizing: border-box !important;
     }
     .hero-btn-primary,
     .hero-btn-secondary {
-      flex: 1 1 50% !important;
-      min-width: 0 !important;
       justify-content: center !important;
-      padding: 0.48rem 0.45rem !important;
-      font-size: 0.73rem !important;
+      padding: 0.54rem 0.8rem !important;
+      font-size: 0.76rem !important;
       white-space: nowrap !important;
       border-radius: 50px !important;
       box-sizing: border-box !important;
@@ -1259,36 +1257,40 @@ const CSS = `
       overflow: hidden !important;
     }
     .hero-btn-primary {
+      flex: 0 0 auto !important;
       background: rgba(200, 150, 62, 0.38) !important;
-      border: 1px solid rgba(245, 208, 112, 0.85) !important;
+      border: 1.2px solid rgba(245, 208, 112, 0.85) !important;
       color: #ffffff !important;
     }
     .hero-btn-secondary {
+      flex: 1 1 auto !important;
+      min-width: 0 !important;
       background: rgba(255, 255, 255, 0.08) !important;
-      border: 1px solid rgba(255, 255, 255, 0.28) !important;
+      border: 1.2px solid rgba(255, 255, 255, 0.3) !important;
       color: #ffffff !important;
+      text-align: center !important;
     }
     .hero-scene-meta {
-      width: 100% !important;
-      max-width: 295px !important;
+      width: 95% !important;
+      max-width: 345px !important;
       border-radius: 50px !important;
-      padding: 0.24rem 0.5rem !important;
-      gap: 0.25rem 0.45rem !important;
-      margin: 0 auto 0.55rem !important;
-      background: rgba(4, 15, 23, 0.3) !important;
-      border: 1px solid rgba(255, 255, 255, 0.16) !important;
+      padding: 0.28rem 0.65rem !important;
+      gap: 0.3rem 0.65rem !important;
+      margin: 0 auto 0.65rem !important;
+      background: rgba(4, 15, 23, 0.35) !important;
+      border: 1px solid rgba(255, 255, 255, 0.18) !important;
       backdrop-filter: none !important;
       -webkit-backdrop-filter: none !important;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
       overflow: hidden !important;
     }
-    .hero-meta-item { font-size: 0.62rem !important; }
+    .hero-meta-item { font-size: 0.65rem !important; }
     .hero-meta-label { opacity: 0.75; }
     .hero-meta-val { color: #f5d070; font-weight: 600; }
     .hero-scroll { display: none !important; }
     .curtain-content-wrapper {
-      border-radius: 26px 26px 0 0 !important;
-      box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.45) !important;
+      border-radius: 28px 28px 0 0 !important;
+      box-shadow: 0 -22px 55px rgba(0, 0, 0, 0.65), 0 -6px 20px rgba(0, 0, 0, 0.4) !important;
     }
   }
 
@@ -2427,15 +2429,20 @@ function Hero() {
       if (!ticking) {
         window.requestAnimationFrame(() => {
           const scrollY = window.scrollY;
-          if (scrollY <= heroHeight) {
-            // Background mountain subtly moves down for majestic depth
-            if (heroStageRef.current) {
-              heroStageRef.current.style.transform = `scale(1.02) translate3d(0, ${(scrollY * 0.16).toFixed(1)}px, 0)`;
-            }
-            // Foreground text moves down slightly and gently dims out before curtain overlaps
+          if (scrollY <= heroHeight * 1.25) {
+            const progress = Math.min(1, Math.max(0, scrollY / heroHeight));
+            // Before section (Hero content) comes down noticeably, scales, and dims like a card being placed underneath
             if (heroContentRef.current) {
-              heroContentRef.current.style.transform = `translate3d(0, ${(scrollY * 0.32).toFixed(1)}px, 0)`;
-              heroContentRef.current.style.opacity = Math.max(0, 1 - (scrollY / (heroHeight * 0.72))).toFixed(3);
+              const downShift = scrollY * 0.45;
+              const scale = (1 - (progress * 0.08)).toFixed(3);
+              heroContentRef.current.style.transform = `translate3d(0, ${downShift.toFixed(1)}px, 0) scale(${scale})`;
+              heroContentRef.current.style.opacity = Math.max(0, 1 - (progress * 1.25)).toFixed(3);
+            }
+            // Background mountain subtly pans down and scales for majestic depth
+            if (heroStageRef.current) {
+              const bgShift = scrollY * 0.2;
+              heroStageRef.current.style.transform = `scale(1.03) translate3d(0, ${bgShift.toFixed(1)}px, 0)`;
+              heroStageRef.current.style.filter = `brightness(${(1 - progress * 0.25).toFixed(2)})`;
             }
           }
           ticking = false;
