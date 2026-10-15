@@ -493,20 +493,119 @@ const CSS = `
     .nav-links.open .nav-cta { text-align: center; padding: 0.6rem 1.25rem; }
   }
 
-  /* ── CINEMATIC ADI KAILASH & OM PARVAT HERO ── */
+  /* ── PRELOADER (3-SECOND CIRCULAR LOGO ANIMATION) ── */
+  .site-preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: #06131c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.65s ease;
+  }
+  .site-preloader.is-fading {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .preloader-content {
+    text-align: center;
+    padding: 2rem;
+    animation: heroItemRise 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .preloader-logo-wrap {
+    position: relative;
+    width: 116px;
+    height: 116px;
+    margin: 0 auto 1.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .preloader-spinner-outer {
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: var(--gold);
+    border-right-color: var(--gold);
+    box-shadow: 0 0 20px rgba(200, 150, 62, 0.45);
+    animation: preloaderSpin 1.4s cubic-bezier(0.5, 0.1, 0.4, 0.9) infinite;
+  }
+  .preloader-spinner-inner {
+    position: absolute;
+    inset: -15px;
+    border-radius: 50%;
+    border: 1.5px dashed rgba(200, 150, 62, 0.38);
+    animation: preloaderSpinRev 3.5s linear infinite;
+  }
+  @keyframes preloaderSpin {
+    0%   { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  @keyframes preloaderSpinRev {
+    0%   { transform: rotate(360deg); }
+    100% { transform: rotate(0deg); }
+  }
+  .preloader-logo-img {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 0 25px rgba(200, 150, 62, 0.35);
+    animation: preloaderPulse 2.2s ease-in-out infinite;
+  }
+  @keyframes preloaderPulse {
+    0%, 100% { transform: scale(1); filter: brightness(1); }
+    50%      { transform: scale(1.04); filter: brightness(1.12); }
+  }
+  .preloader-title {
+    font-family: var(--font-serif);
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.35rem;
+    text-shadow: 0 2px 14px rgba(0,0,0,0.6);
+  }
+  .preloader-sub {
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.85rem;
+    font-weight: 600;
+  }
+  .preloader-mantra {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.75);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── SCROLLYTELLING CURTAIN & PINNED HERO ── */
+  .hero-scroll-pin {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    height: 100svh;
+    z-index: 1;
+    overflow: hidden;
+    background: #071520;
+  }
   .hero {
     position: relative;
     width: 100%;
-    max-width: 100%;
-    min-height: 88svh;
-    height: 94svh;
-    max-height: 1080px;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    padding: 95px 1.5rem 3rem;
-    background: #071520;
+    padding: 85px 1.5rem 2rem;
+    box-sizing: border-box;
   }
   .hero-stage {
     position: absolute;
@@ -579,44 +678,7 @@ const CSS = `
     .hero-img-om { object-position: 50% 18% !important; }
   }
 
-  /* Live 60 FPS Drone Video Layer */
-  .hero-video-bg {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    min-width: 100%; min-height: 100%;
-    object-fit: cover;
-    pointer-events: none !important;
-    filter: contrast(1.04) brightness(0.92);
-  }
-  .hero-video-bg::-webkit-media-controls,
-  .hero-video-bg::-webkit-media-controls-start-playback-button,
-  .hero-video-bg::-webkit-media-controls-play-button,
-  .hero-video-bg::-webkit-media-controls-overlay-play-button,
-  .hero-video-bg::-webkit-media-controls-enclosure,
-  .hero-video-bg::-webkit-media-controls-panel {
-    display: none !important;
-    -webkit-appearance: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-    width: 0 !important;
-    height: 0 !important;
-  }
-  .hero-video-desktop {
-    display: block !important;
-    object-position: center 30%;
-  }
-  .hero-video-mobile {
-    display: none !important;
-    object-position: center 36%;
-  }
-  @media (max-width: 768px), (max-width: 960px) and (orientation: portrait) {
-    .hero-video-desktop { display: none !important; }
-    .hero-video-mobile { display: block !important; }
-  }
-
-  /* Editorial Contrast Layer (Multi-stop gradient keeping peak radiant & text crystal clear) */
+  /* Editorial Contrast Layer */
   .hero-overlay {
     position: absolute; inset: 0;
     background:
@@ -647,6 +709,22 @@ const CSS = `
     50%  { transform: translate3d(22px, 55vh, 0); }
     88%  { opacity: 0.8; }
     100% { transform: translate3d(-16px, 110vh, 0); opacity: 0; }
+  }
+
+  /* ── THE MAJESTIC SCROLLYTELLING CURTAIN WRAPPER ── */
+  .curtain-content-wrapper {
+    position: relative;
+    z-index: 10;
+    background: var(--snow);
+    border-radius: 36px 36px 0 0;
+    box-shadow: 0 -25px 60px rgba(0, 0, 0, 0.5);
+    border-top: 1.5px solid rgba(200, 150, 62, 0.4);
+    will-change: transform;
+  }
+  @media (max-width: 768px) {
+    .curtain-content-wrapper {
+      border-radius: 26px 26px 0 0;
+    }
   }
 
   /* ── GLOBAL SCROLLYTELLING READING BAR ── */
@@ -833,8 +911,30 @@ const CSS = `
     box-shadow: 0 4px 18px rgba(200, 150, 62, 0.45);
     border-color: rgba(255, 255, 255, 0.3);
   }
-  .hero-dest-icon {
-    font-size: 0.95rem;
+  .hero-dest-svg {
+    display: inline-block;
+    vertical-align: middle;
+    flex-shrink: 0;
+    color: currentColor;
+    transition: transform 0.25s ease;
+  }
+  .hero-dest-tab:hover .hero-dest-svg {
+    transform: scale(1.1);
+  }
+  .hero-dest-om {
+    font-size: 1.18rem;
+    font-weight: 700;
+    line-height: 1;
+    display: inline-block;
+    color: currentColor;
+    transition: transform 0.25s ease;
+  }
+  .hero-dest-tab:hover .hero-dest-om {
+    transform: scale(1.12);
+  }
+  .hero-dest-tab:not(.is-active) .hero-dest-svg,
+  .hero-dest-tab:not(.is-active) .hero-dest-om {
+    color: var(--gold);
   }
   .hero-dest-badge {
     font-size: 0.68rem;
@@ -1040,69 +1140,80 @@ const CSS = `
   /* Mobile: comfortable spacing under fixed navbar & stacked buttons */
   @media (max-width: 768px) {
     .hero {
-      height: auto;
-      min-height: 100vh;
-      min-height: 100svh;
-      padding: 96px 1.15rem 3.5rem;
-      align-items: flex-start;
+      height: 100%;
+      min-height: 100%;
+      padding: 78px 1rem 1.25rem;
+      align-items: center;
       justify-content: center;
     }
-    .hero-content { padding: 0 0.5rem; }
+    .hero-content { padding: 0 0.25rem; max-width: 100%; }
     .hero-eyebrow {
-      font-size: 0.68rem;
-      letter-spacing: 0.12em;
-      padding: 0.35rem 1rem;
-      margin-bottom: 0.85rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      padding: 0.3rem 0.85rem;
+      margin-bottom: 0.55rem;
     }
     .hero-headline {
-      font-size: clamp(2.05rem, 7.8vw, 2.9rem);
+      font-size: clamp(1.8rem, 6.2vw, 2.4rem);
       line-height: 1.15;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.35rem;
     }
     .hero-highlight {
-      font-size: clamp(1.22rem, 4.8vw, 1.65rem);
-      margin-bottom: 0.85rem;
+      font-size: clamp(1.1rem, 4.2vw, 1.35rem);
+      margin-bottom: 0.55rem;
     }
     .hero-supporting-copy {
-      font-size: 0.94rem;
-      line-height: 1.55;
-      margin-bottom: 1.35rem;
+      font-size: 0.84rem;
+      line-height: 1.45;
+      margin-bottom: 0.95rem;
+      max-width: 95%;
     }
     .hero-dest-selector {
       width: 100%;
-      border-radius: 20px;
-      padding: 4px;
+      max-width: 380px;
+      border-radius: 50px;
+      padding: 3px;
       gap: 4px;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
+      display: flex;
     }
     .hero-dest-tab {
-      flex: 1 1 45%;
+      flex: 1 1 50%;
       justify-content: center;
-      padding: 0.5rem 0.75rem;
-      font-size: 0.78rem;
-      border-radius: 16px;
+      padding: 0.45rem 0.65rem;
+      font-size: 0.76rem;
+      border-radius: 50px;
+      gap: 6px;
+    }
+    .hero-dest-badge {
+      font-size: 0.62rem;
+      padding: 1px 5px;
     }
     .hero-cta-group {
-      flex-direction: column;
+      flex-direction: row;
       width: 100%;
-      gap: 0.75rem;
-      margin-bottom: 1.5rem;
+      max-width: 380px;
+      gap: 0.65rem;
+      margin-bottom: 0.95rem;
     }
     .hero-btn-primary,
     .hero-btn-secondary {
-      width: 100%;
+      flex: 1 1 50%;
       justify-content: center;
-      padding: 0.82rem 1.25rem;
-      font-size: 0.92rem;
+      padding: 0.68rem 0.8rem;
+      font-size: 0.82rem;
+      white-space: nowrap;
     }
     .hero-scene-meta {
       width: 100%;
-      border-radius: 16px;
-      padding: 0.5rem 0.8rem;
-      gap: 0.6rem 0.9rem;
-      margin-bottom: 1.4rem;
+      max-width: 380px;
+      border-radius: 50px;
+      padding: 0.32rem 0.75rem;
+      gap: 0.5rem 0.75rem;
+      margin-bottom: 0.8rem;
     }
-    .hero-meta-item { font-size: 0.72rem; }
+    .hero-meta-item { font-size: 0.68rem; }
+    .hero-scroll { display: none; }
   }
 
   /* ── SECTIONS ── */
@@ -1465,7 +1576,19 @@ const CSS = `
     display: flex; flex-direction: column; justify-content: center; align-items: center;
     text-shadow: 0 2px 10px rgba(0,0,0,0.6);
   }
-  .why-media-icon { font-size: 2rem; margin-bottom: 0.35rem; }
+  .why-media-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 0.45rem;
+    border-radius: 50%;
+    background: rgba(200, 150, 62, 0.28);
+    border: 1.5px solid var(--gold);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
+  }
   .why-media-title {
     font-family: var(--font-sans); font-weight: 700; font-size: 1.05rem;
     color: white; margin-bottom: 0.25rem;
@@ -1501,9 +1624,26 @@ const CSS = `
     }
   }
   .why-icon {
-    width: 58px; height: 58px; margin: 0 auto 0.9rem; border-radius: 50%;
-    background: linear-gradient(135deg, var(--ice), var(--glacier));
-    display: flex; align-items: center; justify-content: center; font-size: 1.6rem;
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 0.95rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(200, 150, 62, 0.12), rgba(200, 150, 62, 0.24));
+    border: 1.5px solid rgba(200, 150, 62, 0.38);
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(200, 150, 62, 0.15);
+    transition: transform 0.3s ease, border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
+  }
+  .why-card:hover .why-icon,
+  .why-card:focus-visible .why-icon {
+    transform: scale(1.08);
+    background: linear-gradient(135deg, #e5b35a, #c8963e);
+    color: #071520;
+    border-color: var(--gold);
+    box-shadow: 0 6px 20px rgba(200, 150, 62, 0.35);
   }
   .why-title {
     font-family: var(--font-sans); font-size: 0.98rem; font-weight: 700;
@@ -2151,59 +2291,24 @@ const SCENE_DETAILS = {
     altitude: "5,590 m (18,340 ft)",
     subcopy: "Witness the miraculous natural ॐ snow formation at Nabhidhang, timeless Himalayan tranquillity, and heartfelt hospitality of Shiv Darshan Homestay in Dharchula.",
   },
-  video: {
-    sanctuary: "Kumaon Himalayas Aerial Tour",
-    altitude: "High Himalayan Yatra Corridor",
-    subcopy: "Glide above ancient pilgrimage trails, snowfields, and towering sacred peaks from Dharchula on the sacred Adi Kailash & Om Parvat circuit.",
-  },
 };
 
 function Hero() {
   const ref = useRef(null);
   const heroStageRef = useRef(null);
   const heroContentRef = useRef(null);
-  const desktopVideoRef = useRef(null);
-  const mobileVideoRef = useRef(null);
 
-  // Interactive Destination Scene State: 'adiKailash' (default) | 'omParvat' | 'video'
+  // Interactive Destination Scene State: 'adiKailash' (default) | 'omParvat'
   const [activeScene, setActiveScene] = useState("adiKailash");
-
-  // Safe helper to play without interruption or race condition
-  const playVideo = useCallback((v) => {
-    if (!v) return;
-    v.muted = true;
-    v.defaultMuted = true;
-    v.playsInline = true;
-    if (v.paused) {
-      const p = v.play();
-      if (p !== undefined) {
-        p.catch(() => {});
-      }
-    }
-  }, []);
-
-  const pauseVideo = useCallback((v) => {
-    if (!v) return;
-    if (!v.paused) {
-      v.pause();
-    }
-  }, []);
 
   // Handle scene switching with keyboard / click
   const handleSelectScene = (sceneId) => {
     setActiveScene(sceneId);
-    if (sceneId === "video") {
-      playVideo(desktopVideoRef.current);
-      playVideo(mobileVideoRef.current);
-    } else {
-      pauseVideo(desktopVideoRef.current);
-      pauseVideo(mobileVideoRef.current);
-    }
   };
 
   // Keyboard navigation for destination selector (ArrowLeft, ArrowRight)
   const handleTabKeyDown = (e, currentId) => {
-    const sceneKeys = ["adiKailash", "omParvat", "video"];
+    const sceneKeys = ["adiKailash", "omParvat"];
     const idx = sceneKeys.indexOf(currentId);
     if (e.key === "ArrowRight") {
       e.preventDefault();
@@ -2216,33 +2321,23 @@ function Hero() {
     }
   };
 
-  // 60 FPS IntersectionObserver: pauses background media when scrolled off-screen
+  // IntersectionObserver: pauses animations when scrolled completely off-screen
   useEffect(() => {
     const el = ref.current;
     if (!el || !("IntersectionObserver" in window)) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        const isVisible = entry.isIntersecting;
-        el.classList.toggle("is-idle", !isVisible);
-        if (!isVisible) {
-          pauseVideo(desktopVideoRef.current);
-          pauseVideo(mobileVideoRef.current);
-        } else if (activeScene === "video" && window.scrollY < (el.offsetHeight * 0.7)) {
-          playVideo(desktopVideoRef.current);
-          playVideo(mobileVideoRef.current);
-        }
+        el.classList.toggle("is-idle", !entry.isIntersecting);
       },
-      { threshold: 0.1 }
+      { threshold: 0.05 }
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, [activeScene, playVideo, pauseVideo]);
+  }, []);
 
-  // 60 FPS Scrollytelling Parallax & State-Tracked Boundary Play/Pause
+  // 60 FPS Scrollytelling: Hero content recedes down and fades smoothly as curtain rises
   useEffect(() => {
     let ticking = false;
-    let isPastHero = false;
-
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
@@ -2250,28 +2345,17 @@ function Hero() {
           const heroEl = ref.current;
           const heroHeight = heroEl ? heroEl.offsetHeight : window.innerHeight;
 
-          // Parallax transform
-          if (heroStageRef.current) {
-            heroStageRef.current.style.transform = `scale(1.02) translate3d(0, ${(scrollY * 0.16).toFixed(2)}px, 0)`;
-          }
-          if (heroContentRef.current) {
-            heroContentRef.current.style.transform = `translate3d(0, ${(scrollY * 0.28).toFixed(2)}px, 0)`;
-            heroContentRef.current.style.opacity = Math.max(0, 1 - scrollY / 700).toFixed(3);
-          }
-
-          // State-tracked: trigger pause/play only ONCE when crossing the hero boundary
-          const shouldPause = scrollY > (heroHeight * 0.65);
-          if (shouldPause !== isPastHero) {
-            isPastHero = shouldPause;
-            if (shouldPause) {
-              pauseVideo(desktopVideoRef.current);
-              pauseVideo(mobileVideoRef.current);
-            } else if (activeScene === "video") {
-              playVideo(desktopVideoRef.current);
-              playVideo(mobileVideoRef.current);
+          if (scrollY <= heroHeight) {
+            // Background mountain subtly moves down for majestic depth
+            if (heroStageRef.current) {
+              heroStageRef.current.style.transform = `scale(1.02) translate3d(0, ${(scrollY * 0.16).toFixed(1)}px, 0)`;
+            }
+            // Foreground text moves down slightly and gently dims out before curtain overlaps
+            if (heroContentRef.current) {
+              heroContentRef.current.style.transform = `translate3d(0, ${(scrollY * 0.32).toFixed(1)}px, 0)`;
+              heroContentRef.current.style.opacity = Math.max(0, 1 - (scrollY / (heroHeight * 0.72))).toFixed(3);
             }
           }
-
           ticking = false;
         });
         ticking = true;
@@ -2279,14 +2363,7 @@ function Hero() {
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [activeScene, playVideo, pauseVideo]);
-
-  // Desktop Widescreen Video (60 FPS Drone Panorama)
-  const DESKTOP_VIDEO_SRC =
-    "https://res.cloudinary.com/b4c8jnri/video/upload/WhatsApp_Video_2026-10-15_at_1.30.16_AM.mp4";
-  // Mobile Vertical Video (9:16 Snow & Clouds Trek Reel)
-  const MOBILE_VIDEO_SRC =
-    "https://res.cloudinary.com/b4c8jnri/video/upload/WhatsApp_Video_2026-10-15_at_1.04.53_AM.mp4";
+  }, []);
 
   const currentMeta = SCENE_DETAILS[activeScene] || SCENE_DETAILS.adiKailash;
 
@@ -2328,43 +2405,6 @@ function Hero() {
             className="hero-img hero-img-om"
             loading="eager"
           />
-        </div>
-
-        {/* Scene C: Live 60 FPS Drone Panorama & Mobile Reel */}
-        <div
-          className={`hero-scene-layer scene-video ${activeScene === "video" ? "is-active" : ""}`}
-          aria-hidden={activeScene !== "video"}
-        >
-          <video
-            ref={desktopVideoRef}
-            className="hero-video-bg hero-video-desktop"
-            src={DESKTOP_VIDEO_SRC}
-            loop
-            muted
-            playsInline
-            webkit-playsinline="true"
-            preload="auto"
-            controls={false}
-            disablePictureInPicture
-            disableRemotePlayback
-          >
-            <source src={DESKTOP_VIDEO_SRC} type="video/mp4" />
-          </video>
-          <video
-            ref={mobileVideoRef}
-            className="hero-video-bg hero-video-mobile"
-            src={MOBILE_VIDEO_SRC}
-            loop
-            muted
-            playsInline
-            webkit-playsinline="true"
-            preload="auto"
-            controls={false}
-            disablePictureInPicture
-            disableRemotePlayback
-          >
-            <source src={MOBILE_VIDEO_SRC} type="video/mp4" />
-          </video>
         </div>
       </div>
 
@@ -2434,7 +2474,7 @@ function Hero() {
             onClick={() => handleSelectScene("adiKailash")}
             onKeyDown={(e) => handleTabKeyDown(e, "adiKailash")}
           >
-            <span className="hero-dest-icon">🏔️</span>
+            <MountainSnow size={18} strokeWidth={2.2} className="hero-dest-svg" />
             <span>Adi Kailash</span>
             <span className="hero-dest-badge">5,945 m</span>
           </button>
@@ -2447,22 +2487,9 @@ function Hero() {
             onClick={() => handleSelectScene("omParvat")}
             onKeyDown={(e) => handleTabKeyDown(e, "omParvat")}
           >
-            <span className="hero-dest-icon">🕉️</span>
+            <span className="hero-dest-om">ॐ</span>
             <span>Om Parvat</span>
             <span className="hero-dest-badge">5,590 m</span>
-          </button>
-          <button
-            type="button"
-            role="tab"
-            aria-selected={activeScene === "video"}
-            tabIndex={0}
-            className={`hero-dest-tab ${activeScene === "video" ? "is-active" : ""}`}
-            onClick={() => handleSelectScene("video")}
-            onKeyDown={(e) => handleTabKeyDown(e, "video")}
-          >
-            <span className="hero-dest-icon">🎥</span>
-            <span>Aerial Tour</span>
-            <span className="hero-dest-badge">60 FPS</span>
           </button>
         </div>
 
@@ -3561,23 +3588,33 @@ function About() {
   const stackRef = useRef(null);
   const mainImgRef = useRef(null);
 
-  // 60 FPS Scrollytelling Parallax for About owner photo
+  // High-performance Scrollytelling Parallax for About owner photo
   useEffect(() => {
     let ticking = false;
+    let isIntersecting = false;
+    const el = stackRef.current;
+    if (!el) return;
+
+    let observer = null;
+    if ("IntersectionObserver" in window) {
+      observer = new IntersectionObserver(([entry]) => {
+        isIntersecting = entry.isIntersecting;
+      }, { threshold: 0 });
+      observer.observe(el);
+    } else {
+      isIntersecting = true;
+    }
+
     const handleScroll = () => {
+      if (!isIntersecting) return;
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          const el = stackRef.current;
-          if (el) {
+          if (el && mainImgRef.current) {
             const rect = el.getBoundingClientRect();
             const winH = window.innerHeight;
-            if (rect.top < winH && rect.bottom > 0) {
-              const progress = (winH - rect.top) / (winH + rect.height);
-              const mainShift = (progress - 0.5) * 20;
-              if (mainImgRef.current) {
-                mainImgRef.current.style.transform = `translate3d(0, ${mainShift.toFixed(2)}px, 0)`;
-              }
-            }
+            const progress = (winH - rect.top) / (winH + rect.height);
+            const mainShift = (progress - 0.5) * 16;
+            mainImgRef.current.style.transform = `translate3d(0, ${mainShift.toFixed(1)}px, 0)`;
           }
           ticking = false;
         });
@@ -3585,30 +3622,33 @@ function About() {
       }
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (observer) observer.disconnect();
+    };
   }, []);
 
   return (
     <div className="about-bg" id="about">
       <div className="about-grid reveal">
         <div className="about-img-stack" ref={stackRef}>
-          {/* Floating nameplate placed above the owner's photo so face is fully visible */}
+          {/* Floating nameplate placed below the owner photo */}
           <div
             className="floating-caption"
             style={{
               position: "absolute",
-              top: "-20px",
+              bottom: "-24px",
               left: "50%",
               transform: "translateX(-50%)",
               background: "rgba(255, 255, 255, 0.98)",
-              padding: "8px 22px",
+              padding: "9px 24px",
               borderRadius: "30px",
               boxShadow: "0 10px 30px rgba(0,0,0,0.25)",
               textAlign: "center",
               zIndex: 10,
               fontFamily: "var(--font-sans)",
               whiteSpace: "nowrap",
-              border: "1.5px solid rgba(200, 150, 62, 0.4)",
+              border: "1.5px solid rgba(200, 150, 62, 0.45)",
             }}
           >
             <div style={{ fontWeight: "700", color: "#1a3a4a", fontSize: "0.96rem" }}>
@@ -3617,18 +3657,18 @@ function About() {
             <div style={{ fontSize: "0.78rem", color: "#5a7380" }}>
               Owner &amp; Host · Shiv Darshan Homestay 🚩
             </div>
-            {/* Pointer arrow directing attention down to Govind Singh Dhami */}
+            {/* Pointer arrow directing attention up to Govind Singh Dhami */}
             <div
               style={{
                 position: "absolute",
-                bottom: "-6px",
+                top: "-6px",
                 left: "50%",
                 transform: "translateX(-50%) rotate(45deg)",
                 width: "12px",
                 height: "12px",
                 background: "rgba(255, 255, 255, 0.98)",
-                borderRight: "1.5px solid rgba(200, 150, 62, 0.4)",
-                borderBottom: "1.5px solid rgba(200, 150, 62, 0.4)",
+                borderLeft: "1.5px solid rgba(200, 150, 62, 0.45)",
+                borderTop: "1.5px solid rgba(200, 150, 62, 0.45)",
                 zIndex: 1,
               }}
             ></div>
@@ -3725,35 +3765,35 @@ function WhyStay() {
 
   const reasons = [
     {
-      icon: "🏔️",
+      IconComponent: MountainSnow,
       title: "Himalayan Views",
       desc: "Wake up to snow-capped Himalayan peaks right from your window.",
       img: whyHimalayanImg,
       caption: "Himalayan peaks, from your bed",
     },
     {
-      icon: "🛏️",
+      IconComponent: BedDouble,
       title: "Comfortable Rooms",
       desc: "Cozy, heated rooms with premium bedding and 24×7 hot water.",
       img: roomCardImg,
       caption: "Warm, cozy & spotless",
     },
     {
-      icon: "🍲",
+      IconComponent: UtensilsCrossed,
       title: "Kumaoni Cuisine",
       desc: "Authentic home-cooked Kumaoni meals from our organic garden.",
       img: foodImg,
       caption: "Fresh local thali & warm hospitality",
     },
     {
-      icon: "📍",
+      IconComponent: MapPin,
       title: "Near Adi Kailash",
       desc: "Perfect base on the Adi Kailash & Om Parvat yatra route — Haat, Dharchula.",
       img: kedarImg,
       caption: "On the Adi Kailash Route",
     },
     {
-      icon: "❤️",
+      IconComponent: Heart,
       title: "Peaceful Environment",
       desc: "Village trails, fresh mountain air, bird chirping and warm locals — pure mountain calm.",
       img: peacefulImg,
@@ -3783,7 +3823,7 @@ function WhyStay() {
         </p>
       </div>
       <div className="why-grid reveal">
-        {reasons.map(({ icon, title, desc, img, caption }, i) => (
+        {reasons.map(({ IconComponent, title, desc, img, caption }, i) => (
           <div
             key={title}
             className={`why-card${hoveredIndex === i ? " is-active" : ""}`}
@@ -3792,14 +3832,18 @@ function WhyStay() {
             onMouseLeave={() => setHoveredIndex(null)}
             onClick={() => setHoveredIndex(hoveredIndex === i ? null : i)}
           >
-            <div className="why-icon">{icon}</div>
+            <div className="why-icon">
+              <IconComponent size={24} strokeWidth={2.2} />
+            </div>
             <div className="why-title">{title}</div>
             <div className="why-desc">{desc}</div>
             <span className="why-hover-hint">Hover to view 📸</span>
             <div className="why-media" aria-hidden="true">
               <img src={img} alt={caption} loading="lazy" />
               <div className="why-media-caption">
-                <div className="why-media-icon">{icon}</div>
+                <div className="why-media-icon">
+                  <IconComponent size={22} strokeWidth={2.2} />
+                </div>
                 <div className="why-media-title">{title}</div>
                 <div className="why-media-sub">{caption}</div>
                 <div className="why-media-desc">{desc}</div>
@@ -4689,11 +4733,72 @@ function useScrollReveal() {
   }, []);
 }
 
+function Preloader() {
+  const isTest = typeof process !== "undefined" && process.env && process.env.NODE_ENV === "test";
+  const [visible, setVisible] = useState(() => !isTest);
+  const [fading, setFading] = useState(false);
+
+  useEffect(() => {
+    if (isTest || !visible) return;
+    // 3-second circular logo loading sequence (fade begins at 2.4s, completes at 3.0s)
+    const fadeTimer = setTimeout(() => {
+      setFading(true);
+    }, 2400);
+
+    const removeTimer = setTimeout(() => {
+      setVisible(false);
+    }, 3000);
+
+    return () => {
+      clearTimeout(fadeTimer);
+      clearTimeout(removeTimer);
+    };
+  }, [isTest, visible]);
+
+  if (!visible) return null;
+
+  return (
+    <div
+      className={`site-preloader ${fading ? "is-fading" : ""}`}
+      role="status"
+      aria-live="polite"
+      aria-label="Loading Shiv Darshan Homestay"
+    >
+      <div className="preloader-content">
+        <div className="preloader-logo-wrap">
+          <div className="preloader-spinner-outer" />
+          <div className="preloader-spinner-inner" />
+          <img
+            src={logoImg}
+            alt="Shiv Darshan Homestay Logo"
+            className="preloader-logo-img"
+          />
+        </div>
+        <h2 className="preloader-title">Shiv Darshan Homestay</h2>
+        <div className="preloader-sub">Haat, Dharchula · Uttarakhand</div>
+        <div className="preloader-mantra">॥ ॐ नमः शिवाय ॥</div>
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
   const [booking, setBooking] = useState(null);
   const [policies, setPolicies] = useState(null);
 
   useScrollReveal();
+
+  // Always return user to the hero section on page refresh
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if ("scrollRestoration" in window.history) {
+        window.history.scrollRestoration = "manual";
+      }
+      if (typeof process === "undefined" || !process.env || process.env.NODE_ENV !== "test") {
+        window.scrollTo(0, 0);
+      }
+    }
+  }, []);
 
   // In-page links glide to their section instead of jumping, and the address bar
   // keeps the fragment so the links stay shareable. Anything that opens a page of
@@ -4865,29 +4970,34 @@ export default function App() {
       }}
     >
       <style>{CSS}</style>
+      <Preloader />
       {/* 60 FPS Scrollytelling Global Reading Progress Bar */}
       <div ref={readingBarRef} className="scrolly-reading-bar" style={{ width: "0%" }} />
       <Navbar />
-      <Hero />
-      <About />
-      <WhyStay />
-      <Rooms
-        onBook={(room) =>
-          setBooking({ room, checkin: "", checkout: "", guests: "1" })
-        }
-      />
-      <div className="divider" />
-      <Services />
-      <div className="divider" />
-      <Gallery />
-      <VideoSection />
-      <Testimonials />
-      <Contact />
-      <Footer
-        bookRowRef={footerBookRowRef}
-        toTopRef={footerTopRef}
-        onPolicies={(section) => setPolicies({ section })}
-      />
+      <div className="hero-scroll-pin">
+        <Hero />
+      </div>
+      <div className="curtain-content-wrapper">
+        <About />
+        <WhyStay />
+        <Rooms
+          onBook={(room) =>
+            setBooking({ room, checkin: "", checkout: "", guests: "1" })
+          }
+        />
+        <div className="divider" />
+        <Services />
+        <div className="divider" />
+        <Gallery />
+        <VideoSection />
+        <Testimonials />
+        <Contact />
+        <Footer
+          bookRowRef={footerBookRowRef}
+          toTopRef={footerTopRef}
+          onPolicies={(section) => setPolicies({ section })}
+        />
+      </div>
 
       {/* Floating back-to-top circle. Bottom-left so it never fights the Book
           Now pill in the bottom-right corner; JS toggles .show. */}
