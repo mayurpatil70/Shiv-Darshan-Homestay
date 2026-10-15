@@ -2191,7 +2191,7 @@ const CSS = `
   }
   .gmap-card-wrapper {
     background: linear-gradient(175deg, rgba(14, 38, 54, 0.94) 0%, rgba(8, 22, 32, 0.98) 100%);
-    border: 1px solid rgba(245, 208, 112, 0.32);
+    border: 1px solid rgba(245, 208, 112, 0.35);
     border-radius: 24px;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), 0 4px 14px rgba(0, 0, 0, 0.35);
     overflow: hidden;
@@ -2199,11 +2199,11 @@ const CSS = `
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
   }
   .gmap-card-wrapper:hover {
-    border-color: rgba(245, 208, 112, 0.6);
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65), 0 0 25px rgba(200, 150, 62, 0.15);
+    border-color: rgba(245, 208, 112, 0.65);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65), 0 0 25px rgba(200, 150, 62, 0.18);
   }
   .gmap-top-bar {
-    background: rgba(4, 15, 23, 0.88);
+    background: rgba(4, 15, 23, 0.92);
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     padding: 0.85rem 1.25rem;
     display: flex;
@@ -2236,6 +2236,18 @@ const CSS = `
     gap: 0.5rem;
     flex-wrap: wrap;
   }
+  .gmap-satellite-badge {
+    background: rgba(14, 165, 233, 0.18);
+    border: 1px solid rgba(56, 189, 248, 0.45);
+    color: #38bdf8;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.3rem 0.65rem;
+    border-radius: 50px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
   .gmap-rating-badge {
     background: rgba(200, 150, 62, 0.2);
     border: 1px solid rgba(245, 208, 112, 0.4);
@@ -2263,7 +2275,7 @@ const CSS = `
   .gmap-viewport {
     position: relative;
     width: 100%;
-    height: 440px;
+    height: 520px;
     background: #091a24;
     overflow: hidden;
     cursor: pointer;
@@ -2315,7 +2327,7 @@ const CSS = `
     border-color: #ffffff;
   }
   .gmap-info-strip {
-    background: rgba(4, 15, 23, 0.92);
+    background: rgba(4, 15, 23, 0.94);
     border-top: 1px solid rgba(255, 255, 255, 0.08);
     padding: 1.25rem 1.5rem;
     display: flex;
@@ -2360,9 +2372,9 @@ const CSS = `
     flex-wrap: wrap;
   }
   @keyframes gmapRadarPulse {
-    0% { r: 14px; opacity: 0.9; stroke-width: 2px; }
-    50% { opacity: 0.4; }
-    100% { r: 44px; opacity: 0; stroke-width: 0.5px; }
+    0% { r: 14px; opacity: 0.95; stroke-width: 2px; }
+    50% { opacity: 0.45; }
+    100% { r: 48px; opacity: 0; stroke-width: 0.5px; }
   }
   @keyframes gmapPinBounce {
     0%, 100% { transform: translateY(0); }
@@ -2370,15 +2382,26 @@ const CSS = `
   }
   .gmap-pin-group {
     animation: gmapPinBounce 2.8s ease-in-out infinite;
-    transform-origin: 480px 220px;
+    transform-origin: 473px 307px;
   }
-  @media (max-width: 768px) {
-    .gmap-section { padding: 2.5rem 1rem 3rem; }
-    .gmap-viewport { height: 320px; }
-    .gmap-top-bar { padding: 0.75rem 1rem; }
-    .gmap-info-strip { padding: 1rem; flex-direction: column; align-items: stretch; }
-    .gmap-action-btns { width: 100%; justify-content: stretch; }
-    .gmap-action-btns > a { flex: 1 1 100%; justify-content: center; text-align: center; }
+  @media (max-width: 992px) {
+    .gmap-viewport { height: 420px; }
+  }
+  @media (max-width: 640px) {
+    .gmap-section { padding: 2rem 0.75rem 2.5rem; }
+    .gmap-card-wrapper { border-radius: 18px; }
+    .gmap-viewport { height: 330px; }
+    .gmap-top-bar { padding: 0.7rem 0.85rem; }
+    .gmap-search-pill { font-size: 0.74rem; padding: 0.35rem 0.75rem; }
+    .gmap-top-badges { gap: 0.35rem; }
+    .gmap-rating-badge, .gmap-status-badge, .gmap-satellite-badge { font-size: 0.68rem; padding: 0.25rem 0.5rem; }
+    .gmap-poi-secondary { display: none; }
+    .gmap-hover-hint { font-size: 0.7rem; padding: 0.35rem 0.75rem; bottom: 0.65rem; }
+    .gmap-info-strip { padding: 1rem; flex-direction: column; align-items: stretch; gap: 1rem; }
+    .gmap-info-address { font-size: 0.85rem; }
+    .gmap-info-meta { font-size: 0.74rem; gap: 0.5rem; }
+    .gmap-action-btns { width: 100%; flex-direction: column; }
+    .gmap-action-btns > a { width: 100%; justify-content: center; text-align: center; }
   }
 
   /* ── FAQ & PILGRIM GUIDE ACCORDION (AEO & SEO) ── */
@@ -2396,20 +2419,22 @@ const CSS = `
     margin-top: 2rem;
   }
   .faq-item {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #ffffff;
+    border: 1.5px solid var(--border);
     border-radius: 16px;
     overflow: hidden;
-    transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: 0 4px 16px rgba(26, 58, 74, 0.05);
+    transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
   }
   .faq-item:hover {
-    border-color: rgba(245, 208, 112, 0.4);
-    background: rgba(255, 255, 255, 0.06);
+    border-color: var(--gold);
+    box-shadow: 0 8px 24px rgba(200, 150, 62, 0.14);
+    transform: translateY(-2px);
   }
   .faq-item.is-open {
-    border-color: rgba(245, 208, 112, 0.55);
-    background: rgba(200, 150, 62, 0.07);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    border-color: var(--gold);
+    background: #ffffff;
+    box-shadow: 0 10px 28px rgba(200, 150, 62, 0.16);
   }
   .faq-question-btn {
     width: 100%;
@@ -2417,16 +2442,20 @@ const CSS = `
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    padding: 1.15rem 1.4rem;
+    padding: 1.2rem 1.45rem;
     background: transparent;
     border: none;
-    color: #ffffff;
-    font-size: 1.02rem;
-    font-weight: 600;
-    font-family: inherit;
+    color: var(--peak);
+    font-size: 1.05rem;
+    font-weight: 700;
+    font-family: var(--font-sans);
     text-align: left;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
+    transition: color 0.2s ease;
+  }
+  .faq-question-btn:hover {
+    color: var(--gold);
   }
   .faq-question-btn:focus-visible {
     outline: 2px solid var(--gold);
@@ -2436,46 +2465,50 @@ const CSS = `
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.08);
+    background: var(--ice);
     color: var(--gold);
+    border: 1px solid var(--glacier);
     flex-shrink: 0;
-    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.3s ease, color 0.3s ease;
   }
   .faq-item.is-open .faq-icon-wrapper {
     transform: rotate(180deg);
-    background: rgba(200, 150, 62, 0.3);
+    background: var(--gold);
+    color: #ffffff;
+    border-color: var(--gold);
   }
   .faq-answer-pane {
-    padding: 0 1.4rem 1.25rem;
-    font-size: 0.92rem;
-    color: rgba(255, 255, 255, 0.82);
-    line-height: 1.7;
-    border-top: 1px dashed rgba(255, 255, 255, 0.08);
+    padding: 0 1.45rem 1.35rem;
+    font-size: 0.95rem;
+    color: var(--muted);
+    line-height: 1.75;
+    border-top: 1px solid rgba(0, 0, 0, 0.07);
     margin-top: -0.2rem;
-    padding-top: 0.9rem;
+    padding-top: 0.95rem;
     animation: fadeIn 0.3s ease both;
   }
   .faq-cta-banner {
-    margin-top: 2.5rem;
+    margin-top: 2.75rem;
     text-align: center;
-    background: rgba(14, 38, 54, 0.7);
-    border: 1px solid rgba(245, 208, 112, 0.3);
-    border-radius: 18px;
-    padding: 1.5rem 1.5rem;
+    background: linear-gradient(135deg, var(--peak) 0%, #0d2535 100%);
+    border: 1.5px solid rgba(245, 208, 112, 0.35);
+    border-radius: 20px;
+    padding: 1.75rem 2rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1.25rem;
     flex-wrap: wrap;
+    box-shadow: 0 16px 40px rgba(12, 32, 42, 0.25);
   }
   @media (max-width: 720px) {
     .faq-section { padding: 3rem 1.25rem; }
     .faq-question-btn { padding: 1rem 1.15rem; font-size: 0.94rem; }
-    .faq-answer-pane { padding: 0 1.15rem 1.1rem; font-size: 0.88rem; }
-    .faq-cta-banner { flex-direction: column; text-align: center; justify-content: center; }
+    .faq-answer-pane { padding: 0 1.15rem 1.15rem; font-size: 0.88rem; }
+    .faq-cta-banner { flex-direction: column; text-align: center; justify-content: center; padding: 1.4rem 1.2rem; }
   }
 `;
 
@@ -4947,7 +4980,7 @@ function LocationMap() {
         <h2 className="section-title">Find Us in Haat, Dharchula</h2>
         <p className="section-sub" style={{ maxWidth: "680px", margin: "0 auto" }}>
           Shiv Darshan Homestay is situated peacefully in Haat village, Dharchula — right along the sacred
-          gateway highway to Adi Kailash and Om Parvat. Click the interactive map card below to open Google Maps.
+          gateway highway to Adi Kailash and Om Parvat. Click the interactive satellite map below to open Google Maps navigation.
         </p>
       </div>
 
@@ -4961,6 +4994,9 @@ function LocationMap() {
             </span>
           </div>
           <div className="gmap-top-badges">
+            <div className="gmap-satellite-badge">
+              🛰️ Satellite View
+            </div>
             <div className="gmap-rating-badge">
               ★ 4.9 · 500+ Reviews
             </div>
@@ -4982,166 +5018,209 @@ function LocationMap() {
             <span style={{ display: "none" }}>Open Shiv Darshan Homestay in Google Maps</span>
           </a>
 
-          {/* SVG Cartographic Mountain & River Terrain of Haat, Dharchula */}
-          <svg viewBox="0 0 1000 480" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          {/* SVG Realistic Satellite Map View with Geodetic Landmarks */}
+          <svg
+            viewBox="60 10 904 600"
+            preserveAspectRatio="xMidYMid meet"
+            xmlns="http://www.w3.org/2000/svg"
+            style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}
+          >
             <defs>
-              <linearGradient id="terrainGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#0b2330" />
-                <stop offset="50%" stopColor="#103144" />
-                <stop offset="100%" stopColor="#081822" />
-              </linearGradient>
-              <linearGradient id="riverGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#0284c7" />
-                <stop offset="50%" stopColor="#0ea5e9" />
-                <stop offset="100%" stopColor="#38bdf8" />
-              </linearGradient>
               <radialGradient id="auraGlow" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor="#f5d070" stopOpacity="0.8" />
-                <stop offset="45%" stopColor="#f5d070" stopOpacity="0.25" />
+                <stop offset="0%" stopColor="#f5d070" stopOpacity="0.95" />
+                <stop offset="35%" stopColor="#f5d070" stopOpacity="0.4" />
                 <stop offset="100%" stopColor="#f5d070" stopOpacity="0" />
               </radialGradient>
+              <filter id="pinShadow" x="-30%" y="-30%" width="160%" height="160%">
+                <feDropShadow dx="0" dy="5" stdDeviation="5" floodColor="#000000" floodOpacity="0.8" />
+              </filter>
               <filter id="cardShadow" x="-20%" y="-20%" width="140%" height="140%">
-                <feDropShadow dx="0" dy="6" stdDeviation="6" floodColor="#000000" floodOpacity="0.6" />
+                <feDropShadow dx="0" dy="3" stdDeviation="4" floodColor="#000000" floodOpacity="0.7" />
               </filter>
             </defs>
 
-            {/* Base Mountain Valley Terrain */}
-            <rect width="1000" height="480" fill="url(#terrainGrad)" />
-
-            {/* Topographic Elevation Contours */}
-            <path d="M-50,80 Q200,40 450,110 T950,60" fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="36" />
-            <path d="M-50,180 Q250,130 520,210 T1050,160" fill="none" stroke="rgba(255,255,255,0.035)" strokeWidth="48" />
-            <path d="M-50,320 Q220,260 480,330 T1050,290" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="52" />
-            <path d="M-50,440 Q300,380 600,430 T1050,420" fill="none" stroke="rgba(255,255,255,0.025)" strokeWidth="40" />
-
-            {/* Kali River (Indo - Nepal Border) */}
-            <path
-              d="M 860,-20 C 800,100 730,190 670,270 C 620,340 580,410 540,500"
-              fill="none"
-              stroke="url(#riverGrad)"
-              strokeWidth="38"
-              strokeLinecap="round"
-              opacity="0.85"
-            />
-            {/* Kali River Shimmer Current lines */}
-            <path
-              d="M 860,-20 C 800,100 730,190 670,270 C 620,340 580,410 540,500"
-              fill="none"
-              stroke="#ffffff"
-              strokeWidth="2.5"
-              strokeDasharray="18 12"
-              opacity="0.5"
+            {/* Real Photorealistic Satellite Base Imagery */}
+            <image
+              href="/satellite/dharchula_satellite_base.jpg"
+              x="0"
+              y="0"
+              width="1024"
+              height="768"
+              preserveAspectRatio="none"
             />
 
-            {/* Nepal Territory Backdrop */}
-            <path
-              d="M 860,-20 C 800,100 730,190 670,270 C 620,340 580,410 540,500 L 1000,500 L 1000,-20 Z"
-              fill="rgba(6, 18, 26, 0.45)"
-            />
-            {/* Country and Valley Labels */}
-            <text x="820" y="380" fill="rgba(255,255,255,0.3)" fontSize="13" fontWeight="600" letterSpacing="1.5">
-              {"NEPAL 🇳🇵 (Darchula)"}
-            </text>
-            <text x="730" y="240" fill="#38bdf8" fontSize="11" fontWeight="600" fontStyle="italic" letterSpacing="1">
-              {"~ Kali River (Border) ~"}
-            </text>
-            <text x="60" y="440" fill="rgba(255,255,255,0.4)" fontSize="14" fontWeight="600" letterSpacing="1.5">
-              {"INDIA 🇮🇳 (Uttarakhand)"}
-            </text>
+            {/* High-contrast atmospheric tone tint */}
+            <rect x="0" y="0" width="1024" height="768" fill="rgba(4, 14, 22, 0.16)" />
 
-            {/* Tawaghat - Dharchula - Lipulekh Highway (NH 107A - Pilgrimage Route) */}
+            {/* Pilgrimage Highway NH 107A Real Valley Alignment */}
             <path
-              d="M 40,460 Q 180,390 310,330 T 470,230 T 630,120 T 780,-10"
-              fill="none"
-              stroke="#eab308"
-              strokeWidth="11"
-              strokeLinecap="round"
-            />
-            {/* Highway White Dashed Line */}
-            <path
-              d="M 40,460 Q 180,390 310,330 T 470,230 T 630,120 T 780,-10"
-              fill="none"
-              stroke="#ffffff"
-              strokeWidth="2"
-              strokeDasharray="12 10"
-            />
-
-            {/* Village approach road curving directly into Haat & Homestay */}
-            <path
-              d="M 390,285 Q 440,260 480,225"
+              d="M 160,650 Q 240,580 320,510 T 430,370 T 500,260 T 630,150 T 730,90 T 840,40"
               fill="none"
               stroke="#facc15"
-              strokeWidth="7"
+              strokeWidth="4.5"
               strokeLinecap="round"
+              opacity="0.9"
             />
             <path
-              d="M 390,285 Q 440,260 480,225"
+              d="M 160,650 Q 240,580 320,510 T 430,370 T 500,260 T 630,150 T 730,90 T 840,40"
               fill="none"
               stroke="#ffffff"
-              strokeWidth="1.5"
-              strokeDasharray="6 6"
+              strokeWidth="1.8"
+              strokeDasharray="8 6"
+              opacity="0.95"
             />
 
-            {/* Dharchula Town Area Marker */}
-            <g transform="translate(190, 370)">
-              <circle cx="0" cy="0" r="16" fill="rgba(255,255,255,0.12)" />
-              <circle cx="0" cy="0" r="6" fill="#f5d070" />
-              <rect x="-80" y="14" width="160" height="26" rx="13" fill="rgba(4,15,23,0.8)" stroke="rgba(255,255,255,0.18)" />
-              <text x="0" y="31" fill="#ffffff" fontSize="11" fontWeight="600" textAnchor="middle">
-                {"🏙️ Dharchula Town Center"}
+            {/* Haat Village approach spur */}
+            <path
+              d="M 430,370 Q 450,335 473,307"
+              fill="none"
+              stroke="#facc15"
+              strokeWidth="3.5"
+              strokeLinecap="round"
+              opacity="0.9"
+            />
+
+            {/* Kali River Waterway Accent */}
+            <path
+              d="M 840,35 Q 760,110 720,175 T 660,265 T 560,350 T 480,445 T 400,535 T 320,625 T 180,680"
+              fill="none"
+              stroke="#38bdf8"
+              strokeWidth="3.5"
+              strokeDasharray="14 10"
+              opacity="0.8"
+            />
+
+            {/* River Text Label */}
+            <g transform="translate(615, 290) rotate(-45)">
+              <rect x="-95" y="-12" width="190" height="22" rx="11" fill="rgba(6,18,28,0.9)" stroke="rgba(56,189,248,0.6)" strokeWidth="1.2" />
+              <text x="0" y="3.5" fill="#38bdf8" fontSize="10.5" fontWeight="700" fontStyle="italic" textAnchor="middle" letterSpacing="0.8">
+                ~ Kali River (Border) ~
               </text>
             </g>
 
-            {/* Route Arrows */}
-            <g transform="translate(680, 80)">
-              <rect x="-10" y="-14" width="220" height="28" rx="14" fill="rgba(4,15,23,0.85)" stroke="rgba(245,208,112,0.4)" />
-              <text x="100" y="4" fill="#f5d070" fontSize="11.5" fontWeight="700" textAnchor="middle">
-                {"🏔️ Adi Kailash & Om Parvat ↗"}
-              </text>
-            </g>
-            <g transform="translate(40, 410)">
-              <rect x="0" y="-14" width="170" height="28" rx="14" fill="rgba(4,15,23,0.85)" stroke="rgba(255,255,255,0.18)" />
-              <text x="85" y="4" fill="#e2e8f0" fontSize="11" fontWeight="600" textAnchor="middle">
-                {"↙ Pithoragarh / Tanakpur"}
+            {/* Nepal Territory Badge */}
+            <g transform="translate(860, 220)" filter="url(#cardShadow)">
+              <rect x="-65" y="-12" width="130" height="24" rx="12" fill="rgba(8,20,30,0.92)" stroke="rgba(255,255,255,0.35)" strokeWidth="1.2" />
+              <text x="0" y="4" fill="#f1f5f9" fontSize="10.5" fontWeight="700" textAnchor="middle">
+                NEPAL 🇳🇵 (Darchula)
               </text>
             </g>
 
-            {/* ── HIGHLIGHTED SHIV DARSHAN HOMESTAY PROPERTY (HAAT) ── */}
-            <g transform="translate(480, 220)">
+            {/* Indo-Nepal Suspension Bridge (Jhula Pul) */}
+            <g transform="translate(755, 175)" filter="url(#cardShadow)">
+              <rect x="-85" y="-13" width="170" height="26" rx="13" fill="rgba(8,20,30,0.92)" stroke="rgba(56,189,248,0.6)" strokeWidth="1.2" />
+              <circle cx="-68" cy="0" r="4" fill="#38bdf8" />
+              <text x="6" y="4" fill="#ffffff" fontSize="10" fontWeight="600" textAnchor="middle">
+                🌉 Jhula Pul (Bridge to Nepal)
+              </text>
+            </g>
+
+            {/* SDM Office & ILP Permits */}
+            <g transform="translate(710, 60)" filter="url(#cardShadow)">
+              <rect x="-85" y="-13" width="170" height="26" rx="13" fill="rgba(8,20,30,0.92)" stroke="rgba(245,208,112,0.6)" strokeWidth="1.2" />
+              <circle cx="-68" cy="0" r="4" fill="#f5d070" />
+              <text x="6" y="4" fill="#ffffff" fontSize="10" fontWeight="600" textAnchor="middle">
+                🏢 SDM Office (Permits)
+              </text>
+            </g>
+
+            {/* Dharchula Main Market / Taxi Stand */}
+            <g transform="translate(635, 120)" filter="url(#cardShadow)">
+              <rect x="-85" y="-13" width="170" height="26" rx="13" fill="rgba(8,20,30,0.92)" stroke="rgba(245,208,112,0.6)" strokeWidth="1.2" />
+              <circle cx="-68" cy="0" r="4" fill="#f5d070" />
+              <text x="6" y="4" fill="#ffffff" fontSize="10" fontWeight="600" textAnchor="middle">
+                🚕 Main Market &amp; Taxis
+              </text>
+            </g>
+
+            {/* Petrol Pump (Last pump before Adi Kailash) */}
+            <g className="gmap-poi-secondary" transform="translate(535, 75)" filter="url(#cardShadow)">
+              <rect x="-75" y="-12" width="150" height="24" rx="12" fill="rgba(8,20,30,0.92)" stroke="rgba(255,255,255,0.3)" strokeWidth="1" />
+              <circle cx="-60" cy="0" r="3.5" fill="#4ade80" />
+              <text x="6" y="4" fill="#e2e8f0" fontSize="9.5" fontWeight="600" textAnchor="middle">
+                ⛽ Petrol Pump (IndianOil)
+              </text>
+            </g>
+
+            {/* CHC Hospital Dharchula */}
+            <g className="gmap-poi-secondary" transform="translate(495, 140)" filter="url(#cardShadow)">
+              <rect x="-60" y="-12" width="120" height="24" rx="12" fill="rgba(8,20,30,0.92)" stroke="rgba(255,255,255,0.3)" strokeWidth="1" />
+              <circle cx="-46" cy="0" r="3.5" fill="#f87171" />
+              <text x="6" y="4" fill="#e2e8f0" fontSize="9.5" fontWeight="600" textAnchor="middle">
+                🏥 CHC Hospital
+              </text>
+            </g>
+
+            {/* Dharchula Helipad */}
+            <g className="gmap-poi-secondary" transform="translate(290, 560)" filter="url(#cardShadow)">
+              <rect x="-68" y="-12" width="136" height="24" rx="12" fill="rgba(8,20,30,0.92)" stroke="rgba(255,255,255,0.3)" strokeWidth="1" />
+              <circle cx="-52" cy="0" r="3.5" fill="#38bdf8" />
+              <text x="6" y="4" fill="#e2e8f0" fontSize="9.5" fontWeight="600" textAnchor="middle">
+                🚁 Dharchula Helipad
+              </text>
+            </g>
+
+            {/* Haat Village & Kalika Temple */}
+            <g transform="translate(370, 410)" filter="url(#cardShadow)">
+              <rect x="-80" y="-13" width="160" height="26" rx="13" fill="rgba(8,20,30,0.92)" stroke="rgba(245,208,112,0.6)" strokeWidth="1.2" />
+              <circle cx="-64" cy="0" r="4" fill="#f5d070" />
+              <text x="5" y="4" fill="#ffffff" fontSize="10" fontWeight="600" textAnchor="middle">
+                🛕 Haat Kalika Mandir
+              </text>
+            </g>
+
+            {/* Route Direction: Adi Kailash & Om Parvat (Top-Right) */}
+            <g transform="translate(835, 75)" filter="url(#cardShadow)">
+              <rect x="-115" y="-14" width="230" height="28" rx="14" fill="rgba(6,18,28,0.94)" stroke="rgba(245,208,112,0.8)" strokeWidth="1.5" />
+              <text x="0" y="4.5" fill="#f5d070" fontSize="11" fontWeight="700" textAnchor="middle">
+                🏔️ Adi Kailash &amp; Om Parvat ↗
+              </text>
+            </g>
+
+            {/* Route Direction: Pithoragarh / Tanakpur (Bottom-Left) */}
+            <g transform="translate(170, 580)" filter="url(#cardShadow)">
+              <rect x="-85" y="-14" width="170" height="28" rx="14" fill="rgba(6,18,28,0.94)" stroke="rgba(255,255,255,0.4)" strokeWidth="1.2" />
+              <text x="0" y="4.5" fill="#e2e8f0" fontSize="10" fontWeight="600" textAnchor="middle">
+                ↙ Pithoragarh / Tanakpur
+              </text>
+            </g>
+
+            {/* ── PRIMARY HIGHLIGHT: SHIV DARSHAN HOMESTAY (HAAT) ── */}
+            <g transform="translate(473, 307)">
               {/* Golden Ground Aura */}
-              <ellipse cx="0" cy="0" rx="70" ry="35" fill="url(#auraGlow)" />
+              <ellipse cx="0" cy="0" rx="65" ry="32" fill="url(#auraGlow)" />
 
               {/* Pulsing Radar Rings */}
-              <circle cx="0" cy="0" r="15" fill="none" stroke="#f5d070" style={{ animation: "gmapRadarPulse 2.4s infinite cubic-bezier(0.1, 0.7, 0.1, 1)" }} />
-              <circle cx="0" cy="0" r="15" fill="none" stroke="#f5d070" style={{ animation: "gmapRadarPulse 2.4s infinite cubic-bezier(0.1, 0.7, 0.1, 1) 0.8s" }} />
-              <circle cx="0" cy="0" r="15" fill="none" stroke="#f5d070" style={{ animation: "gmapRadarPulse 2.4s infinite cubic-bezier(0.1, 0.7, 0.1, 1) 1.6s" }} />
+              <circle cx="0" cy="0" r="16" fill="none" stroke="#f5d070" strokeWidth="2.2" opacity="0.95" style={{ animation: "gmapRadarPulse 2.4s infinite cubic-bezier(0.1, 0.7, 0.1, 1)" }} />
+              <circle cx="0" cy="0" r="16" fill="none" stroke="#f5d070" strokeWidth="1.5" opacity="0.65" style={{ animation: "gmapRadarPulse 2.4s infinite cubic-bezier(0.1, 0.7, 0.1, 1) 0.8s" }} />
+              <circle cx="0" cy="0" r="16" fill="none" stroke="#f5d070" strokeWidth="0.9" opacity="0.35" style={{ animation: "gmapRadarPulse 2.4s infinite cubic-bezier(0.1, 0.7, 0.1, 1) 1.6s" }} />
 
               {/* Animated Bouncing Google Maps Marker Pin */}
               <g className="gmap-pin-group">
                 {/* Pin Shadow */}
-                <ellipse cx="0" cy="1" rx="10" ry="4" fill="rgba(0,0,0,0.6)" />
+                <ellipse cx="0" cy="1" rx="10" ry="4" fill="rgba(0,0,0,0.7)" />
 
                 {/* Red Google 3D Pin */}
                 <path
-                  d="M 0,-48 C -14,-48 -24,-37 -24,-23 C -24,-7 0,0 0,0 C 0,0 24,-7 24,-23 C 24,-37 14,-48 0,-48 Z"
+                  d="M 0,-44 C -13,-44 -22,-34 -22,-21 C -22,-6 0,0 0,0 C 0,0 22,-6 22,-21 C 22,-34 13,-44 0,-44 Z"
                   fill="#EA4335"
                   stroke="#f5d070"
                   strokeWidth="2"
-                  filter="url(#cardShadow)"
+                  filter="url(#pinShadow)"
                 />
                 {/* Inner white circle */}
-                <circle cx="0" cy="-26" r="9.5" fill="#FFFFFF" />
+                <circle cx="0" cy="-23" r="8.5" fill="#FFFFFF" />
                 {/* Sacred Om center */}
-                <text x="0" y="-22" fontSize="11" textAnchor="middle" fill="#04121d" fontWeight="900">
+                <text x="0" y="-19.5" fontSize="10" textAnchor="middle" fill="#04121d" fontWeight="900">
                   ॐ
                 </text>
               </g>
 
               {/* Floating Info Tooltip Banner above Pin */}
-              <g transform="translate(0, -68)" filter="url(#cardShadow)">
-                <rect x="-135" y="-38" width="270" height="42" rx="10" fill="#0a1d29" stroke="#f5d070" strokeWidth="1.6" />
-                <polygon points="0,4 -6,-1 6,-1" fill="#0a1d29" stroke="#f5d070" strokeWidth="1.6" />
-                <rect x="-4" y="-3" width="8" height="3" fill="#0a1d29" />
+              <g transform="translate(0, -64)" filter="url(#cardShadow)">
+                <rect x="-135" y="-38" width="270" height="42" rx="10" fill="#061622" stroke="#f5d070" strokeWidth="1.6" />
+                <polygon points="0,4 -6,-1 6,-1" fill="#061622" stroke="#f5d070" strokeWidth="1.6" />
+                <rect x="-4" y="-3" width="8" height="3" fill="#061622" />
                 <text x="0" y="-21" fill="#ffffff" fontSize="12" fontWeight="700" textAnchor="middle">
                   {"📍 Shiv Darshan Homestay (Haat)"}
                 </text>
@@ -5151,24 +5230,16 @@ function LocationMap() {
               </g>
             </g>
 
-            {/* Google Watermark Bottom Left */}
-            <g transform="translate(30, 460)">
-              <text x="0" y="0" fill="rgba(255,255,255,0.45)" fontSize="13" fontWeight="700" letterSpacing="0.5">
-                Google
-              </text>
-              <text x="60" y="-1" fill="rgba(255,255,255,0.3)" fontSize="9.5">
-                {"| Map data ©2026 Google / Haat, Dharchula"}
-              </text>
+            {/* Google Map Watermark & Scale */}
+            <g transform="translate(85, 595)">
+              <text x="0" y="0" fill="rgba(255,255,255,0.75)" fontSize="12" fontWeight="700">Google</text>
+              <text x="48" y="-1" fill="rgba(255,255,255,0.55)" fontSize="9.5">| Satellite Imagery ©2026 Maxar / ESRI</text>
             </g>
-
-            {/* Map Scale Bottom Right */}
-            <g transform="translate(870, 455)">
-              <line x1="0" y1="0" x2="60" y2="0" stroke="rgba(255,255,255,0.5)" strokeWidth="2" />
-              <line x1="0" y1="-4" x2="0" y2="4" stroke="rgba(255,255,255,0.5)" strokeWidth="2" />
-              <line x1="60" y1="-4" x2="60" y2="4" stroke="rgba(255,255,255,0.5)" strokeWidth="2" />
-              <text x="30" y="-6" fill="rgba(255,255,255,0.5)" fontSize="9.5" textAnchor="middle">
-                200 m
-              </text>
+            <g transform="translate(870, 595)">
+              <line x1="0" y1="0" x2="50" y2="0" stroke="rgba(255,255,255,0.75)" strokeWidth="2" />
+              <line x1="0" y1="-3" x2="0" y2="3" stroke="rgba(255,255,255,0.75)" strokeWidth="2" />
+              <line x1="50" y1="-3" x2="50" y2="3" stroke="rgba(255,255,255,0.75)" strokeWidth="2" />
+              <text x="25" y="-5" fill="rgba(255,255,255,0.75)" fontSize="9" textAnchor="middle">500 m</text>
             </g>
           </svg>
 
