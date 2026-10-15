@@ -96,13 +96,14 @@ const WA_BOOKING_MESSAGE = [
   "",
   "Please share availability, rates, and guidance for the Adi Kailash & Om Parvat yatra. Thank you!",
   "",
-  "🌹🙏 शिव दर्शन होम स्टे 🙏🌹",
-  "हाट, धारचूला देहात, पिथौरागढ़ (उत्तराखंड)",
-  "स्वामी: गोविंद सिंह धामी",
-  "संपर्क सूत्र: 9410135726 / 9456761865",
+  "नमस्ते गोविंद सिंह धामी जी! मैं धारचूला (उत्तराखंड) के हाट स्थित 'शिव दर्शन होमस्टे' में ठहरने के बारे में जानकारी लेना चाहता हूँ।",
   "",
-  "हमारे होम स्टे से इनर लाइन परमिट और आदि कैलाश ॐ पर्वत के लिए संपूर्ण सुविधा उपलब्ध है 🙏",
-  "🌹🙏 अतिथि देवो भवः · हर हर महादेव 🚩🙏"
+  "चेक-इन की तारीख: ",
+  "चेक-आउट की तारीख: ",
+  "मेहमानों की संख्या: ",
+  "कमरे का प्रकार: ",
+  "",
+  "कृपया उपलब्धता, किराए और आदि कैलाश व ओम पर्वत यात्रा के लिए मार्गदर्शन साझा करें। धन्यवाद!"
 ].join("\n");
 
 const getWaUrl = (number = WA_NUMBER, customMsg = WA_BOOKING_MESSAGE) =>
@@ -3211,7 +3212,26 @@ function RoomCard({ room, onBook, posClass = "", onClick }) {
             onClick={(e) => {
               e.stopPropagation();
               if (room.available) {
-                const msg = `Hello! I would like to book the ${room.name} (${room.type}) at Shiv Darshan Homestay, Haat, Dharchula. Please share availability and rates.`;
+                const msg = [
+                  "Namaste Govind Singh Dhami ji! 🙏",
+                  "I would like to enquire about staying at Shiv Darshan Homestay, Haat, Dharchula (Uttarakhand).",
+                  "",
+                  "📅 Check-in Date: ",
+                  "📅 Check-out Date: ",
+                  "👥 Number of Guests: ",
+                  `🛏️ Preferred Room Type: ${room.name} (${room.type})`,
+                  "",
+                  "Please share availability, rates, and guidance for the Adi Kailash & Om Parvat yatra. Thank you!",
+                  "",
+                  "नमस्ते गोविंद सिंह धामी जी! मैं धारचूला (उत्तराखंड) के हाट स्थित 'शिव दर्शन होमस्टे' में ठहरने के बारे में जानकारी लेना चाहता हूँ।",
+                  "",
+                  "चेक-इन की तारीख: ",
+                  "चेक-आउट की तारीख: ",
+                  "मेहमानों की संख्या: ",
+                  `कमरे का प्रकार: ${room.name} (${room.type})`,
+                  "",
+                  "कृपया उपलब्धता, किराए और आदि कैलाश व ओम पर्वत यात्रा के लिए मार्गदर्शन साझा करें। धन्यवाद!"
+                ].join("\n");
                 window.open(getWaUrl(WA_NUMBER, msg), "_blank", "noopener");
               }
             }}
