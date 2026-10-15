@@ -2654,23 +2654,125 @@ const CSS = `
   }
   .faq-cta-banner {
     margin-top: 2.75rem;
-    text-align: center;
-    background: linear-gradient(135deg, var(--peak) 0%, #0d2535 100%);
-    border: 1.5px solid rgba(245, 208, 112, 0.35);
+    background: linear-gradient(135deg, #0e2738 0%, #081a26 100%);
+    border: 1.5px solid rgba(245, 208, 112, 0.4);
     border-radius: 20px;
-    padding: 1.75rem 2rem;
+    padding: 1.75rem 2.2rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1.25rem;
+    gap: 1.5rem;
     flex-wrap: wrap;
-    box-shadow: 0 16px 40px rgba(12, 32, 42, 0.25);
+    box-shadow: 0 16px 40px rgba(12, 32, 42, 0.35);
+    position: relative;
+    overflow: hidden;
+  }
+  .faq-cta-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(245, 208, 112, 0.6), transparent);
+    pointer-events: none;
+  }
+  .faq-cta-content {
+    text-align: left;
+    max-width: 580px;
+  }
+  .faq-cta-title {
+    color: #ffffff;
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+    font-family: var(--font-serif);
+    letter-spacing: -0.01em;
+  }
+  .faq-cta-desc {
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.88rem;
+    margin: 0;
+    line-height: 1.55;
+  }
+  .faq-cta-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+    margin: 0;
+  }
+  .faq-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    padding: 0.72rem 1.35rem;
+    border-radius: 50px;
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-sizing: border-box;
+    cursor: pointer;
+    margin: 0 !important;
+  }
+  .faq-cta-btn:active {
+    transform: translateY(0) scale(0.97);
+  }
+  .faq-cta-btn-wa {
+    background: #25D366;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);
+  }
+  .faq-cta-btn-wa:hover {
+    background: #20bd5a;
+    color: #ffffff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(37, 211, 102, 0.45);
+  }
+  .faq-cta-btn-call {
+    background: linear-gradient(135deg, #f5d070 0%, #c8963e 100%);
+    color: #0c202a !important;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 14px rgba(200, 150, 62, 0.35);
+  }
+  .faq-cta-btn-call:hover {
+    background: linear-gradient(135deg, #fae08c 0%, #dbab4e 100%);
+    color: #071520 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(200, 150, 62, 0.5);
   }
   @media (max-width: 720px) {
     .faq-section { padding: 3rem 1.25rem; }
     .faq-question-btn { padding: 1rem 1.15rem; font-size: 0.94rem; }
     .faq-answer-pane { padding: 0 1.15rem 1.15rem; font-size: 0.88rem; }
-    .faq-cta-banner { flex-direction: column; text-align: center; justify-content: center; padding: 1.4rem 1.2rem; }
+    .faq-cta-banner {
+      flex-direction: column;
+      text-align: center;
+      justify-content: center;
+      padding: 1.5rem 1.25rem;
+      gap: 1.25rem;
+    }
+    .faq-cta-content {
+      text-align: center;
+      max-width: 100%;
+    }
+    .faq-cta-actions {
+      width: 100%;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .faq-cta-btn {
+      width: 100%;
+      padding: 0.8rem 1.2rem;
+      font-size: 0.9rem;
+    }
   }
 `;
 
@@ -4810,30 +4912,30 @@ function Faq() {
       </div>
 
       <div className="faq-cta-banner reveal">
-        <div style={{ textAlign: "left" }}>
-          <h4 style={{ color: "#ffffff", fontSize: "1.05rem", marginBottom: "0.25rem" }}>
+        <div className="faq-cta-content">
+          <h4 className="faq-cta-title">
             Have a specific question about your pilgrimage route or stay?
           </h4>
-          <p style={{ color: "rgba(255,255,255,0.72)", fontSize: "0.85rem", margin: 0 }}>
+          <p className="faq-cta-desc">
             Chat directly with host Govind Singh Dhami for permit assistance, route status, and room availability.
           </p>
         </div>
-        <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+        <div className="faq-cta-actions">
           <a
             href={WA_BOOKING_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="whatsapp-btn"
-            style={{ padding: "0.65rem 1.1rem", fontSize: "0.85rem" }}
+            className="faq-cta-btn faq-cta-btn-wa"
           >
-            <MessageCircle size={16} strokeWidth={2.2} /> WhatsApp Inquiry
+            <MessageCircle size={17} strokeWidth={2.2} />
+            <span>WhatsApp Inquiry</span>
           </a>
           <a
             href="tel:+919456761865"
-            className="btn-primary"
-            style={{ padding: "0.65rem 1.1rem", fontSize: "0.85rem" }}
+            className="faq-cta-btn faq-cta-btn-call"
           >
-            <Phone size={15} strokeWidth={2.2} /> Call +91 94567 61865
+            <Phone size={16} strokeWidth={2.4} />
+            <span>Call +91 94567 61865</span>
           </a>
         </div>
       </div>
