@@ -2527,6 +2527,76 @@ const CSS = `
     gap: 0.65rem;
     flex-wrap: wrap;
   }
+  .gmap-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.15rem;
+    border-radius: 50px;
+    font-family: var(--font-sans);
+    font-size: 0.84rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-decoration: none !important;
+    white-space: nowrap;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-sizing: border-box;
+    cursor: pointer;
+    margin: 0;
+  }
+  .gmap-btn,
+  .gmap-btn:link,
+  .gmap-btn:visited {
+    text-decoration: none !important;
+  }
+  .gmap-btn:active {
+    transform: translateY(0) scale(0.97);
+  }
+  .gmap-btn-primary,
+  .gmap-btn-primary:visited {
+    background: linear-gradient(135deg, #f5d070 0%, #c8963e 100%);
+    color: #071520 !important;
+    font-weight: 700;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 4px 14px rgba(200, 150, 62, 0.32);
+  }
+  .gmap-btn-primary:hover {
+    background: linear-gradient(135deg, #fae08c 0%, #dbab4e 100%);
+    color: #071520 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(200, 150, 62, 0.48);
+  }
+  .gmap-btn-directions,
+  .gmap-btn-directions:visited {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  }
+  .gmap-btn-directions:hover {
+    background: rgba(255, 255, 255, 0.22);
+    border-color: #ffffff;
+    color: #ffffff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(255, 255, 255, 0.18);
+  }
+  .gmap-btn-call,
+  .gmap-btn-call:visited {
+    background: rgba(245, 208, 112, 0.1);
+    color: #f5d070 !important;
+    border: 1.5px solid rgba(245, 208, 112, 0.45);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  }
+  .gmap-btn-call:hover {
+    background: rgba(245, 208, 112, 0.22);
+    border-color: #f5d070;
+    color: #ffffff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(200, 150, 62, 0.35);
+  }
   @keyframes gmapRadarPulse {
     0% { r: 14px; opacity: 0.95; stroke-width: 2px; }
     50% { opacity: 0.45; }
@@ -5602,50 +5672,27 @@ function LocationMap() {
               href={MAPS_LOCATION_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-primary"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "7px",
-                padding: "0.65rem 1.15rem",
-                fontSize: "0.85rem",
-              }}
+              className="gmap-btn gmap-btn-primary"
             >
               <MapPin size={15} strokeWidth={2.2} />
-              Open in Google Maps
+              <span>Open in Google Maps</span>
               <ExternalLink size={13} strokeWidth={2.2} />
             </a>
             <a
               href={MAPS_DIRECTIONS_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-secondary"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "7px",
-                padding: "0.65rem 1.15rem",
-                fontSize: "0.85rem",
-              }}
+              className="gmap-btn gmap-btn-directions"
             >
               <Navigation size={15} strokeWidth={2.2} />
-              Get Directions
+              <span>Get Directions</span>
             </a>
             <a
               href="tel:+919456761865"
-              className="btn-ghost"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "6px",
-                padding: "0.65rem 0.95rem",
-                fontSize: "0.85rem",
-                color: "var(--gold)",
-                border: "1px solid rgba(245, 208, 112, 0.4)",
-              }}
+              className="gmap-btn gmap-btn-call"
             >
               <Phone size={14} strokeWidth={2.2} />
-              Route Help: 94567 61865
+              <span>Route Help: 94567 61865</span>
             </a>
           </div>
         </div>
